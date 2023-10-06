@@ -1,0 +1,48 @@
+html, body,
+:root{
+    margin: 0;
+    padding: 0;
+}
+
+html{
+    scroll-behavior: smooth;
+}
+
+
+
+.body{
+    background-image: url('./resources/background.jpeg');
+    color: aliceblue !important;
+}
+
+
+.container{
+    height: 100vh;
+    width: 100vw;
+}
+
+.second{
+    width: 450px;
+}
+
+.progress {
+    margin-bottom: 15px;
+}
+
+p{
+    text-align: start !important;
+}
+
+.contacto{
+    width: 450px;
+    display: flex;
+    justify-content: space-between;
+}
+
+a > img {
+    width: 40px;
+}
+
+.user {
+    height: 100%;
+}

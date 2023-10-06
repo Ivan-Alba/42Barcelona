@@ -1,0 +1,23 @@
+ html, body  {
+	  height:100%;
+	  width:100%;
+	  margin:0;
+      }
+      
+      tr {
+	  height: 150px;
+	  text-align: left;
+      }
+      
+      table {   
+	  width: 100%;
+	  height: 100%;
+      }
+	
+	.cell1 {
+	background-color: #63AD53
+	}
+
+	.cell2 {
+	background-coloR: #E1A794
+	}

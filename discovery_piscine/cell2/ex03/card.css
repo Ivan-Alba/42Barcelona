@@ -1,0 +1,42 @@
+table {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    border-spacing: 0;
+  }
+
+  th {
+    font-size: x-large;
+    padding-bottom: 10px;
+  }
+
+  td {
+    border: 1px inset black;
+    padding: 0;
+  }
+
+  .inforow {
+    height: 100px;
+    border-top: 0;
+  }
+
+  .contactrow {
+    background-color: black;
+    color: white;
+    font-size: 20px;
+  }
+
+  img {
+    width: 270px;
+    height: 300px;
+    margin-bottom: 0;
+  }
+
+  .imgrow{
+    border-bottom: 0;
+  }
+
+  .icon {
+    width: 20px;
+    height: 20px;
+  }

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Calculator</title>
+  <style>
+    body {
+      text-align: center;
+    }
+
+    select {
+      font-size: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Calculator</h1>
+
+  <input type="text" id="fnumber" name="fnumber"><br><br>
+
+  <select name="operators" id="operators">
+    <option value="+">+</option>
+    <option value="-">-</option>
+    <option value="*">*</option>
+    <option value="/">/</option>
+    <option value="%">%</option>
+  </select>
+  <br><br>
+  <input type="text" id="snumber" name="snumber"><br><br>
+  <input type="submit" value="Try me!" id="button">
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+
+      $("#button").click(function () {
+        var firstNumber = $("#fnumber").val();
+        var secondNumber = $("#snumber").val();
+        var operator = $("#operators").val();
+
+        if ($.isNumeric(firstNumber) && firstNumber >= 0 && $.isNumeric(secondNumber) && secondNumber >= 0) {
+          firstNumber = parseInt(firstNumber);
+          secondNumber = parseInt(secondNumber);
+
+          var result;
+          switch (operator) {
+            case "+":
+              result = firstNumber + secondNumber;
+              alert(result);
+              break;
+            case "-":
+              result = firstNumber - secondNumber;
+              alert(result);
+              break;
+            case "*":
+              result = firstNumber * secondNumber;
+              alert(result);
+              break;
+            case "/":
+              if (secondNumber === 0) {
+                alert("It's over 9000!");
+                return;
+              } else {
+                result = firstNumber / secondNumber;
+                alert(result);
+                break;
+              }
+            case "%":
+              if (secondNumber === 0) {
+                alert("It's over 9000!");
+                return;
+              } else {
+                result = firstNumber % secondNumber;
+                alert(result);
+              }
+              break;
+          }
+          console.log("Result: " + result);
+        } else {
+          alert("Error :(");
+        }
+      });
+
+      setInterval(function () {
+        alert("Please, use me...");
+      }, 30000);
+
+    });
+  </script>
+</body>
+
+</html>

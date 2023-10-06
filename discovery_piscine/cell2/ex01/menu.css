@@ -1,0 +1,74 @@
+.selection {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 100px;
+  }
+
+  .question {
+    font-size: xx-large;
+    color: rgb(29, 110, 182);
+  }
+
+  .options {
+    font-size: xx-large;
+    text-align: center;
+    background-color: aquamarine;
+    font-family: 'Times New Roman', Times, serif;
+  }
+
+  body {
+    background-image: url(https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimg.freepik.com%2Fpremium-vector%2Fvector-seamless-pattern-fish-editable-can-be-used-web-page-backgrounds-pattern-fills_159242-1352.jpg%3Fw%3D1380&f=1&nofb=1&ipt=3f621321e9e089ffc913f80236c18a77ab279f79993014edf453aaa5e8c429bb&ipo=images);
+
+  }
+
+  .logo {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 20%;
+  }
+
+  table {
+    margin-top: 40px;
+    background-color: aquamarine;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  th {
+    font-size: xx-large;
+    color: white;
+    -webkit-text-stroke: 2px black;
+    /* width and color */
+    height: 30px;
+    padding-left: 70px;
+    padding-right: 70px;
+    border: 1px solid black;
+  }
+
+  td {
+    border: 1px solid black;
+  }
+
+
+
+  h1 {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 70px;
+    color: aquamarine;
+    text-align: center;
+    -webkit-text-stroke: 2px black;
+    margin-top: 0;
+  }
+
+  .productimage {
+    width: 330px;
+    height: 250px;
+    text-align: center;
+    display: block;
+    margin: 0 auto;
+  }
+
+  button{
+    font-size: 20px;
+  }

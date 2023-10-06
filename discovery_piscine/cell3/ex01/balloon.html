@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+  #balloon {
+    left: 50%;
+    top: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+  }
+</style>
+
+<head>
+  <title>Balloon</title>
+</head>
+
+<body>
+  <div style="width: 200px; height: 200px; background-color: red" onclick="balloonClicked()" onmouseleave="balloonLeaved()" id="balloon"></div>
+</body>
+
+<script>
+  function balloonClicked() {
+    var balloon = document.getElementById("balloon");
+
+    var actualWidth = balloon.style.width.split("px");
+    var newWidth = (Number(actualWidth[0]) + 10) + "px";
+
+    var actualHeight = balloon.style.height.split("px");
+    var newHeight = (Number(actualHeight[0]) + 10) + "px";
+
+    if ((Number(actualHeight[0]) + 10) > 420) {
+      balloon.style.width = "200px";
+      balloon.style.height = "200px";
+    } else {
+      balloon.style.height = newHeight;
+      balloon.style.width = newWidth;
+    }
+
+
+    switch (balloon.style.backgroundColor) {
+      case "red":
+        balloon.style.backgroundColor = "green";
+        break;
+      case "green":
+        balloon.style.backgroundColor = "blue";
+        break;
+      case "blue":
+        balloon.style.backgroundColor = "red";
+        break;
+    }
+  }
+
+  function balloonLeaved() {
+    var balloon = document.getElementById("balloon");
+    var actualWidth = balloon.style.width.split("px");
+    var newWidth = (Number(actualWidth[0]) - 5) + "px";
+
+    var actualHeight = balloon.style.height.split("px");
+    var newHeight = (Number(actualHeight[0]) - 5) + "px";
+
+    if ((Number(actualHeight[0]) - 5) >= 200) {
+      balloon.style.height = newHeight;
+      balloon.style.width = newWidth;
+    }
+
+    switch (balloon.style.backgroundColor) {
+      case "red":
+        balloon.style.backgroundColor = "blue";
+        break;
+      case "green":
+        balloon.style.backgroundColor = "red";
+        break;
+      case "blue":
+        balloon.style.backgroundColor = "green";
+        break;
+    }
+  
+  }
+</script>
+
+</html>

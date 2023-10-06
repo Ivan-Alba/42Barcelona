@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+  #balloon {
+    left: 50%;
+    top: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+  }
+</style>
+
+<head>
+  <title>Balloon</title>
+</head>
+
+<body>
+  <div style="width: 200px; height: 200px; background-color: red" id="balloon"></div>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+
+    $("#balloon").click(function () {
+      var $balloon = $("#balloon");
+      var currentWidth = $balloon.width();
+      var currentHeight = $balloon.height();
+
+      if ((currentHeight + 10) > 420) {
+        $balloon.css({ "width": "200px", "height": "200px" });
+      } else {
+        $balloon.css({ "width": (currentWidth + 10) + "px", "height": (currentHeight + 10) + "px" });
+      }
+
+      switch ($balloon.css("background-color")) {
+        case "rgb(255, 0, 0)": // Rojo
+          $balloon.css("background-color", "rgb(0, 128, 0)"); // Verde
+          break;
+        case "rgb(0, 128, 0)": // Verde
+          $balloon.css("background-color", "rgb(0, 0, 255)"); // Azul
+          break;
+        case "rgb(0, 0, 255)": // Azul
+          $balloon.css("background-color", "rgb(255, 0, 0)"); // Rojo
+          break;
+      }
+    });
+
+    $("#balloon").mouseleave(function () {
+      var $balloon = $("#balloon");
+      var currentWidth = $balloon.width();
+      var currentHeight = $balloon.height();
+
+      if ((currentHeight - 5) >= 200) {
+        $balloon.css({ "width": (currentWidth - 5) + "px", "height": (currentHeight - 5) + "px" });
+      }
+
+      switch ($balloon.css("background-color")) {
+        case "rgb(255, 0, 0)": // Rojo
+          $balloon.css("background-color", "rgb(0, 0, 255)"); // Azul
+          break;
+        case "rgb(0, 128, 0)": // Verde
+          $balloon.css("background-color", "rgb(255, 0, 0)"); // Rojo
+          break;
+        case "rgb(0, 0, 255)": // Azul
+          $balloon.css("background-color", "rgb(0, 128, 0)"); // Verde
+          break;
+      }
+    });
+    
+  });
+
+</script>
+
+</html>

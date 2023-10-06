@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+  body {
+    text-align: center;
+  }
+
+  select {
+    font-size: 20px;
+  }
+</style>
+
+<head>
+  <title>Calc</title>
+</head>
+
+<body>
+  <h1>Calculator</h1>
+
+
+  <input type="text" id="fnumber" name="fnumber"><br><br>
+
+  <select name="operators" id="operators">
+    <option value="+">+</option>
+    <option value="-">-</option>
+    <option value="*">*</option>
+    <option value="/">/</option>
+    <option value="%">%</option>
+  </select>
+  <br><br>
+  <input type="text" id="snumber" name="snumber"><br><br>
+  <input type="submit" value="Try me!" onclick="calculate()">
+
+</body>
+
+<script>
+
+  function calculate() {
+    var firstNumber = document.getElementById("fnumber").value;
+    var secondNumber = document.getElementById("snumber").value;
+    var operator = document.getElementById("operators").value;
+
+    if (firstNumber == (parseInt(firstNumber)).toString() && firstNumber >= 0 && secondNumber == (parseInt(secondNumber)).toString() && secondNumber >= 0) {
+      var result;
+      switch (operator) {
+        case "+":
+          result = parseInt(firstNumber) + parseInt(secondNumber);
+          alert(result);
+          break;
+        case "-":
+          result = parseInt(firstNumber) - parseInt(secondNumber);
+          alert(result);
+          break;
+        case "*":
+          result = parseInt(firstNumber) * parseInt(secondNumber);
+          alert(result);
+          break;
+        case "/":
+          result = parseInt(firstNumber) / parseInt(secondNumber);
+          if (secondNumber == 0) {
+            alert("It's over 9000!");
+          } else {
+            alert(result);
+          }
+          break;
+        case "%":
+          result = parseInt(firstNumber) % parseInt(secondNumber);
+          if (secondNumber == 0) {
+            alert("It's over 9000!");
+          } else {
+           alert(result);
+          } break;
+      }
+      console.log(result);
+
+    } else {
+      alert("Error :(");
+    }
+
+  }
+
+  setInterval(function () { alert("Please, use me...") }, 30000);
+
+</script>
+
+
+</html>
