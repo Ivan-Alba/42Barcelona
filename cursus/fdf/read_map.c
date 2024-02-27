@@ -1,0 +1,39 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   read_map.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/26 14:39:19 by igarcia2          #+#    #+#             */
+/*   Updated: 2024/02/26 15:59:49 by igarcia2         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "fdf.h"
+
+char	**read_map(char	*file)
+{
+	int		fd;
+	char	*content;
+	char	*all_content;
+	char	**res;
+
+	fd = open(file, O_RDONLY);
+	if (fd < 0)
+		exit_error(FILE_ERROR);
+	content = get_next_line(fd);
+	all_content = NULL;
+	if (!content)
+		exit_error(MAP_ERROR);
+	while (content)
+	{
+		all_content = ft_strcat(&all_content, content, ft_strlen(content));
+		free(content);
+		content = get_next_line(fd);
+	}
+	res = ft_split(all_content, '\n');
+	if (!res)
+		exit_error("Split error\n");
+	return (res);
+}
