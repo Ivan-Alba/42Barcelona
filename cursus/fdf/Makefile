@@ -6,13 +6,13 @@
 #    By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/21 21:07:38 by igarcia2          #+#    #+#              #
-#    Updated: 2024/02/27 17:40:43 by igarcia2         ###   ########.fr        #
+#    Updated: 2024/03/23 02:25:34 by igarcia2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fdf
 
-SRC = main.c utils.c read_map.c event_controller.c print_pixels.c
+SRC = main.c utils.c read_map.c event_controller.c print_pixels.c map_info.c
 
 DEPS = $(SRC:.c=.d)
 

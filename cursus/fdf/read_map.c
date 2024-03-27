@@ -6,12 +6,13 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:39:19 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/02/26 15:59:49 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/03/22 20:37:16 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
+//Reads map in .txt format and separates it by lines with split
 char	**read_map(char	*file)
 {
 	int		fd;

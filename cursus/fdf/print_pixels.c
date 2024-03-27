@@ -6,13 +6,19 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:38:19 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/02/27 18:26:17 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/03/27 20:29:39 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+void convert_isometric(int *x, int *y, int z)
+{
+    *x = (*x - *y) * cos(1);
+    *y = (*x + *y) * sin(1) - z;
+}
+
+void	putpixel(t_data *data, int x, int y, int color)
 {
 	char	*dst;
 
@@ -20,53 +26,58 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-void	print_x(char **map, t_data *img, int i, int j)
+int	round_float(float num)
 {
-	int	current_pixel;
+	if (num - (int) num >= 0.5)
+		return ((int) num + 1);
+	return ((int) num);
+}
 
-	my_mlx_pixel_put(img, j * 30, i * 30, 0xFFFFFF);
-	current_pixel = j * 30;
-	if (map[i][j + 1] != '\0')
+void	print_lines(t_data *data, t_points point1, t_points point2)
+{
+	int		max;
+	int		x;
+	int		y;
+	int		i;
+
+	if (abs(point2.x_iso - point1.x_iso) > abs(point2.y_iso - point1.y_iso))
+		max = abs(point2.x_iso - point1.x_iso);
+	else
+		max = abs(point2.y_iso - point1.y_iso);
+	if (max > 0)
 	{
-		while (++current_pixel < (j + 1) * 30)
+		x = point1.x_iso + ((point2.x_iso - point1.x_iso) / max);
+		y = point1.y_iso + ((point2.y_iso - point1.y_iso) / max);
+		i = 0;
+		while (i < max)
 		{
-			my_mlx_pixel_put(img, current_pixel, i * 30, 0xFFFFFF);
+			putpixel(data, round_float(x) + 500, round_float(y) + 500, 0xFFFFFF);
+			x = x + ((point2.x_iso - point1.x_iso) / max);
+			y = y + ((point2.y_iso - point1.y_iso) / max);
+			i++;
 		}
 	}
 }
 
-void	print_y(char **map, t_data *img, int i, int j)
+//Function that prints the pixels on the screen based on the map
+void	print_pixels(t_data *data, t_map *map)
 {
-	int	current_pixel;
-	long	colour;
-
-	colour = 0xFFFFFFF;
-	my_mlx_pixel_put(img, j * 30, i * 30, 0xFFFFFF);
-	current_pixel = i * 30;
-	if (map[i + 1] != NULL && map[i + 1][j] != '\0')
-	{
-		while (++current_pixel < (i + 1) * 30)
-		{
-			my_mlx_pixel_put(img, j * 30, current_pixel, colour);
-		}
-	}
-	
-}
-
-void	print_pixels(t_data *img, char **map)
-{
-	int	i;
-	int	j;
+	int			i;
 
 	i = 0;
-	while (map[i] != NULL)
+	while (i < map->width * map->height)
 	{
-		j = 0;
-		while (map[i][j] != '\0')
+		putpixel(data, map->points[i].x_iso + 500, 
+			map->points[i].y_iso + 500, map->points[i].color);
+		//Miramos si hay punto al lado para unir
+		if ((i + 2) < (map->width * map->height) && (i + 1) % 19 != 0)
 		{
-			print_x(map, img, i, j);
-			print_y(map, img, i, j);
-			j++;
+			print_lines(data, map->points[i], map->points[i + 1]);
+		}
+		//Miramos si hay punto debajo para unir
+		if (i + map->width < map->width * map->height)
+		{
+			print_lines(data, map->points[i], map->points[i + map->width]);
 		}
 		i++;
 	}

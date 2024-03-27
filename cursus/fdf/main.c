@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 17:05:05 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/02/27 17:41:16 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/03/27 17:06:20 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,29 @@
 
 int	main(int argc, char *argv[])
 {
-	void	*mlx;
-	void	*mlx_win;
 	t_data	img;
-	char	**map_format;
+	t_map	map;
 	t_vars	vars;
 	
 	if (argc != 2)
 		exit_error(ARGS_ERROR);
 	//Read map
-	map_format = read_map(argv[1]);
+	map.map = read_map(argv[1]);
+	initialize_map_info(&map);
 	//Initialize mlx window
-	mlx = mlx_init();
-	mlx_win = mlx_new_window(mlx, 1920, 1080, "Hello world!");
+	vars.mlx = mlx_init();
+	vars.win = mlx_new_window(vars.mlx, WIN_X, WIN_Y, "Hello world!");
 	//Initialize event listeners
-	vars.mlx = mlx;
-	vars.win = mlx_win;
 	mlx_hook(vars.win, 2, 1L<<0, key_pressed, &vars);
     mlx_hook(vars.win, 17, 0, close_win, &vars);
 	//Initialize img
-	img.img = mlx_new_image(mlx, 1920, 1080);
+	img.img = mlx_new_image(vars.mlx, WIN_X, WIN_Y);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel,
 			&img.line_length, &img.endian);
 	//Print pixels
-	print_pixels(&img, map_format);
-
+	print_pixels(&img, &map);
 	//Put img on window
-	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
+	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
 	//Start render
-	mlx_loop(mlx);
+	mlx_loop(vars.mlx);
 }
