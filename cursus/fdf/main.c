@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 17:05:05 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/04/02 18:18:27 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/04/02 19:52:08 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	refresh_render(t_vars *vars)
 {
 	t_data	img;
+
 	//Initialize img
 	img.img = mlx_new_image(vars->mlx, WIN_X, WIN_Y);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel,
@@ -29,7 +30,6 @@ void	refresh_render(t_vars *vars)
 
 int	main(int argc, char *argv[])
 {
-	//t_data	img;
 	t_map	map;
 	t_vars	vars;
 	
@@ -38,7 +38,6 @@ int	main(int argc, char *argv[])
 	//Read map
 	map.map = read_map(argv[1]);
 	initialize_map_info(&map, &vars);
-	vars.map = &map;
 	//Initialize mlx window
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, WIN_X, WIN_Y, "Hello world!");

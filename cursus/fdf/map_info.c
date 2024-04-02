@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 02:21:35 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/04/02 18:21:24 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/04/02 19:55:30 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ void	get_iso_values(t_points *point)
 {
 	point->x_iso = point->x;
 	point->y_iso = point->y;
-	convert_isometric(&point->x_iso, &point->y_iso, point->z);
+	point->x_iso = (point->x_iso - point->y_iso) * cos(M_PI / 6);
+	point->y_iso = (point->x_iso + point->y_iso) * sin(M_PI / 6) - point->z;
+	//convert_isometric(&point->x_iso, &point->y_iso, point->z);
 }
 
 int	get_color(char *str, int z)
@@ -71,14 +73,21 @@ void	set_points_values(t_map *map, t_vars *vars)
 	}
 }
 
-/*void	initialize_img_settings (t_vars *vars)
+void	initialize_settings (t_vars *vars)
 {
+	t_map	*map;
+
+	map = vars->map;
+	//SCALE
 	vars->scale = INIT_SCALE;
 	while (vars->scale * map->width < WIN_X / 3)
 		vars->scale += 1;
 	while (vars->scale * map->width > WIN_X / 3)
 		vars->scale -= 1;
-}*/
+	//POSITION
+	vars->pos_x = 500;
+	vars->pos_y = 500;	
+}
 
 void	initialize_map_info(t_map *map, t_vars *vars)
 {
@@ -101,10 +110,7 @@ void	initialize_map_info(t_map *map, t_vars *vars)
 	if (!map->points)
 		exit_error("ERROR");
 	free(line);
-	vars->scale = 30;
-	while (vars->scale * map->width < WIN_X / 3)
-		vars->scale += 1;
-	while (vars->scale * map->width > WIN_X / 3)
-		vars->scale -= 1;
+	vars->map = map;
+	initialize_settings(vars);
 	set_points_values(map, vars);
 }

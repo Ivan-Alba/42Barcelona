@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:29:18 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/04/02 18:14:12 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/04/02 19:27:20 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,29 @@ void	change_scale(t_vars *vars, int is_plus)
 	}
 }
 
-/*void	move_img(t_vars *vars, int keycode)
+void	move_img(t_vars *vars, int keycode)
 {
 	if (keycode == 123)
-
+	{
+		vars->pos_x -= 1;
+		refresh_render(vars);
+	}
 	else if (keycode == 124)
-
+	{
+		vars->pos_x += 1;
+		refresh_render(vars);
+	}
 	else if (keycode == 125)
-
+	{
+		vars->pos_y += 1;
+		refresh_render(vars);
+	}
 	else if (keycode == 126)
-	
-}*/
+	{
+		vars->pos_y -= 1;
+		refresh_render(vars);
+	}
+}
 
 //Function that listens for the key pressed and calls the corresponding function
 int key_pressed(int keycode, t_vars *vars)
@@ -51,7 +63,7 @@ int key_pressed(int keycode, t_vars *vars)
 		change_scale(vars, 1);
 	else if (keycode == 78)
 		change_scale(vars, 0);
-	/*else if (keycode >= 123 && keycode <= 126)
-		move_img(vars, keycode);*/
+	else if (keycode >= 123 && keycode <= 126)
+		move_img(vars, keycode);
 	return (0);
 }

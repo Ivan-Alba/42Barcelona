@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 12:34:50 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/04/02 18:16:55 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/04/02 19:00:06 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@
 # define WIN_X 1920
 # define WIN_Y 1080
 # define INIT_SCALE 30
-
 typedef struct	s_data {
 	void	*img;
 	char	*addr;
@@ -54,6 +53,8 @@ typedef struct	s_vars {
 	void	*mlx;
 	void	*win;
 	int		scale;
+	int		pos_x;
+	int		pos_y;
 	t_map	*map;
 }				t_vars;
 
