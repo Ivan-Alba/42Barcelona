@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 02:21:35 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/03/27 20:31:19 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/04/02 18:21:24 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,6 @@ void	get_iso_values(t_points *point)
 	point->x_iso = point->x;
 	point->y_iso = point->y;
 	convert_isometric(&point->x_iso, &point->y_iso, point->z);
-	//point->x_iso *= 30;
-	//point->y_iso *= 30;
-	ft_printf("x: %d, y: %d, z: %d, x_iso: %d, y_iso: %d, color: %d\n",
-			point->x, point->y, point->z, point->x_iso, point->y_iso, point->color);
 }
 
 int	get_color(char *str, int z)
@@ -46,7 +42,7 @@ int	get_color(char *str, int z)
 	return (color);
 }
 
-void	set_points_values(t_map *map)
+void	set_points_values(t_map *map, t_vars *vars)
 {
 	int		i;
 	int		j;
@@ -63,9 +59,9 @@ void	set_points_values(t_map *map)
 			exit_error("ERROR");
 		while (line[j] != NULL)
 		{
-			map->points[h].x = j * 30;
-			map->points[h].y = i * 30;
-			map->points[h].z = ft_atoi(line[j]) * 30;
+			map->points[h].x = j * vars->scale;
+			map->points[h].y = i * vars->scale;
+			map->points[h].z = ft_atoi(line[j]) * vars->scale;
 			map->points[h].color = get_color(line[j], map->points[h].z);
 			get_iso_values(&(map->points[h]));
 			h++;
@@ -75,7 +71,16 @@ void	set_points_values(t_map *map)
 	}
 }
 
-void	initialize_map_info(t_map *map)
+/*void	initialize_img_settings (t_vars *vars)
+{
+	vars->scale = INIT_SCALE;
+	while (vars->scale * map->width < WIN_X / 3)
+		vars->scale += 1;
+	while (vars->scale * map->width > WIN_X / 3)
+		vars->scale -= 1;
+}*/
+
+void	initialize_map_info(t_map *map, t_vars *vars)
 {
 	int		i;
 	char	**line;
@@ -96,5 +101,10 @@ void	initialize_map_info(t_map *map)
 	if (!map->points)
 		exit_error("ERROR");
 	free(line);
-	set_points_values(map);
+	vars->scale = 30;
+	while (vars->scale * map->width < WIN_X / 3)
+		vars->scale += 1;
+	while (vars->scale * map->width > WIN_X / 3)
+		vars->scale -= 1;
+	set_points_values(map, vars);
 }

@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 12:34:50 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/03/27 17:15:16 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/04/02 18:16:55 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # define MAP_ERROR "Map format error\n"
 # define WIN_X 1920
 # define WIN_Y 1080
-# define CELL_SIZE 50
+# define INIT_SCALE 30
 
 typedef struct	s_data {
 	void	*img;
@@ -33,11 +33,6 @@ typedef struct	s_data {
 	int		line_length;
 	int		endian;
 }				t_data;
-
-typedef struct	s_vars {
-	void	*mlx;
-	void	*win;
-}				t_vars;
 
 typedef struct	s_points {
 	int		x;
@@ -55,12 +50,23 @@ typedef struct	s_map {
 	t_points	*points;
 }				t_map;
 
+typedef struct	s_vars {
+	void	*mlx;
+	void	*win;
+	int		scale;
+	t_map	*map;
+}				t_vars;
+
 void	exit_error(char *error_msg);
 char	**read_map(char *file);
 int		key_pressed(int keycode, t_vars *vars);
 int		close_win(t_vars *vars);
-void	print_pixels(t_data *img, t_map *map);
-void	initialize_map_info(t_map *map);
+void	print_pixels(t_data *img, t_vars *vars);
+void	initialize_map_info(t_map *map, t_vars *vars);
+void	initialize_settings(t_vars *vars);
 void	convert_isometric(int *x, int *y, int z);
+int		get_color(char *str, int z);
+void	refresh_render(t_vars *vars);
+void	set_points_values(t_map *map, t_vars *vars);
 
 #endif
