@@ -6,30 +6,26 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:38:19 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/04/02 19:55:53 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/04/03 16:32:13 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-/*void convert_isometric(int *x, int *y, int z)
-{
-    *x = (*x - *y) * cos(M_PI / 6);
-    *y = (*x + *y) * sin(M_PI / 6) - z;
-}*/
-
+//Minilibx function to print pixels on screen
 void	putpixel(t_data *data, int x, int y, int color)
 {
 	char	*dst;
 
 	if (x >= 0 && y >= 0 && x < WIN_X && y < WIN_Y)
 	{
-		dst = data->addr + (y * data->line_length 
-			+ x * (data->bits_per_pixel / 8));
-		*(unsigned int*)dst = color;
+		dst = data->addr + (y * data->line_length
+				+ x * (data->bits_per_pixel / 8));
+		*(unsigned int *)dst = color;
 	}
 }
 
+//Function that rounds off a float and returns it as int
 int	round_float(float num)
 {
 	if (num - (int) num >= 0.5)
@@ -37,37 +33,39 @@ int	round_float(float num)
 	return ((int) num);
 }
 
-int	gett_color(t_points point1, t_points point2, int i, int max)
+//Function that returns the color to print the lines.
+int	get_color(t_points point1, t_points point2, int i, int max)
 {
 	max = i;
-	if (point1.z == point2.z) 
+	if (point1.z == point2.z)
 		return (point1.color);
 	else
 		return (0x32FF00);
 }
 
-void	print_lines(t_data *data, t_points point1, t_points point2, t_vars *vars)
-{	
+//Function that draws lines between two points
+void	print_lines(t_data *data, t_points pnt1, t_points pnt2, t_vars *vars)
+{
 	int		max;
 	float	x;
 	float	y;
 	int		i;
 
-	if (abs(point2.x_iso - point1.x_iso) > abs(point2.y_iso - point1.y_iso))
-		max = abs(point2.x_iso - point1.x_iso);
+	if (abs(pnt2.x_iso - pnt1.x_iso) > abs(pnt2.y_iso - pnt1.y_iso))
+		max = abs(pnt2.x_iso - pnt1.x_iso);
 	else
-		max = abs(point2.y_iso - point1.y_iso);
+		max = abs(pnt2.y_iso - pnt1.y_iso);
 	if (max > 0)
 	{
-		x = (float) point1.x_iso + ((point2.x_iso - point1.x_iso) / (float) max);
-		y = (float) point1.y_iso + ((point2.y_iso - point1.y_iso) / (float) max);
+		x = (float) pnt1.x_iso + ((pnt2.x_iso - pnt1.x_iso) / (float) max);
+		y = (float) pnt1.y_iso + ((pnt2.y_iso - pnt1.y_iso) / (float) max);
 		i = 0;
 		while (i < max)
 		{
-			putpixel(data, round_float(x) + vars->pos_x, round_float(y) 
-				+ vars->pos_y, gett_color(point1, point2, i, max));
-			x = x + ((point2.x_iso - point1.x_iso) / (float) max);
-			y = y + ((point2.y_iso - point1.y_iso) / (float) max);
+			putpixel(data, round_float(x) + vars->pos_x, round_float(y)
+				+ vars->pos_y, get_color(pnt1, pnt2, i, max));
+			x = x + ((pnt2.x_iso - pnt1.x_iso) / (float) max);
+			y = y + ((pnt2.y_iso - pnt1.y_iso) / (float) max);
 			i++;
 		}
 	}
@@ -83,14 +81,13 @@ void	print_pixels(t_data *data, t_vars *vars)
 	i = 0;
 	while (i < map->width * map->height)
 	{
-		putpixel(data, map->points[i].x_iso + vars->pos_x, 
+		putpixel(data, map->points[i].x_iso + vars->pos_x,
 			map->points[i].y_iso + vars->pos_y, map->points[i].color);
-		//Miramos si hay punto al lado para unir
 		if ((i + 1) < (map->width * map->height) && (i + 1) % map->width != 0)
 			print_lines(data, map->points[i], map->points[i + 1], vars);
-		//Miramos si hay punto debajo para unir
 		if (i + map->width < map->width * map->height)
-			print_lines(data, map->points[i], map->points[i + map->width], vars);
+			print_lines(data, map->points[i],
+				map->points[i + map->width], vars);
 		i++;
 	}
 }

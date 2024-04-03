@@ -6,22 +6,26 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 02:21:35 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/04/02 19:55:30 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/04/03 18:56:17 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	get_iso_values(t_points *point)
+//Function that transforms vertex positions in isometric view
+void	get_iso_values(t_points *pnt, int angle)
 {
-	point->x_iso = point->x;
-	point->y_iso = point->y;
-	point->x_iso = (point->x_iso - point->y_iso) * cos(M_PI / 6);
-	point->y_iso = (point->x_iso + point->y_iso) * sin(M_PI / 6) - point->z;
-	//convert_isometric(&point->x_iso, &point->y_iso, point->z);
+	pnt->x_iso = pnt->x;
+	pnt->y_iso = pnt->y;
+	if (angle > 0)
+	{
+		pnt->x_iso = (pnt->x_iso - pnt->y_iso) * cos(angle * M_PI / 180);
+		pnt->y_iso = (pnt->x_iso + pnt->y_iso) * sin(angle * M_PI / 180) - pnt->z;
+	}
 }
 
-int	get_color(char *str, int z)
+//Function that stores in each vertex the reference color
+int	set_color(char *str, int z)
 {
 	int		color;
 	int		i;
@@ -44,6 +48,7 @@ int	get_color(char *str, int z)
 	return (color);
 }
 
+//Function that configures the vertices read from the map
 void	set_points_values(t_map *map, t_vars *vars)
 {
 	int		i;
@@ -63,9 +68,9 @@ void	set_points_values(t_map *map, t_vars *vars)
 		{
 			map->points[h].x = j * vars->scale;
 			map->points[h].y = i * vars->scale;
-			map->points[h].z = ft_atoi(line[j]) * vars->scale;
-			map->points[h].color = get_color(line[j], map->points[h].z);
-			get_iso_values(&(map->points[h]));
+			map->points[h].z = ft_atoi(line[j]);
+			map->points[h].color = set_color(line[j], map->points[h].z);
+			get_iso_values(&(map->points[h]), vars->z_angle);
 			h++;
 			j++;
 		}
@@ -73,7 +78,8 @@ void	set_points_values(t_map *map, t_vars *vars)
 	}
 }
 
-void	initialize_settings (t_vars *vars)
+//Function that initializes the rendering configuration values
+void	initialize_settings(t_vars *vars)
 {
 	t_map	*map;
 
@@ -86,9 +92,12 @@ void	initialize_settings (t_vars *vars)
 		vars->scale -= 1;
 	//POSITION
 	vars->pos_x = 500;
-	vars->pos_y = 500;	
+	vars->pos_y = 500;
+	//ANGLE
+	vars->z_angle = INIT_Z_ANGLE;
 }
 
+//Function that initializes the map configuration values
 void	initialize_map_info(t_map *map, t_vars *vars)
 {
 	int		i;
@@ -105,8 +114,7 @@ void	initialize_map_info(t_map *map, t_vars *vars)
 	while (line[i])
 		i++;
 	map->width = i;
-	map->points = malloc((map->width * map->height)
-		* sizeof(t_points));
+	map->points = malloc((map->width * map->height) * sizeof(t_points));
 	if (!map->points)
 		exit_error("ERROR");
 	free(line);

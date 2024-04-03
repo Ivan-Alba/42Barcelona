@@ -6,21 +6,22 @@
 #    By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/21 21:07:38 by igarcia2          #+#    #+#              #
-#    Updated: 2024/03/23 02:25:34 by igarcia2         ###   ########.fr        #
+#    Updated: 2024/04/03 18:44:55 by igarcia2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fdf
 
-SRC = main.c utils.c read_map.c event_controller.c print_pixels.c map_info.c
+SRC = src/main.c src/utils.c src/read_map.c src/event_controller.c \
+	  src/print_pixels.c src/map_info.c src/menu.c
 
 DEPS = $(SRC:.c=.d)
 
 OBJ = $(SRC:.c=.o)
 
-LIBFT = libft/libft.a
+LIBFT = src/libft/libft.a
 
-MAKE_LIBFT = libft/Makefile
+MAKE_LIBFT = src/libft/Makefile
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
@@ -34,20 +35,20 @@ all:	$(NAME)
 $(NAME): $(OBJ) $(LIBFT)
 	$(CC) $(OBJ) $(LIBFT) -Lmlx -lmlx -framework OpenGL -framework AppKit -o $(NAME)
 
-$(LIBFT): libft/libft.h $(MAKE_LIBFT)
-	make -C libft
+$(LIBFT): src/libft/libft.h $(MAKE_LIBFT)
+	make -C src/libft
 
 clean:	libft_clean
 	$(RM) $(OBJ) $(DEPS)
 
 libft_clean:
-	make -C libft clean
+	make -C src/libft clean
 
 fclean: clean libft_fclean
 	$(RM) $(NAME)
 
 libft_fclean:
-	make -C libft fclean
+	make -C src/libft fclean
 
 re: fclean all
 
