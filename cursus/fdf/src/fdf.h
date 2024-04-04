@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 12:34:50 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/04/03 18:44:31 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/04/04 19:55:50 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,8 @@ int		round_float(float num);
 void	print_nbr(t_vars *vars, int x, int y, int nbr);
 void	print_str(t_vars *vars, int x, int y, char *str);
 void	draw_menu(t_vars *vars);
+void	free_split(char **str);
+int		hex_to_int(char *hex);
+void	get_iso_values(t_points *pnt, int angle);
 
 #endif

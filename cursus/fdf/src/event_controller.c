@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:29:18 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/04/03 18:58:14 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/04/04 20:06:35 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,29 @@
 int	close_win(t_vars *vars)
 {
 	mlx_destroy_window(vars->mlx, vars->win);
+	free_split((vars->map)->map);
+	free((vars->map)->points);
 	exit(0);
 }
 
 //Function that rotates the rendering at the angle z
 void	rotate_z_img(t_vars *vars, int keycode)
 {
-	if (keycode == 83 && vars->z_angle > 0)
+	if (keycode == 43 && vars->z_angle > 0)
 		vars->z_angle -= 1;
-	else if (keycode == 83 && vars->z_angle == 0)
+	else if (keycode == 43 && vars->z_angle == 0)
 		vars->z_angle = 360;
-	else if (keycode == 85 && vars->z_angle < 360)
+	else if (keycode == 47 && vars->z_angle < 360)
 		vars->z_angle += 1;
-	else if (keycode == 85 && vars->z_angle == 360)
+	else if (keycode == 47 && vars->z_angle == 360)
 		vars->z_angle = 0;
+	else if (keycode == 49)
+	{
+		if (vars->z_angle != 0)
+			vars->z_angle = 0;
+		else
+			vars->z_angle = INIT_Z_ANGLE;
+	}
 	set_points_values(vars->map, vars);
 	refresh_render(vars);
 }
@@ -39,7 +48,7 @@ void	change_scale(t_vars *vars, int is_plus)
 {
 	if (is_plus && vars->scale < 60)
 		vars->scale += 1;
-	else if (!is_plus && vars->scale > 2)
+	else if (!is_plus && vars->scale > 1)
 		vars->scale -= 1;
 	set_points_values(vars->map, vars);
 	refresh_render(vars);
@@ -48,14 +57,35 @@ void	change_scale(t_vars *vars, int is_plus)
 //Function that moves the rendering when the corresponding key is pressed
 void	move_img(t_vars *vars, int keycode)
 {
-	if (keycode == 123)
+	if (keycode == 0)
 		vars->pos_x -= MOVE_QTY;
-	else if (keycode == 124)
+	else if (keycode == 2)
 		vars->pos_x += MOVE_QTY;
-	else if (keycode == 125)
+	else if (keycode == 1)
 		vars->pos_y += MOVE_QTY;
-	else if (keycode == 126)
+	else if (keycode == 13)
 		vars->pos_y -= MOVE_QTY;
+	refresh_render(vars);
+}
+
+void	modify_z(t_vars *vars, int keycode)
+{
+	int	i;
+	int	change;
+
+	i = 0;
+	change = 1;
+	if (keycode == 6)
+		change = -1;
+	while (i < vars->map->height * vars->map->width)
+	{
+		if (!change && (vars->map)->points[i].z > 7)
+			(vars->map)->points[i].z += change;
+		else if (change && (vars->map)->points[i].z >= 5)
+			(vars->map)->points[i].z += change;
+		get_iso_values(&(vars->map->points[i]), vars->z_angle);
+		i++;
+	}
 	refresh_render(vars);
 }
 
@@ -69,9 +99,11 @@ int	key_pressed(int keycode, t_vars *vars)
 		change_scale(vars, 1);
 	else if (keycode == 78)
 		change_scale(vars, 0);
-	else if (keycode >= 123 && keycode <= 126)
+	else if ((keycode >= 0 && keycode <= 2) || keycode == 13)
 		move_img(vars, keycode);
-	else if (keycode == 83 || keycode == 85)
+	else if (keycode == 43 || keycode == 47 || keycode == 49)
 		rotate_z_img(vars, keycode);
+	else if (keycode == 6 || keycode == 7)
+		modify_z(vars, keycode);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:39:19 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/03/22 20:37:16 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/04/04 17:12:26 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ char	**read_map(char	*file)
 		free(content);
 		content = get_next_line(fd);
 	}
+	free(content);
 	res = ft_split(all_content, '\n');
+	free(all_content);
 	if (!res)
 		exit_error("Split error\n");
 	return (res);

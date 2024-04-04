@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 13:14:20 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/04/03 18:37:34 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/04/04 17:40:18 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,41 @@ void	print_nbr(t_vars *vars, int x, int y, int nbr)
 void	print_str(t_vars *vars, int x, int y, char *str)
 {
 	mlx_string_put(vars->mlx, vars->win, x, y, TEXT_COLOR, str);
+}
+
+//Function that transforms a char * hexadecimal to int
+int hex_to_int(char *hex)
+{
+	int		res;
+	int		i;
+	char	c;
+	int		decimal;
+
+	i = 0;
+	res = 0;
+	if (hex[0] == '0' && (hex[1] == 'x' || hex[1] == 'X'))
+		i = 2;
+	while (hex[i] != '\0') {
+		c = hex[i];
+		if (c >= '0' && c <= '9')
+			decimal = c - '0';
+		else if (c >= 'a' && c <= 'f')
+			decimal = 10 + c - 'a';
+		else if (c >= 'A' && c <= 'F')
+			decimal = 10 + c - 'A';
+		res = res * 16 + decimal;
+		i++;
+	}
+	return (res);
+}
+
+//Function that frees a pointer of string pointers
+void	free_split(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		free(str[i++]);
+	free(str);
 }

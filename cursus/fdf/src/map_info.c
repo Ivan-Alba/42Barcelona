@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 02:21:35 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/04/03 18:56:17 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/04/04 18:49:00 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,15 @@ int	set_color(char *str, int z)
 		while (str[i] != ',')
 			i++;
 		hexa = ft_substr(str, i + 1, 8);
+		color = hex_to_int(hexa);
+		free(hexa);
 	}
 	else if (z > 8)
 		color = 0xFF2D00;
-	else if (z > 5)
-		color = 0xFFA600;
-	else if (z > 2)
-		color = 0x32FF00;
+	//else if (z > 5)
+		//color = 0xFFA600;
+	//else if (z > 2)
+		//color = 0x32FF00;
 	return (color);
 }
 
@@ -60,11 +62,11 @@ void	set_points_values(t_map *map, t_vars *vars)
 	h = 0;
 	while (map->map[i] != NULL)
 	{
-		j = 0;
+		j = -1;
 		line = ft_split(map->map[i], ' ');
 		if (!line)
 			exit_error("ERROR");
-		while (line[j] != NULL)
+		while (line[++j] != NULL)
 		{
 			map->points[h].x = j * vars->scale;
 			map->points[h].y = i * vars->scale;
@@ -72,9 +74,9 @@ void	set_points_values(t_map *map, t_vars *vars)
 			map->points[h].color = set_color(line[j], map->points[h].z);
 			get_iso_values(&(map->points[h]), vars->z_angle);
 			h++;
-			j++;
 		}
 		i++;
+		free_split(line);
 	}
 }
 
@@ -86,9 +88,9 @@ void	initialize_settings(t_vars *vars)
 	map = vars->map;
 	//SCALE
 	vars->scale = INIT_SCALE;
-	while (vars->scale * map->width < WIN_X / 3)
+	while (vars->scale * map->width < WIN_X / 2)
 		vars->scale += 1;
-	while (vars->scale * map->width > WIN_X / 3)
+	while (vars->scale * map->width > WIN_X / 2)
 		vars->scale -= 1;
 	//POSITION
 	vars->pos_x = 500;
@@ -117,7 +119,7 @@ void	initialize_map_info(t_map *map, t_vars *vars)
 	map->points = malloc((map->width * map->height) * sizeof(t_points));
 	if (!map->points)
 		exit_error("ERROR");
-	free(line);
+	free_split(line);
 	vars->map = map;
 	initialize_settings(vars);
 	set_points_values(map, vars);

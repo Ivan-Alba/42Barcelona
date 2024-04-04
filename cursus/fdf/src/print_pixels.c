@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:38:19 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/04/03 16:32:13 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/04/04 17:44:19 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	get_color(t_points point1, t_points point2, int i, int max)
 	if (point1.z == point2.z)
 		return (point1.color);
 	else
-		return (0x32FF00);
+		return (point2.color);
 }
 
 //Function that draws lines between two points
