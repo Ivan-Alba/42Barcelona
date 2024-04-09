@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 13:14:20 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/04/04 17:40:18 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/04/05 18:55:02 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	print_str(t_vars *vars, int x, int y, char *str)
 }
 
 //Function that transforms a char * hexadecimal to int
-int hex_to_int(char *hex)
+int	hex_to_int(char *hex)
 {
 	int		res;
 	int		i;
@@ -47,7 +47,8 @@ int hex_to_int(char *hex)
 	res = 0;
 	if (hex[0] == '0' && (hex[1] == 'x' || hex[1] == 'X'))
 		i = 2;
-	while (hex[i] != '\0') {
+	while (hex[i] != '\0')
+	{
 		c = hex[i];
 		if (c >= '0' && c <= '9')
 			decimal = c - '0';

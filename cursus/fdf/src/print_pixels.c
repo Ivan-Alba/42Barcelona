@@ -6,11 +6,31 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:38:19 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/04/04 17:44:19 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/04/05 18:54:05 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+//Function that returns the color to print the lines.
+int	get_color(t_points point1, t_points point2, int i, int max)
+{
+	float	red_inc;
+	float	green_inc;
+	float	blue_inc;
+	int		color;
+
+	red_inc = (float)(((point2.color >> 16) & 0xFF)
+			- ((point1.color >> 16) & 0xFF)) / max;
+	green_inc = (float)(((point2.color >> 8) & 0xFF)
+			- ((point1.color >> 8) & 0xFF)) / max;
+	blue_inc = (float)((point2.color & 0xFF)
+			- (point1.color & 0xFF)) / max;
+	color = (((point1.color >> 16) & 0xFF + (int)(red_inc * i)) << 16)
+		| (((point1.color >> 8) & 0xFF + (int)(green_inc * i)) << 8)
+		| ((point1.color & 0xFF) + (int)(blue_inc * i));
+	return (color);
+}
 
 //Minilibx function to print pixels on screen
 void	putpixel(t_data *data, int x, int y, int color)
@@ -31,16 +51,6 @@ int	round_float(float num)
 	if (num - (int) num >= 0.5)
 		return ((int) num + 1);
 	return ((int) num);
-}
-
-//Function that returns the color to print the lines.
-int	get_color(t_points point1, t_points point2, int i, int max)
-{
-	max = i;
-	if (point1.z == point2.z)
-		return (point1.color);
-	else
-		return (point2.color);
 }
 
 //Function that draws lines between two points

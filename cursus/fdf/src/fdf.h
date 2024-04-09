@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 12:34:50 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/04/04 19:55:50 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/04/09 20:41:46 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ typedef struct s_vars
 void	exit_error(char *error_msg);
 char	**read_map(char *file);
 int		key_pressed(int keycode, t_vars *vars);
-int		close_win(t_vars *vars);
 void	print_pixels(t_data *img, t_vars *vars);
 void	initialize_map_info(t_map *map, t_vars *vars);
 void	initialize_settings(t_vars *vars);
@@ -86,5 +85,12 @@ void	draw_menu(t_vars *vars);
 void	free_split(char **str);
 int		hex_to_int(char *hex);
 void	get_iso_values(t_points *pnt, int angle);
+void	center_render(t_vars *vars);
+//Event controller
+int		close_win(t_vars *vars);
+void	change_scale(t_vars *vars, int is_plus);
+void	move_img(t_vars *vars, int keycode);
+void	rotate_z_img(t_vars *vars, int keycode);
+void	modify_z(t_vars *vars, int keycode);
 
 #endif

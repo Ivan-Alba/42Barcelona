@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:29:18 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/04/04 20:06:35 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/04/05 19:22:18 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	move_img(t_vars *vars, int keycode)
 	refresh_render(vars);
 }
 
+//Function that increases or decreases the height of the vertices
 void	modify_z(t_vars *vars, int keycode)
 {
 	int	i;
@@ -87,23 +88,4 @@ void	modify_z(t_vars *vars, int keycode)
 		i++;
 	}
 	refresh_render(vars);
-}
-
-//Function that listens for the key pressed and calls the corresponding function
-int	key_pressed(int keycode, t_vars *vars)
-{
-	ft_printf("KEY PRESSED:%d\n", keycode);
-	if (keycode == 53)
-		close_win(vars);
-	else if (keycode == 69)
-		change_scale(vars, 1);
-	else if (keycode == 78)
-		change_scale(vars, 0);
-	else if ((keycode >= 0 && keycode <= 2) || keycode == 13)
-		move_img(vars, keycode);
-	else if (keycode == 43 || keycode == 47 || keycode == 49)
-		rotate_z_img(vars, keycode);
-	else if (keycode == 6 || keycode == 7)
-		modify_z(vars, keycode);
-	return (0);
 }

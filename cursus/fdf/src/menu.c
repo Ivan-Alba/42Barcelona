@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:38:21 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/04/04 20:36:12 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/04/05 19:19:28 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,10 @@
 
 #define CONTROL_BOX			200
 #define DRAWINFO_BOX		40
-#define MAPINFO_BOX			280
-#define COLORSCHEME_BOX		480
 #define LINE_SIZE			30
 #define MENU_TAB			30
 
+//Function that prints on the screen the information of the controls
 static void	draw_controls(t_vars *vars)
 {
 	int	line;
@@ -34,7 +33,7 @@ static void	draw_controls(t_vars *vars)
 	line += LINE_SIZE;
 	print_str(vars, MENU_TAB, line, "MOVE DOWN: [S]");
 	line += LINE_SIZE;
-	print_str(vars, MENU_TAB, line, "MOVE LEFT: [A]");	
+	print_str(vars, MENU_TAB, line, "MOVE LEFT: [A]");
 	line += LINE_SIZE;
 	print_str(vars, MENU_TAB, line, "MOVE RIGHT: [D]");
 	line += LINE_SIZE;
@@ -45,6 +44,7 @@ static void	draw_controls(t_vars *vars)
 	print_str(vars, MENU_TAB, line, "ORTOGRAPHIC VIEW: [SPACE]");
 }
 
+//Function that prints on the screen the map information
 static void	draw_info(t_vars *vars)
 {
 	int	line;
@@ -63,6 +63,7 @@ static void	draw_info(t_vars *vars)
 	print_nbr(vars, MENU_TAB + 80, line, vars->scale);
 }
 
+//Function that manages the screen printing of the information
 void	draw_menu(t_vars *vars)
 {
 	draw_info(vars);

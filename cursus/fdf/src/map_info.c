@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 02:21:35 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/04/04 18:49:00 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/04/09 21:33:01 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void	get_iso_values(t_points *pnt, int angle)
 	if (angle > 0)
 	{
 		pnt->x_iso = (pnt->x_iso - pnt->y_iso) * cos(angle * M_PI / 180);
-		pnt->y_iso = (pnt->x_iso + pnt->y_iso) * sin(angle * M_PI / 180) - pnt->z;
+		pnt->y_iso = (pnt->x_iso + pnt->y_iso) * sin(angle * M_PI / 180)
+			- pnt->z;
 	}
 }
 
@@ -43,10 +44,6 @@ int	set_color(char *str, int z)
 	}
 	else if (z > 8)
 		color = 0xFF2D00;
-	//else if (z > 5)
-		//color = 0xFFA600;
-	//else if (z > 2)
-		//color = 0x32FF00;
 	return (color);
 }
 
@@ -86,17 +83,37 @@ void	initialize_settings(t_vars *vars)
 	t_map	*map;
 
 	map = vars->map;
-	//SCALE
 	vars->scale = INIT_SCALE;
 	while (vars->scale * map->width < WIN_X / 2)
 		vars->scale += 1;
 	while (vars->scale * map->width > WIN_X / 2)
 		vars->scale -= 1;
-	//POSITION
 	vars->pos_x = 500;
 	vars->pos_y = 500;
-	//ANGLE
 	vars->z_angle = INIT_Z_ANGLE;
+}
+
+void	center_render(t_vars *vars)
+{
+	int	min_x;
+	int	max_x;
+	int	i;
+	
+	i = 0;
+	min_x = WIN_X;
+	max_x = 0;
+	while (i < (vars->map)->width * (vars->map)->height)
+	{
+		if ((vars->map)->points[i].x_iso < min_x)
+			min_x = (vars->map)->points[i].x_iso;
+		if ((vars->map)->points[i].x_iso > max_x)
+			max_x = (vars->map)->points[i].x_iso;
+		i++;
+	}
+	vars->pos_x = (WIN_X / 2) - ((max_x - min_x) / 2);
+	vars->pos_x += (vars->map)->points[0].x_iso - min_x;
+	ft_printf("min_x: %d, max_x: %d, pos_x: %d\n", min_x, max_x, vars->pos_x);
+	refresh_render(vars);
 }
 
 //Function that initializes the map configuration values
