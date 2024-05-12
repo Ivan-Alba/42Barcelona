@@ -23,6 +23,7 @@ typedef struct s_pipex {
         char    **env;
 	char	**path;
         int     cmd_num;
+	int	*pipes;
         t_cmd   *cmds;
 }       t_pipex;
 

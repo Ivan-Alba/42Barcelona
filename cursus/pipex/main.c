@@ -12,7 +12,6 @@ void	check_args(int argc, char **argv, t_pipex *data)
 {
 	if (access(data->in_file, F_OK) == -1 || access(data->in_file, R_OK) == -1)
 	{
-		printf("Error infile: %s\n", data->in_file);
 		data->in_file = NULL;
 		perror(argv[1]);
 	}
@@ -29,37 +28,41 @@ void	check_args(int argc, char **argv, t_pipex *data)
 }
 
 //Manages the incoming and outgoing fd's and executes the command
-void	execute(int pid, int pipe[2], t_pipex *data, int i)
+void	execute(int pid, t_pipex *data, int i)
 {
 	int	fd_in;
 	int	fd_out;
 
         if (pid == 0) //Child
         {
-		printf("Child_%d: %s\n", i, data->cmds[i].cmd_flags[0]);
                 if (data->cmds[i].first)
 		{
-		//	close(pipe[0]);
+			close(data->pipes[0]);
 			fd_in = open(data->in_file, O_RDONLY);
                 	dup2(fd_in, STDIN_FILENO);
                 	close(fd_in);
-                	dup2(pipe[1], STDOUT_FILENO);
-		//	close(pipe[1]);
+                	dup2(data->pipes[1], STDOUT_FILENO);
+			close(data->pipes[1]);
 		}
 		else if (data->cmds[i].last)
 		{
-		//	close(pipe[1]);
-			dup2(pipe[0], STDIN_FILENO);
+			close(data->pipes[i * 2 + 1]);
+			dup2(data->pipes[i * 2 - 2], STDIN_FILENO);
 			if (data->out_file)
 			{
 			fd_out = open(data->out_file, O_WRONLY);
 			dup2(fd_out, STDOUT_FILENO);
 			close(fd_out);
 			}
-		//	close(pipe[0]);
+			close(data->pipes[data->cmd_num * 2 - 2]);
 		}
-		close(pipe[0]);
-		close(pipe[1]);
+		else
+		{
+			dup2(data->pipes[i * 2 - 2], STDIN_FILENO);
+			close(data->pipes[i * 2 - 2]);
+			dup2(data->pipes[i * 2 + 1], STDOUT_FILENO);
+			close(data->pipes[i * 2 + 1]);
+		}
 		if (execve(data->cmds[i].path, data->cmds[i].cmd_flags, data->env) == -1)
 			perror("execve");
 	}
@@ -76,11 +79,7 @@ void	get_path(char **env, t_pipex *data)
 	while (env[i])
 	{
 		if (ft_strnstr(env[i], "PATH=", 5))
-		{
-			printf("%s\n", env[i]);
 			break;
-
-		}
 		i++;
 	}
 	data->path = ft_split(env[i] + 5, ':');
@@ -122,6 +121,19 @@ char	**get_cmd_flags(char *arg)
 	return (cmd_flags);	
 }
 
+void	generate_pipes(t_pipex *data)
+{
+	int	i;
+	
+	i = 0;
+	while (i < data->cmd_num)
+	{
+		if (pipe(data->pipes + 2 * i) == -1)
+			error_exit("Error creating pipes.\n");
+		i++;
+	}
+}
+
 //Initializes the structures with the necessary data
 void	init_data(t_pipex *data, int argc, char **argv, char **env)
 {
@@ -133,9 +145,11 @@ void	init_data(t_pipex *data, int argc, char **argv, char **env)
 	data->cmd_num = argc - 3;
 	data->cmds = malloc((data->cmd_num) * sizeof(t_cmd));
 	data->out_file = ft_strdup(argv[argc - 1]);
-	data->in_file = ft_strdup(argv[1]);	
-	if (!data->cmds)
+	data->in_file = ft_strdup(argv[1]);
+	data->pipes = malloc(data->cmd_num * 2 * sizeof(int));
+	if (!data->cmds || !data->pipes)
 		error_exit("Malloc error\n");
+	generate_pipes(data);
 	i = 0;
 	while (i < data->cmd_num)
 	{
@@ -153,36 +167,20 @@ void	init_data(t_pipex *data, int argc, char **argv, char **env)
 //Main function
 int	main(int argc, char **argv, char **env)
 {
-	/*
-	 * init_pipex()
-	 * check_args
-	 * parse_cmd()
-	 * parse_args()
-	 * while(cmds)
-	 * 	exec()
-	 * cleanup()
-	 * */
-
 	int	i;
 	int	pid;
-	int	fd[2];
 	t_pipex	*data;
 
 	data = malloc(sizeof(t_pipex));
 	if (!data)
 		error_exit("Malloc error\n");
-	printf("Before init data\n");
 	init_data(data, argc, argv, env);
-	printf("after init data\n");
 	check_args(argc, argv, data);
-	printf("After check_args()\n");
-	if (pipe(fd) == -1)
-		error_exit("PIPE ERROR\n");
 	i = 0;
 	while (i < data->cmd_num)
 	{
 		pid = fork();
-		execute(pid, fd, data, i);
+		execute(pid, data, i);
 		i++;
 	}
 	wait(NULL);
