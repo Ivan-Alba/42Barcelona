@@ -41,8 +41,8 @@ void	execute(t_pipex *data, int i)
 	}
 	else
 	{
-	dup2(data->pipes[i * 2 - 2], STDIN_FILENO);
-	close(data->pipes[i * 2 - 2]);
+		dup2(data->pipes[i * 2 - 2], STDIN_FILENO);
+		close(data->pipes[i * 2 - 2]);
 	}
 	if (data->cmds[i].last)
 	{
@@ -52,8 +52,8 @@ void	execute(t_pipex *data, int i)
 	}
 	else
 	{
-	dup2(data->pipes[i * 2 + 1], STDOUT_FILENO);
-	close(data->pipes[i * 2 + 1]);
+		dup2(data->pipes[i * 2 + 1], STDOUT_FILENO);
+		close(data->pipes[i * 2 + 1]);
 	}
 	if (execve(data->cmds[i].path, data->cmds[i].cmd_flags, data->env) == -1)
 		perror("execve");
