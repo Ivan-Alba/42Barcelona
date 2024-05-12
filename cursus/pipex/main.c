@@ -28,46 +28,35 @@ void	check_args(int argc, char **argv, t_pipex *data)
 }
 
 //Manages the incoming and outgoing fd's and executes the command
-void	execute(int pid, t_pipex *data, int i)
+void	execute(t_pipex *data, int i)
 {
 	int	fd_in;
 	int	fd_out;
 
-        if (pid == 0) //Child
-        {
-                if (data->cmds[i].first)
-		{
-			close(data->pipes[0]);
-			fd_in = open(data->in_file, O_RDONLY);
-                	dup2(fd_in, STDIN_FILENO);
-                	close(fd_in);
-                	dup2(data->pipes[1], STDOUT_FILENO);
-			close(data->pipes[1]);
-		}
-		else if (data->cmds[i].last)
-		{
-			close(data->pipes[i * 2 + 1]);
-			dup2(data->pipes[i * 2 - 2], STDIN_FILENO);
-			if (data->out_file)
-			{
-			fd_out = open(data->out_file, O_WRONLY);
-			dup2(fd_out, STDOUT_FILENO);
-			close(fd_out);
-			}
-			close(data->pipes[data->cmd_num * 2 - 2]);
-		}
-		else
-		{
-			dup2(data->pipes[i * 2 - 2], STDIN_FILENO);
-			close(data->pipes[i * 2 - 2]);
-			dup2(data->pipes[i * 2 + 1], STDOUT_FILENO);
-			close(data->pipes[i * 2 + 1]);
-		}
-		if (execve(data->cmds[i].path, data->cmds[i].cmd_flags, data->env) == -1)
-			perror("execve");
+	if (data->cmds[i].first)
+	{
+		fd_in = open(data->in_file, O_RDONLY);
+		dup2(fd_in, STDIN_FILENO);
+		close(fd_in);
 	}
-        else if (pid == -1)
-                perror("fork");
+	else
+	{
+	dup2(data->pipes[i * 2 - 2], STDIN_FILENO);
+	close(data->pipes[i * 2 - 2]);
+	}
+	if (data->cmds[i].last)
+	{
+		fd_out = open(data->out_file, O_WRONLY);
+		dup2(fd_out, STDOUT_FILENO);
+		close(fd_out);
+	}
+	else
+	{
+	dup2(data->pipes[i * 2 + 1], STDOUT_FILENO);
+	close(data->pipes[i * 2 + 1]);
+	}
+	if (execve(data->cmds[i].path, data->cmds[i].cmd_flags, data->env) == -1)
+		perror("execve");
 }
 
 //Searches for the PATH environment variable and stores it
@@ -121,6 +110,7 @@ char	**get_cmd_flags(char *arg)
 	return (cmd_flags);	
 }
 
+//Create the necessary pipes for communication between processes
 void	generate_pipes(t_pipex *data)
 {
 	int	i;
@@ -180,7 +170,10 @@ int	main(int argc, char **argv, char **env)
 	while (i < data->cmd_num)
 	{
 		pid = fork();
-		execute(pid, data, i);
+		if (pid == 0)
+			execute(data, i);
+		else if (pid == -1)
+			perror("fork");
 		i++;
 	}
 	wait(NULL);
