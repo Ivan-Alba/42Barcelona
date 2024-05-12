@@ -68,7 +68,7 @@ void	get_path(char **env, t_pipex *data)
 	while (env[i])
 	{
 		if (ft_strnstr(env[i], "PATH=", 5))
-			break;
+			break ;
 		i++;
 	}
 	data->path = ft_split(env[i] + 5, ':');
@@ -91,7 +91,7 @@ char	*get_cmd_path(t_pipex *data, char *cmd)
 		free(complete_path);
 		complete_path = NULL;
 		if (access(final_path, F_OK) != -1)
-				return (final_path);
+			return (final_path);
 		free(final_path);
 		final_path = NULL;
 		i++;
@@ -107,14 +107,14 @@ char	**get_cmd_flags(char *arg)
 	cmd_flags = ft_split(arg, ' ');
 	if (!cmd_flags)
 		error_exit("Malloc error\n");
-	return (cmd_flags);	
+	return (cmd_flags);
 }
 
 //Create the necessary pipes for communication between processes
 void	generate_pipes(t_pipex *data)
 {
 	int	i;
-	
+
 	i = 0;
 	while (i < data->cmd_num)
 	{
