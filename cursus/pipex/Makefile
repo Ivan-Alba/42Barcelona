@@ -30,7 +30,7 @@ RM = rm -f
 
 all:	$(NAME)
 
-%.o: %.c Makefile
+%.o: %.c Makefile pipex.h
 	$(CC) $(CFLAGS) -c -MMD $<
 
 $(NAME): $(LIBFT) $(OBJ) $(MAIN_OBJ)
