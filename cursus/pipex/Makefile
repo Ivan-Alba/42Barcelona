@@ -6,7 +6,7 @@
 #    By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/21 21:07:38 by igarcia2          #+#    #+#              #
-#    Updated: 2024/02/24 15:00:00 by igarcia2         ###   ########.fr        #
+#    Updated: 2024/05/13 14:25:36 by igarcia2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = pipex
 
 MAIN = main.c
 
-SRC = 
+SRC = init_data.c utils.c
 
 LIBFT = libft.a
 
