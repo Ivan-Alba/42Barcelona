@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:19:37 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/05/13 15:48:19 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/05/14 20:29:13 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	generate_pipes(t_pipex *data)
 	int	i;
 
 	i = 0;
-	while (i < data->cmd_num)
+	while (i < data->cmd_num + data->is_heredoc)
 	{
 		if (pipe(data->pipes + 2 * i) == -1)
 			free_data(data, "Error creating pipes.\n");
@@ -87,11 +87,11 @@ void	init_data(t_pipex *data, int argc, char **argv, char **env)
 	int	i;
 
 	get_path(env, data);
-	data->cmd_num = argc - 3;
+	data->cmd_num = argc - 3 - data->is_heredoc;
 	data->cmds = malloc((data->cmd_num) * sizeof(t_cmd));
 	data->out_file = ft_strdup(argv[argc - 1]);
 	data->in_file = ft_strdup(argv[1]);
-	data->pipes = malloc(data->cmd_num * 2 * sizeof(int));
+	data->pipes = malloc((data->cmd_num + data->is_heredoc) * 2 * sizeof(int));
 	if (!data->cmds || !data->pipes || !data->out_file || !data->in_file)
 		free_data(data, "Malloc error\n");
 	generate_pipes(data);
@@ -100,10 +100,11 @@ void	init_data(t_pipex *data, int argc, char **argv, char **env)
 	{
 		data->cmds[i].first = 0;
 		data->cmds[i].last = 0;
-		data->cmds[i].cmd_flags = get_cmd_flags(argv[2 + i], data);
+		data->cmds[i].cmd_flags = get_cmd_flags(argv[2 + data->is_heredoc + i],
+				data);
 		data->cmds[i].path = get_cmd_path(data, data->cmds[i].cmd_flags[0]);
 		i++;
 	}
-	data->cmds[0].first = 1;
+	data->cmds[0].first = 1 - data->is_heredoc;
 	data->cmds[data->cmd_num - 1].last = 1;
 }

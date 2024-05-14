@@ -1,24 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
+/*   ft_free_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/12 17:44:21 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/02/24 15:25:36 by igarcia2         ###   ########.fr       */
+/*   Created: 2024/02/01 16:52:32 by igarcia2          #+#    #+#             */
+/*   Updated: 2024/02/01 18:25:34 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
 
-int	ft_putchar_fd(char c, int fd)
+//Funcion que libera la memoria de char *s y retorna -1
+int	free_and_out(char *s)
 {
-	return (write(fd, &c, 1));
+	free(s);
+	return (-1);
 }
-
-/*
-int	main(void)
-{
-	ft_putchar_fd(68, 1);
-}*/

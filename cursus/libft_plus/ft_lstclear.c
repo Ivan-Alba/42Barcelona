@@ -1,24 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
+/*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/12 17:44:21 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/02/24 15:25:36 by igarcia2         ###   ########.fr       */
+/*   Created: 2024/01/17 16:09:44 by igarcia2          #+#    #+#             */
+/*   Updated: 2024/01/17 16:56:23 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_putchar_fd(char c, int fd)
+void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
-	return (write(fd, &c, 1));
+	if (!(*lst) || !lst || !del)
+		return ;
+	ft_lstclear(&(*lst)->next, del);
+	del((*lst)->content);
+	free(*lst);
+	*lst = NULL;
 }
-
-/*
-int	main(void)
-{
-	ft_putchar_fd(68, 1);
-}*/

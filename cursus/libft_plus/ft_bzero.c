@@ -1,24 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/12 17:44:21 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/02/24 15:25:36 by igarcia2         ###   ########.fr       */
+/*   Created: 2024/01/09 18:23:41 by igarcia2          #+#    #+#             */
+/*   Updated: 2024/01/12 19:59:46 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_putchar_fd(char c, int fd)
+void	ft_bzero(void *s, size_t n)
 {
-	return (write(fd, &c, 1));
+	char	*tmp;
+
+	tmp = s;
+	while (n > 0)
+	{
+		*tmp = 0;
+		tmp++;
+		n--;
+	}
 }
 
 /*
+#include <stdio.h>
+
 int	main(void)
 {
-	ft_putchar_fd(68, 1);
+	char	str[] = "Hello world";
+	char	str2[] = "Hello world";
+	size_t	n = 5 * sizeof(char);
+
+	bzero(str, n);
+	ft_bzero(str2, n);
 }*/

@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:24:08 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/05/13 18:49:23 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/05/14 20:30:33 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,17 @@ void	free_split(char **str)
 	int	i;
 
 	i = 0;
-	while (str[i])
-	{
-		free(str[i]);
-		str[i] = NULL;
-		i++;
-	}
 	if (str)
 	{
-		free(str);
-		str = NULL;
+		while (str[i])
+		{
+			free(str[i]);
+			str[i] = NULL;
+			i++;
+		}
 	}
+	free(str);
+	str = NULL;
 }
 
 //Free and closes all pipes
@@ -56,7 +56,7 @@ void	free_close_pipes(t_pipex *data)
 	i = 0;
 	if (data->pipes)
 	{
-		while (i < data->cmd_num)
+		while (i < data->cmd_num + data->is_heredoc)
 		{
 			close(data->pipes[i * 2]);
 			close(data->pipes[i * 2 + 1]);
@@ -74,17 +74,17 @@ void	free_data(t_pipex *data, char *error)
 
 	if (data)
 	{
-		i = 0;
+		i = -1;
 		free_str(data->in_file);
 		free_str(data->out_file);
+		free_str(data->limiter);
 		free_split(data->path);
 		if (data->cmds)
 		{
-			while (i < data->cmd_num)
+			while (++i < data->cmd_num)
 			{
 				free_split(data->cmds[i].cmd_flags);
 				free_str(data->cmds[i].path);
-				i++;
 			}
 			free(data->cmds);
 			data->cmds = NULL;

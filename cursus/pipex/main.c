@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:24:42 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/05/13 18:52:06 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/05/14 20:39:19 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,18 @@
 //Checks the arguments and permissions of input and output files
 void	check_args(int argc, char **argv, t_pipex *data)
 {
-	if (access(data->in_file, F_OK) == -1 || access(data->in_file, R_OK) == -1)
+	if (!data->is_heredoc)
 	{
-		if (data->in_file)
+		if (access(data->in_file, F_OK) == -1
+			|| access(data->in_file, R_OK) == -1)
 		{
-			free(data->in_file);
-			data->in_file = NULL;
+			if (data->in_file)
+			{
+				free(data->in_file);
+				data->in_file = NULL;
+			}
+			perror(argv[1]);
 		}
-		perror(argv[1]);
 	}
 	if (access(argv[argc - 1], F_OK) == 0 && access(argv[argc -1], W_OK) == -1)
 	{
@@ -34,10 +38,8 @@ void	check_args(int argc, char **argv, t_pipex *data)
 		perror(argv[argc - 1]);
 	}
 	else
-	{
 		if (open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0666) == -1)
 			perror("open");
-	}
 }
 
 //Manages the incoming and outgoing fd's and executes the command
@@ -58,7 +60,8 @@ void	execute(t_pipex *data, int i)
 			exit(1);
 	}
 	else
-		if (dup2(data->pipes[i * 2 - 2], STDIN_FILENO) == -1)
+		if (dup2(data->pipes[(i + data->is_heredoc) * 2 - 2],
+				STDIN_FILENO) == -1)
 			perror("");
 	if (data->cmds[i].last)
 	{
@@ -73,7 +76,8 @@ void	execute(t_pipex *data, int i)
 			exit(1);
 	}
 	else
-		if (dup2(data->pipes[i * 2 + 1], STDOUT_FILENO) == -1)
+		if (dup2(data->pipes[(i + data->is_heredoc) * 2 + 1],
+				STDOUT_FILENO) == -1)
 			perror("");
 	free_close_pipes(data);
 	if (execve(data->cmds[i].path, data->cmds[i].cmd_flags, data->env) == -1)
@@ -81,6 +85,24 @@ void	execute(t_pipex *data, int i)
 		perror("execve");
 		exit(1);
 	}
+}
+
+//Calls the necessary functions depending on whether it is here_doc or not
+void	pipex(t_pipex *data, int argc, char **argv, char **env)
+{
+	if (ft_strncmp(argv[1], "here_doc", 9) == 0)
+	{
+		data->is_heredoc = 1;
+		data->limiter = ft_strjoin(argv[2], "\n");
+		init_data(data, argc, argv, env);
+		read_heredoc(data);
+	}
+	else
+	{
+		data->is_heredoc = 0;
+		init_data(data, argc, argv, env);
+	}
+	check_args(argc, argv, data);
 }
 
 //Main function
@@ -95,8 +117,7 @@ int	main(int argc, char **argv, char **env)
 	data = malloc(sizeof(t_pipex));
 	if (!data)
 		free_data(data, "Malloc error\n");
-	init_data(data, argc, argv, env);
-	check_args(argc, argv, data);
+	pipex(data, argc, argv, env);
 	i = 0;
 	while (i < data->cmd_num)
 	{
@@ -107,10 +128,9 @@ int	main(int argc, char **argv, char **env)
 			free_data(data, "Fork error\n");
 		i++;
 	}
-	free_close_pipes(data);
-	/*while (i--)
-		wait(NULL);
-	*/
 	free_data(data, NULL);
+	//close(STDOUT_FILENO);
+	while (i--)
+		wait(NULL);
 	return (0);
 }

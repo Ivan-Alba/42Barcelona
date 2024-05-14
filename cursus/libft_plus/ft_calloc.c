@@ -1,24 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/12 17:44:21 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/02/24 15:25:36 by igarcia2         ###   ########.fr       */
+/*   Created: 2024/01/10 17:56:46 by igarcia2          #+#    #+#             */
+/*   Updated: 2024/01/15 19:32:54 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_putchar_fd(char c, int fd)
+void	*ft_calloc(size_t nelem, size_t elsize)
 {
-	return (write(fd, &c, 1));
+	void	*res;
+
+	res = malloc(nelem * elsize);
+	if (res == NULL)
+		return (res);
+	else
+		ft_bzero(res, nelem * elsize);
+	return (res);
 }
 
 /*
 int	main(void)
 {
-	ft_putchar_fd(68, 1);
+	char	*ptr;
+	char	*ptr2;
+
+	ptr = (char *)calloc(5, sizeof(char));
+	ptr2 = (char *)ft_calloc(5, sizeof(char));
 }*/
