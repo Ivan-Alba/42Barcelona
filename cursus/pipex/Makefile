@@ -39,11 +39,17 @@ $(NAME): $(LIBFT) $(OBJ) $(MAIN_OBJ)
 $(LIBFT):
 	make -C libft/
    
-clean:	
+clean:	libft_clean
 	$(RM) $(OBJ) $(MAIN_OBJ) $(DEPS)
+	
+libft_clean:
+	make clean -C libft/
 
-fclean: clean
+fclean: clean libft_fclean
 		$(RM) $(NAME)
+
+libft_fclean:
+	make fclean -C libft/
 
 re: fclean all
 
