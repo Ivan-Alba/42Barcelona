@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:39:16 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/05/14 21:01:17 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/05/17 23:10:50 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct s_pipex
 {
 	char	*in_file;
 	char	*out_file;
+	int		fd_out;
 	char	**env;
 	char	**path;
 	char	*limiter;
@@ -43,11 +44,9 @@ typedef struct s_pipex
 }		t_pipex;
 
 void	init_data(t_pipex *data, int argc, char **argv, char **env);
-void	init_data_heredoc(t_pipex *data, int argc, char **argv, char **env);
 void	free_data(t_pipex *data, char *error);
 void	error_exit(char *error);
 void	free_close_pipes(t_pipex *data);
-void	read_heredoc(t_pipex *data);
 void	execute(t_pipex *data, int i);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:24:42 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/05/14 21:05:35 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/05/17 23:22:40 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ void	read_heredoc(t_pipex *data)
 	close(STDOUT_FILENO);
 }
 
-//Checks the arguments and permissions of input and output files
-void	check_args(int argc, char **argv, t_pipex *data)
+//Checks if the input file exists and we have access to it
+void	set_infile(char **argv, t_pipex *data)
 {
 	if (!data->is_heredoc)
 	{
@@ -48,7 +48,12 @@ void	check_args(int argc, char **argv, t_pipex *data)
 			perror(argv[1]);
 		}
 	}
-	if (access(argv[argc - 1], F_OK) == 0 && access(argv[argc -1], W_OK) == -1)
+}
+
+////Checks if the output file exists and we have access to it
+void	set_outfile(int argc, char **argv, t_pipex *data)
+{
+	if (access(argv[argc - 1], F_OK) == 0 && access(argv[argc - 1], W_OK) == -1)
 	{
 		if (data->out_file)
 		{
@@ -58,8 +63,16 @@ void	check_args(int argc, char **argv, t_pipex *data)
 		perror(argv[argc - 1]);
 	}
 	else
-		if (open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0666) == -1)
-			perror("open");
+	{
+		if (!data->is_heredoc)
+		{
+			if (open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0666) == -1)
+				perror("open");
+		}
+		else
+			if (open(argv[argc - 1], O_WRONLY | O_CREAT, 0666) == -1)
+				perror("open");
+	}
 }
 
 //Calls the necessary functions depending on whether it is here_doc or not
@@ -77,7 +90,8 @@ void	pipex(t_pipex *data, int argc, char **argv, char **env)
 		data->is_heredoc = 0;
 		init_data(data, argc, argv, env);
 	}
-	check_args(argc, argv, data);
+	set_infile(argv, data);
+	set_outfile(argc, argv, data);
 }
 
 //Main function
