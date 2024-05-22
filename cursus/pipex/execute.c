@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 21:00:27 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/05/22 16:39:50 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/05/22 17:38:43 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,12 @@ void	execute(t_pipex *data, int i)
 	set_stdin(data, i);
 	set_stdout(data, i);
 	free_close_pipes(data);
+	if (data->cmds[i].cmd_flags[0] && data->cmds[i].cmd_flags[0][0] == '/'
+			&& access(data->cmds[i].path, X_OK) == -1)
+	{
+		perror(data->cmds[i].path);
+		exit(127);
+	}
 	if (execve(data->cmds[i].path, data->cmds[i].cmd_flags, data->env) == -1)
 	{
 		if (data->cmds[i].cmd_flags[0])
@@ -71,7 +77,7 @@ void	execute(t_pipex *data, int i)
 			write(2, data->cmds[i].cmd_flags[0],
 				ft_strlen(data->cmds[i].cmd_flags[0]));
 		}
-		perror(": command not found");
+		write(2, ": command not found\n", 20);
 		exit(1);
 	}
 }

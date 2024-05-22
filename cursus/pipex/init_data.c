@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:19:37 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/05/22 16:30:21 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/05/22 17:37:46 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,15 +108,17 @@ void	init_data(t_pipex *data, int argc, char **argv, char **env)
 	if (!data->cmds || !data->pipes || !data->out_file || !data->in_file)
 		free_data(data, "Malloc error\n");
 	generate_pipes(data);
-	i = 0;
-	while (i < data->cmd_num)
+	i = -1;
+	while (++i < data->cmd_num)
 	{
 		data->cmds[i].first = 0;
 		data->cmds[i].last = 0;
 		data->cmds[i].cmd_flags = get_cmd_flags(argv[2 + data->is_heredoc + i],
 				data);
-		data->cmds[i].path = get_cmd_path(data, data->cmds[i].cmd_flags[0]);
-		i++;
+		if (data->cmds[i].cmd_flags[0] && data->cmds[i].cmd_flags[0][0] == '/')
+			data->cmds[i].path = ft_strdup(data->cmds[i].cmd_flags[0]);
+		else
+			data->cmds[i].path = get_cmd_path(data, data->cmds[i].cmd_flags[0]);
 	}
 	data->cmds[0].first = 1 - data->is_heredoc;
 	data->cmds[data->cmd_num - 1].last = 1;
