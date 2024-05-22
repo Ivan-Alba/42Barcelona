@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:19:37 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/05/14 20:29:13 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/05/22 16:30:21 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,21 +45,24 @@ char	*get_cmd_path(t_pipex *data, char *cmd)
 	char	*final_path;
 
 	i = 0;
-	while (data->path[i])
+	if (data->path && cmd)
 	{
-		complete_path = ft_strjoin(data->path[i], "/");
-		if (!complete_path)
-			free_data(data, "Malloc error");
-		final_path = ft_strjoin(complete_path, cmd);
-		if (!final_path)
-			free_data(data, "Malloc error");
-		free(complete_path);
-		complete_path = NULL;
-		if (access(final_path, F_OK) != -1)
-			return (final_path);
-		free(final_path);
-		final_path = NULL;
-		i++;
+		while (data->path[i])
+		{
+			complete_path = ft_strjoin(data->path[i], "/");
+			if (!complete_path)
+				free_data(data, "Malloc error");
+			final_path = ft_strjoin(complete_path, cmd);
+			if (!final_path)
+				free_data(data, "Malloc error");
+			free(complete_path);
+			complete_path = NULL;
+			if (access(final_path, F_OK) != -1)
+				return (final_path);
+			free(final_path);
+			final_path = NULL;
+			i++;
+		}
 	}
 	return (NULL);
 }
@@ -68,17 +71,27 @@ char	*get_cmd_path(t_pipex *data, char *cmd)
 void	get_path(char **env, t_pipex *data)
 {
 	int	i;
+	int	found;
 
+	found = 0;
 	i = 0;
 	while (env[i])
 	{
 		if (ft_strnstr(env[i], "PATH=", 5))
+		{
+			found = 1;
 			break ;
+		}
 		i++;
 	}
-	data->path = ft_split(env[i] + 5, ':');
-	if (!data->path)
-		free_data(data, "Malloc error\n");
+	if (found)
+	{
+		data->path = ft_split(env[i] + 5, ':');
+		if (!data->path)
+			free_data(data, "Malloc error\n");
+	}
+	else
+		data->path = NULL;
 }
 
 //Initializes the structures with the necessary data

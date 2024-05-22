@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 21:00:27 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/05/17 23:06:16 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/05/22 16:39:50 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,11 @@ void	execute(t_pipex *data, int i)
 	free_close_pipes(data);
 	if (execve(data->cmds[i].path, data->cmds[i].cmd_flags, data->env) == -1)
 	{
-		write(2, data->cmds[i].cmd_flags[0],
-			ft_strlen(data->cmds[i].cmd_flags[0]));
+		if (data->cmds[i].cmd_flags[0])
+		{
+			write(2, data->cmds[i].cmd_flags[0],
+				ft_strlen(data->cmds[i].cmd_flags[0]));
+		}
 		perror(": command not found");
 		exit(1);
 	}
