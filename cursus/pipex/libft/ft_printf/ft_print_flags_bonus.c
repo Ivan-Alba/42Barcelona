@@ -52,9 +52,7 @@ int	print_ptr_flags(uintptr_t ptr, t_flags *flags)
 int	print_str_flags(char *s, t_flags *flags)
 {
 	char	*str;
-	int		len;
 
-	len = 0;
 	if (!s)
 		s = ft_read_string(s);
 	else

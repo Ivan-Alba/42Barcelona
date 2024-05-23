@@ -47,7 +47,7 @@ int	check_stack(char **saved, int i, char **res)
 	{
 		*saved = cut_after_next_line(&*saved);
 		if (!*saved)
-			return ((int)free_out(&*res));
+			return (free_out(&*res), 0);
 	}
 	else
 	{

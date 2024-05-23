@@ -44,9 +44,7 @@ static int	pow_ten(int dig)
 static char	*put_string(unsigned int n, char *res, int dig)
 {
 	int	i;
-	int	num;
 
-	num = 0;
 	i = 0;
 	while (dig > 0)
 	{
