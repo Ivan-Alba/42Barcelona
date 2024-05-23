@@ -6,7 +6,7 @@
 #    By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/21 21:07:38 by igarcia2          #+#    #+#              #
-#    Updated: 2024/05/17 23:13:56 by igarcia2         ###   ########.fr        #
+#    Updated: 2024/05/23 19:22:40 by igarcia2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 RM = rm -f
 
-%.o: %.c Makefile pipex.h
+%.o: %.c Makefile
 	$(CC) $(CFLAGS) -c -MMD $<
 
 all:	$(NAME)

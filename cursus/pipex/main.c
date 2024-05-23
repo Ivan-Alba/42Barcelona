@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:24:42 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/05/22 17:35:54 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/05/23 15:54:45 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,11 @@ void	set_outfile(int argc, char **argv, t_pipex *data)
 		if (!data->is_heredoc)
 		{
 			if (open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0666) == -1)
-				perror("open");
+				perror("File error");
 		}
 		else
 			if (open(argv[argc - 1], O_WRONLY | O_CREAT, 0666) == -1)
-				perror("open");
+				perror("File error");
 	}
 }
 
