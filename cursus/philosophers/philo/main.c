@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 03:47:11 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/06/12 21:12:19 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/09 15:03:50 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ int	check_args(int argc, char **argv, t_data *data)
 		data->philos[i].dead_lock = &(data->dead_lock);
 		//data->philos[i].meal_lock = &(data->meal_lock);
 		pthread_mutex_init(&(data->philos[i].meal_lock), NULL);
-
 		pthread_mutex_init(&(data->philos[i].r_fork), NULL);
 		if (argc == 6 && argv[5][0] != '\0')
 			data->philos[i].num_times_to_eat = check_int(argv[5]);
@@ -80,7 +79,13 @@ int	check_args(int argc, char **argv, t_data *data)
 	while (i < data->philo_num)
 	{
 		if (i == 0)
-			data->philos[i].l_fork = &(data->philos[data->philo_num - 1].r_fork);
+		{
+			if (data->philo_num == 1)
+				data->philos[i].l_fork = NULL;
+			else
+				data->philos[i].l_fork = &(data->philos[data->philo_num - 1]
+						.r_fork);
+		}
 		else
 			data->philos[i].l_fork = &(data->philos[i - 1].r_fork);
 		i++;
@@ -101,12 +106,7 @@ int	main(int argc, char **argv)
 		return (print_error("MALLOC ERROR\n", NULL), 1);
 	if (check_args(argc, argv, data) == 1)
 		return (print_error("ARGS ERROR\n", data), 1);
-	/*if (data->philo_num > 200)
-		return (print_error("MAX 200 PHILOSOPHERS\n", data), 1);*/
-
-	//printf("BEFORE START PHILOS\n");
 	philos_start(data);
-
 	free_data(data);
 	return (0);
 }

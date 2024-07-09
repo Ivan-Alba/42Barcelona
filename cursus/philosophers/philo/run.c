@@ -6,7 +6,7 @@
 /*   By: igarcia2 <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 04:19:05 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/02 04:19:08 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/09 14:58:42 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 
 void	*philo_run(void *param)
 {
+	t_philo	*philo;
+
 	//BLOQUEO HASTA QUE TODOS LOS HILOS ESTAN CREADOS
-	t_philo *philo;
 	philo = (t_philo *)param;
 	if (philo->id % 2 == 0)
-		usleep(1000);
+		usleep(50000);
 	while (*(philo->dead) == 0)
 	{
 		philo_eat(philo);
@@ -28,7 +29,6 @@ void	*philo_run(void *param)
 	return (NULL);
 }
 
-
 void	check_if_dead(t_data *data)
 {
 	int	i;
@@ -37,14 +37,16 @@ void	check_if_dead(t_data *data)
 	while (i < data->philo_num)
 	{
 		pthread_mutex_lock(&(data->philos[i].meal_lock));
-		if (get_time_in_milliseconds() - data->philos[i].last_meal >= data->philos[i].time_to_die)
+		if (get_time_in_milliseconds() - data->philos[i].last_meal
+			>= data->philos[i].time_to_die)
 		{
 			pthread_mutex_unlock(&(data->philos[i].meal_lock));
 			pthread_mutex_lock(&(data->dead_lock));
 			data->dead_flag = 1;
 			pthread_mutex_unlock(&(data->dead_lock));
-			print_log("is dead", get_time_in_milliseconds(), &(data->philos[i]));
-			break;
+			print_log("is dead", get_time_in_milliseconds(),
+				&(data->philos[i]));
+			break ;
 		}
 		pthread_mutex_unlock(&(data->philos[i].meal_lock));
 		i++;
@@ -60,17 +62,17 @@ void	init_mutexs(t_data *data)
 
 void	philos_start(t_data *data)
 {
-	int i;
+	int	i;
 
 	init_mutexs(data);
 	data->start_time = get_time_in_milliseconds();
 	i = 0;
 	while (i < data->philo_num)
 	{
-		pthread_create(&(data->philos[i].thread), NULL, philo_run, (void *)&(data->philos[i]));
+		pthread_create(&(data->philos[i].thread), NULL, philo_run,
+			(void *)&(data->philos[i]));
 		i++;
 	}
-
 	while (1)
 	{
 		check_if_dead(data);
@@ -78,15 +80,11 @@ void	philos_start(t_data *data)
 		if (data->dead_flag == 1)
 		{
 			pthread_mutex_unlock(&(data->dead_lock));
-			break;
+			break ;
 		}
 		pthread_mutex_unlock(&(data->dead_lock));
 	}
-	//JOIN HILOS
-	i = 0;
-	while (i < data->philo_num)
-	{
+	i = -1;
+	while (++i < data->philo_num)
 		pthread_join(data->philos[i].thread, NULL);
-		i++;
-	}
 }

@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 03:59:20 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/05/18 04:27:14 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/09 14:53:11 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	print_error(char *str, t_data *data)
 		free_data(data);
 }
 
-void free_data(t_data *data)
+void	free_data(t_data *data)
 {
 	if (data)
 	{

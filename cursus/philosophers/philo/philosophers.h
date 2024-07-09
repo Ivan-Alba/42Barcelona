@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 03:50:29 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/06/28 21:52:21 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/09 14:54:02 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ typedef struct s_philo
 
 typedef struct s_data
 {
-	int			dead_flag;
-	int			philo_num;
-	long		start_time;
-	pthread_mutex_t		dead_lock;
+	int				dead_flag;
+	int				philo_num;
+	long			start_time;
+	pthread_mutex_t	dead_lock;
 	//pthread_mutex_t		*meal_lock;
-	pthread_mutex_t		write_lock;
-	t_philo		*philos;
+	pthread_mutex_t	write_lock;
+	t_philo			*philos;
 }	t_data;
 
 int		ft_strlen(char *str);
