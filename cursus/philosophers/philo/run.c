@@ -6,7 +6,7 @@
 /*   By: igarcia2 <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 04:19:05 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/09 14:58:42 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/10 15:57:47 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,48 +16,33 @@ void	*philo_run(void *param)
 {
 	t_philo	*philo;
 
-	//BLOQUEO HASTA QUE TODOS LOS HILOS ESTAN CREADOS
 	philo = (t_philo *)param;
+	pthread_mutex_lock(philo->start_lock);
+	pthread_mutex_unlock(philo->start_lock);
 	if (philo->id % 2 == 0)
 		usleep(50000);
+	pthread_mutex_lock(philo->dead_lock);
 	while (*(philo->dead) == 0)
 	{
+		pthread_mutex_unlock(philo->dead_lock);
 		philo_eat(philo);
+		pthread_mutex_lock(&(philo->meals_eaten_lock));
+		philo->meals_eaten++;
+		pthread_mutex_unlock(&(philo->meals_eaten_lock));
 		philo_sleep(philo);
 		philo_think(philo);
+		pthread_mutex_lock(philo->dead_lock);
 	}
+	pthread_mutex_unlock(philo->dead_lock);
 	return (NULL);
-}
-
-void	check_if_dead(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->philo_num)
-	{
-		pthread_mutex_lock(&(data->philos[i].meal_lock));
-		if (get_time_in_milliseconds() - data->philos[i].last_meal
-			>= data->philos[i].time_to_die)
-		{
-			pthread_mutex_unlock(&(data->philos[i].meal_lock));
-			pthread_mutex_lock(&(data->dead_lock));
-			data->dead_flag = 1;
-			pthread_mutex_unlock(&(data->dead_lock));
-			print_log("is dead", get_time_in_milliseconds(),
-				&(data->philos[i]));
-			break ;
-		}
-		pthread_mutex_unlock(&(data->philos[i].meal_lock));
-		i++;
-	}
 }
 
 void	init_mutexs(t_data *data)
 {
 	pthread_mutex_init(&(data->write_lock), NULL);
-	//pthread_mutex_init(&(data->meal_lock), NULL);
+	pthread_mutex_init(&(data->start_lock), NULL);
 	pthread_mutex_init(&(data->dead_lock), NULL);
+	pthread_mutex_lock(&(data->start_lock));
 }
 
 void	philos_start(t_data *data)
@@ -65,26 +50,11 @@ void	philos_start(t_data *data)
 	int	i;
 
 	init_mutexs(data);
-	data->start_time = get_time_in_milliseconds();
-	i = 0;
-	while (i < data->philo_num)
-	{
-		pthread_create(&(data->philos[i].thread), NULL, philo_run,
-			(void *)&(data->philos[i]));
-		i++;
-	}
-	while (1)
-	{
-		check_if_dead(data);
-		pthread_mutex_lock(&(data->dead_lock));
-		if (data->dead_flag == 1)
-		{
-			pthread_mutex_unlock(&(data->dead_lock));
-			break ;
-		}
-		pthread_mutex_unlock(&(data->dead_lock));
-	}
 	i = -1;
 	while (++i < data->philo_num)
-		pthread_join(data->philos[i].thread, NULL);
+		pthread_create(&(data->philos[i].thread), NULL, philo_run,
+			(void *)&(data->philos[i]));
+	data->start_time = get_time_ms();
+	pthread_mutex_unlock(&(data->start_lock));
+	monitoring(data);
 }

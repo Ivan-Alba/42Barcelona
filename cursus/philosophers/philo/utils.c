@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 03:59:20 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/09 14:53:11 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/10 15:51:51 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	ft_strncmp(const char *s1, const char *s2)
 }
 
 //Function that obtains the milliseconds elapsed since 1970-01-01
-long	get_time_in_milliseconds(void)
+long	get_time_ms(void)
 {
 	struct timeval	tv;
 
