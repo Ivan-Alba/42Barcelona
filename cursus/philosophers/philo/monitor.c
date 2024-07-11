@@ -6,7 +6,7 @@
 /*   By: igarcia2 <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 13:57:08 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/10 16:09:03 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/11 13:54:08 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ void	check_if_dead(t_data *data)
 	while (++i < data->philo_num)
 	{
 		pthread_mutex_lock(&(data->philos[i].meal_lock));
-		if (get_time_ms() - data->philos[i].last_meal
-			>= data->philos[i].die_time)
+		if (get_time_ms() - 1 - data->philos[i].last_meal
+			> data->philos[i].die_time)
 		{
 			pthread_mutex_unlock(&(data->philos[i].meal_lock));
 			pthread_mutex_lock(&(data->dead_lock));

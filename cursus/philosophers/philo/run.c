@@ -6,7 +6,7 @@
 /*   By: igarcia2 <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 04:19:05 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/10 15:57:47 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/11 13:30:07 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@ void	*philo_run(void *param)
 	if (philo->id % 2 == 0)
 		usleep(50000);
 	pthread_mutex_lock(philo->dead_lock);
+	pthread_mutex_lock(&(philo->meal_lock));
+	philo->last_meal = get_time_ms();
+	pthread_mutex_unlock(&(philo->meal_lock));
 	while (*(philo->dead) == 0)
 	{
 		pthread_mutex_unlock(philo->dead_lock);
@@ -40,8 +43,8 @@ void	*philo_run(void *param)
 void	init_mutexs(t_data *data)
 {
 	pthread_mutex_init(&(data->write_lock), NULL);
-	pthread_mutex_init(&(data->start_lock), NULL);
 	pthread_mutex_init(&(data->dead_lock), NULL);
+	pthread_mutex_init(&(data->start_lock), NULL);
 	pthread_mutex_lock(&(data->start_lock));
 }
 
@@ -54,7 +57,7 @@ void	philos_start(t_data *data)
 	while (++i < data->philo_num)
 		pthread_create(&(data->philos[i].thread), NULL, philo_run,
 			(void *)&(data->philos[i]));
-	data->start_time = get_time_ms();
 	pthread_mutex_unlock(&(data->start_lock));
+	data->start_time = get_time_ms();
 	monitoring(data);
 }
