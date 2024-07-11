@@ -6,12 +6,13 @@
 /*   By: igarcia2 <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 04:18:54 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/11 13:54:55 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/11 15:12:58 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
+//Function that prints on the screen the actions of the philosophers
 void	print_log(char *txt, long action_time, t_philo *philo)
 {
 	int	dead;
@@ -25,6 +26,7 @@ void	print_log(char *txt, long action_time, t_philo *philo)
 	pthread_mutex_unlock(philo->write_lock);
 }
 
+//Function that manages the locking of the philosophers' forks
 void	lock_forks(t_philo *philo, int is_first_fork)
 {
 	if (is_first_fork)
@@ -45,6 +47,7 @@ void	lock_forks(t_philo *philo, int is_first_fork)
 	}
 }
 
+//Function that manages the philosophers' eating action
 void	philo_eat(t_philo *philo)
 {
 	lock_forks(philo, 1);
@@ -68,6 +71,7 @@ void	philo_eat(t_philo *philo)
 		pthread_mutex_unlock(&(philo->r_fork));
 }
 
+//Function that manages the philosophers' sleeping action
 void	philo_sleep(t_philo *philo)
 {
 	if (philo->l_fork)
@@ -84,6 +88,7 @@ void	philo_sleep(t_philo *philo)
 		usleep(philo->die_time * 1001);
 }
 
+//Function that manages the philosophers' thinking action
 void	philo_think(t_philo *philo)
 {
 	if (philo->l_fork)

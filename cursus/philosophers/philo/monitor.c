@@ -6,12 +6,13 @@
 /*   By: igarcia2 <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 13:57:08 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/11 13:54:08 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/11 15:10:10 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
+//Check if the philosophers have taken the necessary amount of meals
 void	check_if_meals_eaten(t_data *data)
 {
 	int	i;
@@ -37,6 +38,7 @@ void	check_if_meals_eaten(t_data *data)
 	}
 }
 
+//Check if any philosopher dies 
 void	check_if_dead(t_data *data)
 {
 	int	i;
@@ -59,6 +61,7 @@ void	check_if_dead(t_data *data)
 	}
 }
 
+//Function that monitors the status of the philosophers
 void	monitoring(t_data *data)
 {
 	int	i;

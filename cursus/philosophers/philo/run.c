@@ -6,12 +6,13 @@
 /*   By: igarcia2 <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 04:19:05 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/11 13:30:07 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/11 15:15:05 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
+//Manages the threads that represent the philosophers, who manage their actions
 void	*philo_run(void *param)
 {
 	t_philo	*philo;
@@ -40,6 +41,7 @@ void	*philo_run(void *param)
 	return (NULL);
 }
 
+//Initializes the necessary mutex
 void	init_mutexs(t_data *data)
 {
 	pthread_mutex_init(&(data->write_lock), NULL);
@@ -48,6 +50,7 @@ void	init_mutexs(t_data *data)
 	pthread_mutex_lock(&(data->start_lock));
 }
 
+//Initialize threads for each philosopher
 void	philos_start(t_data *data)
 {
 	int	i;

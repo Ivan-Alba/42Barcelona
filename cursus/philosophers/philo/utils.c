@@ -6,12 +6,13 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 03:59:20 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/10 15:51:51 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/11 15:07:58 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
+//Receives a char * as argument and returns the character length
 int	ft_strlen(char *str)
 {
 	int	i;
@@ -22,6 +23,7 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
+//Prints the message received by parameter on the error fd and frees the data
 void	print_error(char *str, t_data *data)
 {
 	write(2, str, ft_strlen(str));
@@ -29,6 +31,7 @@ void	print_error(char *str, t_data *data)
 		free_data(data);
 }
 
+//Frees data from structures
 void	free_data(t_data *data)
 {
 	if (data)
@@ -41,6 +44,7 @@ void	free_data(t_data *data)
 	}
 }
 
+//Compares two strings and returns 0 if equal
 int	ft_strncmp(const char *s1, const char *s2)
 {
 	unsigned char	*c1;

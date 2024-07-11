@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 03:47:11 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/10 16:20:14 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/11 15:05:22 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	check_int(char *arg)
 	return ((int)num);
 }
 
+//Link philosophers forks to l_fork pointer
 void	init_forks(t_data *data)
 {
 	int	i;
@@ -60,6 +61,7 @@ void	init_forks(t_data *data)
 	}
 }
 
+//Initializes the data of the structures
 void	init_data(t_data *data, int argc, char **argv)
 {
 	int	i;
@@ -89,7 +91,7 @@ void	init_data(t_data *data, int argc, char **argv)
 	init_forks(data);
 }
 
-//Function that checks the args and stores them in the data structure.
+//Checks the arguments and calls the necessary functions to store the data
 int	check_args(int argc, char **argv, t_data *data)
 {
 	if (argc < 5 || argc > 6)
