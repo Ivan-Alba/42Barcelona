@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 03:47:11 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/11 15:55:34 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/12 14:17:43 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int	main(int argc, char **argv)
 		return (print_error("ARGS ERROR\n", data), 1);
 	pid = philos_start(data);
 	i = data->philo_num;
-	free_data(data);
+	//free_data(data);
 	if (pid != 0)
 	{
 		while (i-- > 0)
