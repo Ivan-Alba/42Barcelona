@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 03:50:29 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/12 13:35:47 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/13 17:09:16 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,20 @@
 # include <limits.h>
 # include <stdlib.h>
 # include <sys/time.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 # include <stdio.h>
 # include <semaphore.h>
-//# include <pthread.h>
+# include <pthread.h>
+# include <signal.h>
+# include <fcntl.h>
 
 typedef struct s_philo
 {
-	//pthread_t		thread;
+	pthread_t		thread;
 	int		id;
 	int		pid;
+	int		done;
 	int		meals_eaten;
 	long	last_meal;
 	long	die_time;
@@ -34,9 +39,15 @@ typedef struct s_philo
 	long	act_time;
 	int		n_times_eat;
 	int		dead;
+	int		*dead_flag;
 	long	*start;
-	sem_t	*sem;
-	sem_t	*meal_sem;
+	sem_t	*forks_sem;
+	sem_t	*write_sem;
+	sem_t	*meals_eaten_sem;
+	sem_t	*last_meal_sem;
+	sem_t	*dead_sem;
+	sem_t	*done_sem;
+	sem_t	*dead_flag_sem;
 }	t_philo;
 
 typedef struct s_data
@@ -44,7 +55,11 @@ typedef struct s_data
 	int		dead_flag;
 	int		philo_num;
 	long	start_time;
-	sem_t	sem;
+	int		dead_written;
+	sem_t	*forks_sem;
+	sem_t	*dead_flag_sem;
+	sem_t	*write_sem;
+	sem_t	*start_sem;
 	t_philo	*philos;
 }	t_data;
 
@@ -54,7 +69,7 @@ void	print_error(char *str, t_data *data);
 void	free_data(t_data *data);
 long	get_time_ms(void);
 int		philos_start(t_data *data);
-void	monitoring(t_data *data);
+void	*monitoring(void *param);
 //Actions
 void	philo_eat(t_philo *philo);
 void	philo_sleep(t_philo *philo);
