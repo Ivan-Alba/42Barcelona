@@ -6,23 +6,15 @@
 /*   By: igarcia2 <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 04:19:05 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/13 16:56:34 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/14 15:32:30 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	philo_run(t_philo *philo, t_data *data)
+//Controls the loop of philosophers' actions
+void	philo_action_loop(t_philo *philo)
 {
-	//CREATE MONITORING THREAD
-	sem_wait(data->start_sem);
-	sem_post(data->start_sem);
-	pthread_create(&(philo->thread), NULL, monitoring, (void *)(philo));
-	if (philo->id % 2)
-		usleep(50000);
-	sem_wait(philo->last_meal_sem);
-	philo->last_meal = get_time_ms();
-	sem_post(philo->last_meal_sem);
 	sem_wait(philo->dead_sem);
 	sem_wait(philo->done_sem);
 	while ((philo->dead) == 0 && philo->done == 0)
@@ -40,13 +32,27 @@ int	philo_run(t_philo *philo, t_data *data)
 	}
 	sem_post(philo->dead_sem);
 	sem_post(philo->done_sem);
+}
+
+//Manages the creation of threads for processes and process actions
+int	philo_run(t_philo *philo, t_data *data)
+{
+	sem_wait(data->start_sem);
+	sem_post(data->start_sem);
+	pthread_create(&(philo->thread), NULL, monitoring, (void *)(philo));
+	if (philo->id % 2)
+		usleep(50000);
+	sem_wait(philo->last_meal_sem);
+	philo->last_meal = get_time_ms();
+	sem_post(philo->last_meal_sem);
+	philo_action_loop(philo);
 	pthread_join(philo->thread, NULL);
-	//liberar aqui??
 	if (philo->dead)
 		exit(philo->id);
 	exit(0);
 }
 
+//Function that handles the creation of philosopher's processes
 int	philos_start(t_data *data)
 {
 	int	i;

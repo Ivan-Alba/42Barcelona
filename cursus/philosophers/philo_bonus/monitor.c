@@ -6,7 +6,7 @@
 /*   By: igarcia2 <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 13:57:08 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/13 17:13:42 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/14 15:40:58 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,15 @@ void	check_if_dead(t_philo *philo)
 	{
 		sem_post(philo->last_meal_sem);
 		sem_wait(philo->dead_sem);
+		//TODO check dead sem
+		sem_wait(philo->check_dead_sem);
 		philo->dead = 1;
+		sem_post(philo->check_dead_sem);
 		sem_post(philo->dead_sem);
-		print_log("is dead", get_time_ms(), philo);	
+		print_log("is dead", get_time_ms(), philo);
 	}
-	sem_post(philo->last_meal_sem);
+	else
+		sem_post(philo->last_meal_sem);
 }
 
 //Function that monitors the status of the philosophers
@@ -51,15 +55,13 @@ void	*monitoring(void *param)
 	while (1)
 	{
 		check_if_dead(philo);
-		if (philo->n_times_eat > -1)
-			check_if_meals_eaten(philo);
 		sem_wait(philo->dead_sem);
+		if (!philo->dead && philo->n_times_eat > -1)
+			check_if_meals_eaten(philo);
 		if (philo->dead || philo->done)
-		{
-			sem_post(philo->dead_sem);
 			break ;
-		}
 		sem_post(philo->dead_sem);
 	}
+	sem_post(philo->dead_sem);
 	return (NULL);
 }
