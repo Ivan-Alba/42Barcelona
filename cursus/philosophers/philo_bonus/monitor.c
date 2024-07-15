@@ -6,7 +6,7 @@
 /*   By: igarcia2 <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 13:57:08 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/15 14:51:31 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/15 15:36:31 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	*monitoring(void *param)
 		if (philo->n_times_eat > -1)
 			check_if_meals_eaten(philo);
 		check_if_dead(philo);
+		usleep(200);
 	}
 	return (NULL);
 }
