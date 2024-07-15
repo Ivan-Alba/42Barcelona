@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 03:50:29 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/14 15:00:01 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/15 14:51:51 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef struct s_philo
 	pthread_t	thread;
 	int			id;
 	int			pid;
-	int			done;
+	//int			done;
 	int			meals_eaten;
 	long		last_meal;
 	long		die_time;
@@ -38,15 +38,12 @@ typedef struct s_philo
 	long		sleep_time;
 	long		act_time;
 	int			n_times_eat;
-	int			dead;
 	long		*start;
 	sem_t		*forks_sem;
 	sem_t		*write_sem;
-	sem_t		*meals_eaten_sem;
 	sem_t		*last_meal_sem;
-	sem_t		*dead_sem;
-	sem_t		*done_sem;
-	sem_t		*check_dead_sem;
+	sem_t		*meals_eaten_sem;
+	//sem_t		*done_sem;
 }	t_philo;
 
 typedef struct s_data

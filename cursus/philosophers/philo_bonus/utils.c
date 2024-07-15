@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 03:59:20 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/14 14:02:55 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/15 12:30:37 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	free_data(t_data *data)
 		}
 		free(data);
 	}
+	unlink_sem();
 }
 
 //Compares two strings and returns 0 if equal

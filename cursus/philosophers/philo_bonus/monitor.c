@@ -6,7 +6,7 @@
 /*   By: igarcia2 <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 13:57:08 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/14 15:40:58 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/15 14:51:31 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,7 @@ void	check_if_meals_eaten(t_philo *philo)
 	if (philo->meals_eaten >= philo->n_times_eat)
 	{
 		sem_post(philo->meals_eaten_sem);
-		sem_wait(philo->done_sem);
-		philo->done = 1;
-		sem_post(philo->done_sem);
+		exit(0);
 		return ;
 	}
 	sem_post(philo->meals_eaten_sem);
@@ -31,16 +29,11 @@ void	check_if_meals_eaten(t_philo *philo)
 void	check_if_dead(t_philo *philo)
 {
 	sem_wait(philo->last_meal_sem);
-	if (get_time_ms() - 1 - philo->last_meal > philo->die_time)
+	if (get_time_ms() - 2 - philo->last_meal > philo->die_time)
 	{
 		sem_post(philo->last_meal_sem);
-		sem_wait(philo->dead_sem);
-		//TODO check dead sem
-		sem_wait(philo->check_dead_sem);
-		philo->dead = 1;
-		sem_post(philo->check_dead_sem);
-		sem_post(philo->dead_sem);
 		print_log("is dead", get_time_ms(), philo);
+		exit(philo->id);
 	}
 	else
 		sem_post(philo->last_meal_sem);
@@ -54,14 +47,9 @@ void	*monitoring(void *param)
 	philo = (t_philo *)param;
 	while (1)
 	{
-		check_if_dead(philo);
-		sem_wait(philo->dead_sem);
-		if (!philo->dead && philo->n_times_eat > -1)
+		if (philo->n_times_eat > -1)
 			check_if_meals_eaten(philo);
-		if (philo->dead || philo->done)
-			break ;
-		sem_post(philo->dead_sem);
+		check_if_dead(philo);
 	}
-	sem_post(philo->dead_sem);
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 03:47:11 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/14 14:10:59 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/15 14:29:25 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,6 @@ void	init_data(t_data *data, int argc, char **argv)
 	while (++i < data->philo_num)
 	{
 		data->philos[i].id = i + 1;
-		data->philos[i].done = 0;
-		data->philos[i].dead = 0;
 		data->philos[i].meals_eaten = 0;
 		data->philos[i].n_times_eat = -1;
 		data->philos[i].last_meal = get_time_ms();
@@ -110,9 +108,9 @@ int	main(int argc, char **argv)
 			kill_all_proccesses(data, WEXITSTATUS(status));
 			break ;
 		}
-		child_remaining--;
+		else if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
+			child_remaining--;
 	}
 	free_data(data);
-	unlink_sem();
 	return (0);
 }
