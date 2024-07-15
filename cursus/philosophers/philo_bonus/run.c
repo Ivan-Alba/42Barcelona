@@ -6,7 +6,7 @@
 /*   By: igarcia2 <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 04:19:05 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/15 14:57:49 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/15 15:50:55 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	philo_action_loop(t_philo *philo)
 		philo_eat(philo);
 		philo_sleep(philo);
 		philo_think(philo);
+		usleep(200);
 	}
 }
 

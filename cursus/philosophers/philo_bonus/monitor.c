@@ -6,7 +6,7 @@
 /*   By: igarcia2 <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 13:57:08 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/15 15:36:31 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/15 15:48:12 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	check_if_meals_eaten(t_philo *philo)
 void	check_if_dead(t_philo *philo)
 {
 	sem_wait(philo->last_meal_sem);
-	if (get_time_ms() - 2 - philo->last_meal > philo->die_time)
+	if (get_time_ms() - philo->last_meal > philo->die_time)
 	{
 		sem_post(philo->last_meal_sem);
 		print_log("is dead", get_time_ms(), philo);
