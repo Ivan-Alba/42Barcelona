@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igarcia2 <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/02 04:18:54 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/11 15:12:58 by igarcia2         ###   ########.fr       */
+/*   Created: 2024/07/16 12:07:39 by igarcia2          #+#    #+#             */
+/*   Updated: 2024/07/16 13:30:09 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,10 @@ void	philo_eat(t_philo *philo)
 		pthread_mutex_unlock(philo->l_fork);
 	}
 	else
+	{
+		usleep(2000);
 		pthread_mutex_unlock(&(philo->r_fork));
+	}
 }
 
 //Function that manages the philosophers' sleeping action
