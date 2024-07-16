@@ -6,7 +6,7 @@
 #    By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/21 21:07:38 by igarcia2          #+#    #+#              #
-#    Updated: 2024/07/15 15:51:51 by igarcia2         ###   ########.fr        #
+#    Updated: 2024/07/16 12:30:50 by igarcia2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ RM = rm -f
 all:	$(NAME)
 
 $(NAME): $(OBJ) $(MAIN_OBJ)
-	$(CC) -o $(NAME) $(OBJ) $(MAIN_OBJ)
+	$(CC) -fsanitize=address -o $(NAME) $(OBJ) $(MAIN_OBJ)
    
 clean:
 	$(RM) $(OBJ) $(MAIN_OBJ) $(DEPS)

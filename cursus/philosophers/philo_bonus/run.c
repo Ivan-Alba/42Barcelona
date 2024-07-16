@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igarcia2 <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/02 04:19:05 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/15 15:50:55 by igarcia2         ###   ########.fr       */
+/*   Created: 2024/07/16 12:09:08 by igarcia2          #+#    #+#             */
+/*   Updated: 2024/07/16 12:30:09 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,12 @@ void	philo_run(t_philo *philo, t_data *data)
 {
 	sem_wait(data->start_sem);
 	sem_post(data->start_sem);
-	pthread_create(&(philo->thread), NULL, monitoring, (void *)(philo));
+	if (pthread_create(&(philo->thread), NULL, monitoring,
+			(void *)(philo)) == -1)
+	{
+		print_error("Error creating threads\n", data);
+		exit(1);
+	}
 	if (philo->id % 2)
 		usleep(20000);
 	sem_wait(philo->last_meal_sem);
