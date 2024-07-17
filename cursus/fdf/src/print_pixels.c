@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:38:19 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/04/05 18:54:05 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/17 15:24:55 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ int	get_color(t_points point1, t_points point2, int i, int max)
 			- ((point1.color >> 8) & 0xFF)) / max;
 	blue_inc = (float)((point2.color & 0xFF)
 			- (point1.color & 0xFF)) / max;
-	color = (((point1.color >> 16) & 0xFF + (int)(red_inc * i)) << 16)
-		| (((point1.color >> 8) & 0xFF + (int)(green_inc * i)) << 8)
+	color = (((point1.color >> 16) & (0xFF + (int)(red_inc * i))) << 16)
+		| (((point1.color >> 8) & (0xFF + (int)(green_inc * i))) << 8)
 		| ((point1.color & 0xFF) + (int)(blue_inc * i));
 	return (color);
 }

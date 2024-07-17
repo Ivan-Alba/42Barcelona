@@ -6,7 +6,7 @@
 #    By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/21 21:07:38 by igarcia2          #+#    #+#              #
-#    Updated: 2024/04/04 18:49:47 by igarcia2         ###   ########.fr        #
+#    Updated: 2024/07/17 15:30:14 by igarcia2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ LIBFT = src/libft/libft.a
 MAKE_LIBFT = src/libft/Makefile
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wextra -Werror -Wall 
 RM = rm -f
 
 all:	$(NAME)

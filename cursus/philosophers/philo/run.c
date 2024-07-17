@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 12:08:04 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/16 16:32:31 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/17 11:21:44 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	*philo_run(void *param)
 	pthread_mutex_lock(philo->start_lock);
 	pthread_mutex_unlock(philo->start_lock);
 	if (philo->id % 2 == 0)
-		usleep(50000);
+		usleep(2000);
 	pthread_mutex_lock(philo->dead_lock);
 	pthread_mutex_lock(&(philo->meal_lock));
 	philo->last_meal = get_time_ms();

@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 15:52:53 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/02/24 15:20:08 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/17 15:24:00 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <stdint.h>
 
 typedef struct s_flags
 {

@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 20:08:31 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/02/01 16:25:39 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/17 15:25:41 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,7 @@ int	print_ptr_flags(uintptr_t ptr, t_flags *flags)
 int	print_str_flags(char *s, t_flags *flags)
 {
 	char	*str;
-	int		len;
 
-	len = 0;
 	if (!s)
 		s = ft_read_string(s);
 	else

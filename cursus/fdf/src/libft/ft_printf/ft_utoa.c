@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:21:00 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/01/30 16:22:51 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/17 15:25:21 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,7 @@ static int	pow_ten(int dig)
 static char	*put_string(unsigned int n, char *res, int dig)
 {
 	int	i;
-	int	num;
 
-	num = 0;
 	i = 0;
 	while (dig > 0)
 	{

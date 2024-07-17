@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 12:07:39 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/16 13:30:09 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/17 11:22:42 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	philo_eat(t_philo *philo)
 		{
 			if (get_time_ms() - philo->act_time >= philo->eat_time)
 				break ;
+			usleep(100);
 		}
 		pthread_mutex_unlock(&(philo->r_fork));
 		pthread_mutex_unlock(philo->l_fork);
@@ -85,6 +86,7 @@ void	philo_sleep(t_philo *philo)
 		{
 			if (get_time_ms() - philo->act_time >= philo->sleep_time)
 				break ;
+			usleep(100);
 		}
 	}
 	else

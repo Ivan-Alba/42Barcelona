@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 12:34:50 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/04/09 20:41:46 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/17 15:22:49 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@
 # include "libft/get_next_line/get_next_line.h"
 # include <mlx.h>
 # include <math.h>
+# include <stdint.h>
+# include <inttypes.h>
+# include <unistd.h>
 
 # define ARGS_ERROR "Args error\n"
 # define FILE_ERROR "File error\n"
