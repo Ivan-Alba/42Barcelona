@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 12:08:04 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/16 12:08:06 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/16 16:32:31 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	*philo_run(void *param)
 		philo_sleep(philo);
 		philo_think(philo);
 		pthread_mutex_lock(philo->dead_lock);
+		usleep(200);
 	}
 	pthread_mutex_unlock(philo->dead_lock);
 	return (NULL);
