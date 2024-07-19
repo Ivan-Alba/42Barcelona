@@ -6,11 +6,54 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:30:27 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/19 12:39:22 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/19 14:47:11 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+void	print_split(char **splitted)
+{
+	int	i;
+
+	i = 0;
+	if (splitted)
+	{
+		while (splitted[i])
+		{
+			ft_printf("%s\n", splitted[i]);
+			i++;
+		}
+	}
+}
+
+
+/*void	create_tokens(char **splitted_prompt, t_data *data)
+{
+	int	i;
+
+	i = 0;
+	if (splitted)
+	{
+		while (splitted[i])
+		{
+			if (splitted[i][0] == '<' && ) 
+		}
+	}
+}*/
+
+
+void	read_prompt(char *prompt, t_data *data)
+{
+	//char	**splitted_prompt;
+	(void)data;
+	ft_token_split(prompt, "<>&| ", data);
+
+	//create_tokens(splitted_prompt, data);
+
+	//print_split(splitted_prompt);
+	//free_split(splitted_prompt);
+}
 
 int	main(int argc, char **argv, char **env)
 {
@@ -27,6 +70,6 @@ int	main(int argc, char **argv, char **env)
 	while (1)
 	{
 		prompt = readline("minishell: ");
-		prompt = prompt;
+		read_prompt(prompt, data);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:34:21 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/19 12:37:11 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/19 14:41:44 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,35 @@
 # include <readline/history.h>
 # include <stdlib.h>
 
+enum token_type {
+    WORD,		// 0
+    PIPE,		// 1
+    ENV_VAR,	// 2
+    LESS,		// 3
+   	GREAT,		// 4
+   	LESSLESS,	// 5
+    GREATGREAT,	// 6
+	AND,		// 7
+	OR			// 8
+};
+
+typedef struct s_token
+{
+	enum token_type	type;
+	char			*str;
+	void			*next;
+} t_token;
+
 typedef struct s_data
 {
 	char	**env;
 	char	*prompt;
+	t_token	*tokens;
 } t_data;
 
 
 void	print_error_exit(char *msg, t_data *data);
+void	free_split(char **splitted);
+char	**ft_token_split(char *str, char *separators);
 
 #endif

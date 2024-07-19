@@ -6,13 +6,13 @@
 #    By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/21 21:07:38 by igarcia2          #+#    #+#              #
-#    Updated: 2024/07/19 12:45:46 by igarcia2         ###   ########.fr        #
+#    Updated: 2024/07/19 14:42:50 by igarcia2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell 
 
-SRC = utils.c main.c
+SRC = utils.c main.c ft_token_split.c
 
 SRC_DIR = src/
 
