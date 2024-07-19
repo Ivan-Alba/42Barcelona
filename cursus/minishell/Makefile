@@ -6,7 +6,7 @@
 #    By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/21 21:07:38 by igarcia2          #+#    #+#              #
-#    Updated: 2024/07/19 12:27:49 by igarcia2         ###   ########.fr        #
+#    Updated: 2024/07/19 12:45:46 by igarcia2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -108,7 +108,7 @@ clean:	libft_clean
 	@echo "Done $(CHECKMARK)"
 	
 libft_clean:
-	@make clean -C $(LIBFT_DIR)
+	@make clean -C $(LIBFT_DIR) --no-print-directory
 
 fclean: clean libft_fclean
 	@echo "$(WARNING) Fcleaning..."
@@ -116,7 +116,7 @@ fclean: clean libft_fclean
 	@echo "Done $(CHECKMARK)"
 
 libft_fclean:
-	@make fclean -C $(LIBFT_DIR) 
+	@make fclean -C $(LIBFT_DIR) --no-print-directory
 
 re: fclean all
 

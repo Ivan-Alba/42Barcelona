@@ -6,7 +6,7 @@
 #    By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/13 17:28:56 by igarcia2          #+#    #+#              #
-#    Updated: 2024/02/24 16:52:43 by igarcia2         ###   ########.fr        #
+#    Updated: 2024/07/19 12:48:59 by igarcia2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,28 +40,53 @@ CFLAGS = -Wall -Wextra -Werror
 RM = rm -f
 AR = ar rcs
 
+# Color codes
+RED     = \033[0;31m
+GREEN   = \033[0;32m
+YELLOW  = \033[0;33m
+BLUE    = \033[0;34m
+RESET   = \033[0m
+
+CHECKMARK = ✅
+ERROR     = ❌
+WARNING   = ⚠️
+INFO      = ℹ️
+
+# Function to display messages with icons
+define SHOW_MESSAGE
+	@echo "$(1)$(2)$(RESET)"
+endef
+
+
 # Reglas de compilación para archivos en la carpeta raíz
 %.o: %.c Makefile
-	$(CC) $(CFLAGS) -MMD -c -o $@ $<
+	@$(call SHOW_MESSAGE, $(INFO), " Compiling $<...")
+	@$(CC) $(CFLAGS) -MMD -c -o $@ $<
+	@$(call SHOW_MESSAGE, $(CHECKMARK), " Compiled $<")
 
 # Reglas de compilación para archivos en la carpeta ft_printf
 ft_printf/%.o: ft_printf/%.c Makefile
-	$(CC) $(CFLAGS) -MMD -c -o $@ $<
+	@$(call SHOW_MESSAGE, $(INFO), " Compiling $<...")
+	@$(CC) $(CFLAGS) -MMD -c -o $@ $<
+	@$(call SHOW_MESSAGE, $(CHECKMARK), " Compiled $<")
 
 # Reglas de compilación para archivos en la carpeta get_next_line
 get_next_line/%.o: get_next_line/%.c Makefile
-	$(CC) $(CFLAGS) -MMD -c -o $@ $<
+	@$(call SHOW_MESSAGE, $(INFO), " Compiling $<...")
+	@$(CC) $(CFLAGS) -MMD -c -o $@ $<
+	@$(call SHOW_MESSAGE, $(CHECKMARK), " Compiled $<")
 
 all:	$(NAME)
 
-$(NAME): $(OBJECTS) 
-	$(AR) $(NAME) $(OBJECTS)
+$(NAME): $(OBJECTS)
+	@$(call SHOW_MESSAGE, $(INFO), " Creating $(NAME)...")
+	@$(AR) $(NAME) $(OBJECTS)
 
 clean:	
-	$(RM) $(OBJECTS) $(DEPS)
+	@$(RM) $(OBJECTS) $(DEPS)
 
 fclean: clean
-		$(RM) $(NAME)
+	@$(RM) $(NAME)
 
 re: fclean all
 
