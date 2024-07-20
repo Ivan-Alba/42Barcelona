@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:30:27 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/19 14:47:11 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/20 18:58:09 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,12 @@ void	print_split(char **splitted)
 
 void	read_prompt(char *prompt, t_data *data)
 {
-	//char	**splitted_prompt;
 	(void)data;
 	ft_token_split(prompt, "<>&| ", data);
 
 	//create_tokens(splitted_prompt, data);
 
-	//print_split(splitted_prompt);
+	print_split(data->splitted_prompt);
 	//free_split(splitted_prompt);
 }
 

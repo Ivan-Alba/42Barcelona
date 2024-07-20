@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:34:21 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/19 14:41:44 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/20 18:55:21 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,13 @@ typedef struct s_data
 {
 	char	**env;
 	char	*prompt;
+	char	**splitted_prompt;
 	t_token	*tokens;
 } t_data;
 
 
 void	print_error_exit(char *msg, t_data *data);
 void	free_split(char **splitted);
-char	**ft_token_split(char *str, char *separators);
+void	ft_token_split(char *str, char *separators, t_data *data);
 
 #endif
