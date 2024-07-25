@@ -6,87 +6,81 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:28:04 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/20 19:27:44 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/25 16:45:32 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int	count_words(char *str, char *separators)
+void	count_words(t_data *data, char *separators)
 {
 	int	i;
-	size_t	j;
-	int	words;
-	int	len;
+	int	j;
 
-	if (!str || !separators)
-		return (0);
+	if (!(data->prompt) || !separators)
+		return ;
 	i = 0;
-	len = 0;
-	words = 0;
-	while (str[i])
+	while (data->prompt[i])
 	{
 		j = 0;
-		len++;
+		(data->split_info->len)++;
 		while (separators[j])
 		{
-			if (str[i] == separators[j])
+			if (data->prompt[i] == separators[j])
 			{
-				if (len > 1)
-					words+=2;
+				if (data->split_info->len > 1)
+					data->split_info->words+=2;
 				else
-					words++;
-				len = 0;
+					data->split_info->words++;
+				data->split_info->len = 0;
 				break;
 			}
 			j++;
 		}
 		i++;
 	}
-	if (len > 0)
-		words++;
-	return (words);
+	if (data->split_info->len > 0)
+		data->split_info->words++;
 }
 
 void	insert_substring(char *str, int len, int word_idx, t_data *data)
 {
 	int	i;
 	
-	i = 0;
-	if (!len)
+	if (len == 0)
 		len = 1;
-	data->splitted_prompt[word_idx] = malloc(sizeof(char) * (len + 1));
-	if (!data->splitted_prompt[word_idx])
+	data->split_info->splitted_prompt[word_idx] = malloc(sizeof(char) * (len + 1));
+	if (!data->split_info->splitted_prompt[word_idx])
 		print_error_exit("Error: memory allocation", data);
+	i = 0;
 	while (i < len)
 	{
-		data->splitted_prompt[word_idx][i] = str[i];
+		data->split_info->splitted_prompt[word_idx][i] = str[i];
 		i++;
 	}
-	data->splitted_prompt[word_idx][i] = '\0';
+	data->split_info->splitted_prompt[word_idx][i] = '\0';
 }
 
-void	create_substr(char *str, char *separators, t_data *data)
+void	create_substr(char *separators, t_data *data)
 {
 	int	i;
 	int	j;
 	int	word_idx;
 
 	i = 0;
-	word_idx = 0;
-	while (str[i])
+	word_idx = -1;
+	while (data->prompt[i])
 	{
 		j = 0;
 		while (separators[j])
 		{
-			if (str[i] == separators[j])
+			if (data->prompt[i] == separators[j])
 			{
-				insert_substring(&str[0], i, word_idx, data);
-				word_idx++;
+				insert_substring(data->prompt, i, ++word_idx, data);
 				if (!i)
-					str++;
+					(data->prompt)++;
 				else
-					str += i;
+					(data->prompt) += i;
 				i = -1;
 				break;
 			}
@@ -95,18 +89,17 @@ void	create_substr(char *str, char *separators, t_data *data)
 		i++;
 	}
 	if (i >= 1)
-		insert_substring(&str[0], i, word_idx, data);
-	data->splitted_prompt[word_idx + 1] = NULL;
+		insert_substring(data->prompt, i, ++word_idx, data);
+	data->split_info->splitted_prompt[++word_idx] = NULL;
 }
 
-void	ft_token_split(char *str, char *separators, t_data *data)
+void	ft_token_split(char *separators, t_data *data)
 {
-	int		words;
-
-	words = count_words(str, separators);
-	data->splitted_prompt = malloc(sizeof(char *) * (words + 1));
-	if (!data->splitted_prompt)
+	count_words(data, separators);
+	data->split_info->splitted_prompt = malloc(sizeof(char *)
+			* (data->split_info->words + 1));
+	if (!data->split_info->splitted_prompt)
 		print_error_exit("Error: memory allocation", data);
-	ft_printf("Palabras: %d\n", words);
-	create_substr(str, separators, data);
+	ft_printf("Palabras: %d\n", data->split_info->words);
+	create_substr(separators, data);
 }

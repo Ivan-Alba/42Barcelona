@@ -6,69 +6,50 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:30:27 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/20 18:58:09 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/25 16:52:26 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	print_split(char **splitted)
+void	init_data(t_data *data, char **env)
 {
-	int	i;
-
-	i = 0;
-	if (splitted)
-	{
-		while (splitted[i])
-		{
-			ft_printf("%s\n", splitted[i]);
-			i++;
-		}
-	}
+	data->env = env;
+	data->split_info = malloc(sizeof(t_split));
+	if (!data->split_info)
+		print_error_exit("Error: allocating memory", data);
+	data->split_info->words = 0;
+	data->split_info->len = 0;
+	data->split_info->word_idx = 0;
 }
 
-
-/*void	create_tokens(char **splitted_prompt, t_data *data)
+void	read_prompt(t_data *data)
 {
-	int	i;
+	data->prompt_init = data->prompt;
+	//TODO Check_quotes
+	ft_token_split("<>|& ", data);
 
-	i = 0;
-	if (splitted)
-	{
-		while (splitted[i])
-		{
-			if (splitted[i][0] == '<' && ) 
-		}
-	}
-}*/
-
-
-void	read_prompt(char *prompt, t_data *data)
-{
-	(void)data;
-	ft_token_split(prompt, "<>&| ", data);
-
-	//create_tokens(splitted_prompt, data);
-
-	print_split(data->splitted_prompt);
-	//free_split(splitted_prompt);
+	print_split(data->split_info->splitted_prompt);
+	//TODO Transform splitted on tokens
+	//free_split(data->split_info->splitted_prompt);
 }
 
 int	main(int argc, char **argv, char **env)
 {
 	t_data	*data;
-	char	*prompt;
 
 	(void)argv;
 	if (argc != 1)
 		print_error_exit("Error: no args required", NULL);
-	data = malloc(sizeof(t_data *));
+	data = malloc(sizeof(t_data));
 	if (!data)
 		print_error_exit("Error: allocating memory", NULL);
-	data->env = env;
+	init_data(data, env);
 	while (1)
 	{
-		prompt = readline("minishell: ");
-		read_prompt(prompt, data);
+		data->prompt = readline("minishell: ");
+		read_prompt(data);
+		free_data(data);
+		exit(0);
 	}
 }

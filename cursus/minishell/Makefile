@@ -6,7 +6,7 @@
 #    By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/21 21:07:38 by igarcia2          #+#    #+#              #
-#    Updated: 2024/07/19 14:42:50 by igarcia2         ###   ########.fr        #
+#    Updated: 2024/07/25 16:13:58 by igarcia2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -91,7 +91,7 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c Makefile
 
 $(NAME): check_readline $(LIBFT) $(OBJ_DIR) $(OBJ_FULL_DIR)
 	@echo "$(YELLOW)LINKING $(NAME)...$(RESET)"
-	$(CC) -o $(NAME) $(OBJ_FULL_DIR) $(LIBFT_DIR)/$(LIBFT) $(READLINE_LIB)
+	$(CC) -o $(NAME) $(OBJ_FULL_DIR) $(LIBFT_DIR)/$(LIBFT) $(READLINE_LIB) -fsanitize=address 
 
 $(OBJ_DIR): 
 	@mkdir $(OBJ_DIR)
