@@ -6,7 +6,7 @@
 #    By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/13 17:28:56 by igarcia2          #+#    #+#              #
-#    Updated: 2024/07/19 12:48:59 by igarcia2         ###   ########.fr        #
+#    Updated: 2024/08/02 15:35:53 by igarcia2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ SRC = \
 	   ft_memmove.c ft_strchr.c ft_strncmp.c ft_isascii.c ft_memrchr.c \
 	   ft_strdup.c ft_strnstr.c ft_isdigit.c ft_memset.c ft_striteri.c \
 	   ft_strrchr.c ft_isprint.c ft_strjoin.c ft_strtrim.c ft_putchar_fd.c \
-	   ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c \
+	   ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c ft_strcat.c \
 	   ft_lstadd_back.c ft_lstclear.c ft_lstiter.c ft_lstmap.c ft_lstdelone.c
 
 FT_PRINTF_SRC = ft_printf/ft_check_flags_bonus.c ft_printf/ft_int_flags_bonus.c \

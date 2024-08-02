@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:30:27 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/30 15:07:00 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/02 17:37:08 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	main(int argc, char **argv, char **env)
 		read_prompt(data);
 		free(data->prompt_init);
 		data->prompt_init = NULL;
+		ft_token_lstclear(&data->tokens);
 		//free_data(data);
 		//exit(0);
 	}

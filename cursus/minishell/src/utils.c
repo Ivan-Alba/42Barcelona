@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:28:42 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/28 17:55:50 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/02 17:36:10 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	free_data(t_data *data)
 		}
 		if (data->prompt_init)
 			free(data->prompt_init);
+		if (data->tokens)
+			ft_token_lstclear(&data->tokens);
 		free(data);
 	}
 }

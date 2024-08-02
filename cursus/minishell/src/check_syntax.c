@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 16:10:36 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/30 12:12:31 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/02 12:38:30 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,28 @@ int	check_non_accepted_chars(t_data *data)
 	return (0);
 }
 
+int	check_brackets(t_data *data)
+{
+	int	bracket_open;
+	int	bracket_close;
+	int	i;
+
+	i = 0;
+	bracket_open = 0;
+	bracket_close = 0;
+	while (data->prompt[i] != '\0')
+	{
+		if (data->prompt[i] == '(')
+			bracket_open++;
+		else if (data->prompt[i] == ')')
+			bracket_close++;
+		i++;
+	}
+	if (bracket_close != bracket_open)
+		return (1);
+	return (0);
+}
+
 int	check_syntax(t_data *data)
 {
 	if (check_quotes(data))
@@ -58,6 +80,11 @@ int	check_syntax(t_data *data)
 	if (check_non_accepted_chars(data))
 	{
 		print_error("Error: There are characters not accepted");
+		return (1);
+	}
+	if (check_brackets(data))
+	{
+		print_error("Error: brackets not closed correctly");
 		return (1);
 	}
 	return (0);

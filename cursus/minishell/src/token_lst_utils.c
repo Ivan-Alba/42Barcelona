@@ -6,13 +6,25 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:53:07 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/30 15:49:19 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/02 17:33:17 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-t_token	*ft_lstlast(t_token *lst)
+void	ft_token_lstclear(t_token **lst)
+{
+	if ((!lst) || !(*lst))
+		return ;
+	ft_token_lstclear((void *)&(*lst)->next);
+	if ((*lst)->str)
+		free((*lst)->str);
+	(*lst)->str = NULL;
+	free(*lst);
+	*lst = NULL;
+}
+
+t_token	*ft_token_last(t_token *lst)
 {
 	if (!lst)
 		return (NULL);
@@ -21,19 +33,20 @@ t_token	*ft_lstlast(t_token *lst)
 	return (lst);
 }
 
-t_token	*ft_lstnew(char *str, enum e_token_type type)
+t_token	*ft_token_new(char *str, enum e_token_type type)
 {
 	t_token	*new;
 
 	new = (t_token *) malloc(sizeof(t_token));
 	if (!new)
-		return (print_error_exit("Error: Allocating memory"));
+		return (print_error_exit("Error: Allocating memory", NULL), NULL);
 	new->str = str;
+	new->type = type;
 	new->next = NULL;
 	return (new);
 }
 
-void	ft_lstadd_back(t_token **lst, t_token *new)
+void	ft_token_add_back(t_token **lst, t_token *new)
 {
 	t_token	*last;
 
@@ -45,7 +58,7 @@ void	ft_lstadd_back(t_token **lst, t_token *new)
 			*lst = new;
 		else
 		{
-			last = ft_lstlast(*lst);
+			last = ft_token_last(*lst);
 			last->next = new;
 		}
 	}

@@ -6,13 +6,14 @@
 #    By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/21 21:07:38 by igarcia2          #+#    #+#              #
-#    Updated: 2024/07/31 12:04:44 by igarcia2         ###   ########.fr        #
+#    Updated: 2024/08/02 11:33:02 by igarcia2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell 
 
-SRC = utils.c main.c ft_token_split.c check_syntax.c tokenizer.c token_types.c token_lst_utils.c
+SRC = utils.c main.c ft_token_split.c check_syntax.c tokenizer.c token_types.c \
+	  token_lst_utils.c
 
 SRC_DIR = src/
 
@@ -71,7 +72,6 @@ else
 READLINE_INCLUDE =
 READLINE_LIB =
 endif
-
 
 all: $(NAME)	
 
