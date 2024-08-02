@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:34:21 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/28 18:23:19 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/07/30 15:51:03 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ enum	e_token_type
 	WORD,
 	PIPE,
 	ENV_VAR,
-	LESS,
-	GREAT,
-	LESSLESS,
-	GREATGREAT,
+	INPUT_FILE,
+	OUTPUT_FILE,
+	HEREDOC,
+	OUT_APPEND_FILE,
 	AND,
 	OR
 };
@@ -65,5 +65,9 @@ void	free_split(char ***splitted);
 void	print_split(char **splitted);
 void	ft_token_split(char *separators, t_data *data);
 void	free_data(t_data *data);
+//Tokenizer
+int		tokenizer(t_data *data);
+void	token_great_less(t_data *data, int *i);
+void	token_pipe_or_and(t_data *data, int *i);
 
 #endif
