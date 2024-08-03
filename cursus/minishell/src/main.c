@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:30:27 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/02 17:37:08 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:29:18 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,39 @@ void	init_data(t_data *data, char **env)
 	data->env = env;
 }
 
+void	expand_env_var(t_data *data)
+{
+	int		single_quote;
+	int		double_quote;
+	int		i;
+	char	*current;
+
+	i = 0;
+	single_quote = 0;
+	double_quote = 0;
+	current = data->split_info->splitted_prompt[i];
+	while (current)
+	{
+		if (current[0] == '\'' && double_quote % 2 == 0)
+			single_quote++;
+		else if (current[0] == '"' && single_quote % 2 == 0)
+			double_quote++;
+		else if (current[0] == '$' && single_quote % 2 == 0)
+		{
+			//expand_var(data, i);
+		}
+		current = data->split_info->splitted_prompt[++i];
+	}
+}
+
 void	read_prompt(t_data *data)
 {
 	data->prompt_init = data->prompt;
 	if (check_syntax(data))
 		return ;
-	ft_token_split("<>|& ()\"\'$", data);
+	ft_token_split("<>|& ()\"\'", data);
+	//TODO EXPAND $
+	//expand_env_var(data);
 	print_split(data->split_info->splitted_prompt);
 	//TODO Transform splitted on tokens
 	if (tokenizer(data))
