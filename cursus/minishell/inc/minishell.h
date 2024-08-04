@@ -48,7 +48,7 @@ typedef struct s_token
 {
 	enum e_token_type	type;
 	char				*str;
-	void				*next;
+	struct s_token				*next;
 }	t_token;
 
 typedef struct s_split

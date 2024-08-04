@@ -20,6 +20,11 @@ void	init_data(t_data *data, char **env)
 
 void	read_prompt(t_data *data)
 {
+	char	*aux;
+
+	aux = data->prompt;
+	data->prompt = ft_strtrim(data->prompt, " ");
+	free(aux);
 	data->prompt_init = data->prompt;
 	if (check_syntax(data))
 		return ;

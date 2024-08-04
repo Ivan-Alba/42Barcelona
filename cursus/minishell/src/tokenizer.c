@@ -45,6 +45,63 @@ void	create_token(t_data *data, int *i)
 		token_word(data, i);
 }
 
+void	merge_tokens(t_data *data)
+{
+	t_token	*current;
+	t_token	*aux;
+	char	*str1;
+
+	current = data->tokens;
+	while (current)
+	{
+		if (current->type == WORD && current->next && (current->next)->type == WORD)
+		{
+			aux = current->next->next;
+			str1 = ft_strdup(current->str);
+			free(current->str);
+			current->str = ft_strcat(str1, current->next->str);
+			free(current->next->str);
+			free(current->next);
+			free(str1);
+			current->next = aux;
+		}
+		else
+			current = current->next;
+	}
+}
+
+/*void	check_tokens_format(t_data *data)
+{
+	t_token	*current;
+
+	current = data->tokens;
+	while (current)
+	{
+		
+		current = current->next;
+	}
+}*/
+
+void	delete_space_tokens(t_data *data)
+{
+	t_token	*current;
+	t_token	*aux;
+
+	current = data->tokens;
+	while (current)
+	{
+		if (current->next && current->next->type == SPC)
+		{
+			aux = current->next->next;
+			free(current->next->str);
+			free(current->next);
+			current->next = aux;
+		}
+		else
+			current = current->next;
+	}
+}
+
 int	tokenizer(t_data *data)
 {
 	int	i;
@@ -56,10 +113,12 @@ int	tokenizer(t_data *data)
 		create_token(data, &i);
 		i++;
 	}
-	//TODO concatenar tokens tipo WORD
-
+	//Concatenar tokens tipo WORD
+	merge_tokens(data);
+	//TODO delete spaces
+	delete_space_tokens(data);
 	//TODO check tokens format
-
+	//check_tokens_format(data);
 	print_tokens(data);
 	return (0);
 }
