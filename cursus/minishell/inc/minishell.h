@@ -38,6 +38,8 @@ enum	e_token_type
 	OUT_F,
 	HEREDOC,
 	OUT_AP_F,
+	OPEN_BRACKET,
+	CLOSE_BRACKET,
 	AND,
 	OR
 };
@@ -85,5 +87,7 @@ t_token	*ft_token_last(t_token *lst);
 t_token	*ft_token_new(char *str, enum e_token_type type);
 void	ft_token_add_back(t_token **lst, t_token *new);
 void	ft_token_lstclear(t_token **lst);
+//expand_var
+int	expand_var(t_data *data);
 
 #endif

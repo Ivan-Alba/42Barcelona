@@ -101,9 +101,11 @@ void	token_brackets(t_data *data, int *i)
 
 	current = data->split_info->splitted_prompt[*i];
 	if (current[0] == '(')
-	{
-
-	}
+		ft_token_add_back(&(data->tokens),
+			ft_token_new(ft_strdup("("), OPEN_BRACKET));
+	else
+		ft_token_add_back(&(data->tokens),
+			ft_token_new(ft_strdup(")"), CLOSE_BRACKET));
 }
 
 void	token_word(t_data *data, int *i)

@@ -37,8 +37,8 @@ void	create_token(t_data *data, int *i)
 		token_pipe_or_and(data, i);
 	else if (current[0] == '\'' || current[0] == '"')
 		token_quotes(data, i);
-	/*else if (current[0] == '(' || current[0] == ')')
-		token_brackets(data, i);*/
+	else if (current[0] == '(' || current[0] == ')')
+		token_brackets(data, i);
 	else if (current[0] == ' ')
         ft_token_add_back(&(data->tokens), ft_token_new(ft_strdup(current), SPC));	
 	else
@@ -57,7 +57,9 @@ int	tokenizer(t_data *data)
 		i++;
 	}
 	//TODO concatenar tokens tipo WORD
+
 	//TODO check tokens format
+
 	print_tokens(data);
 	return (0);
 }
