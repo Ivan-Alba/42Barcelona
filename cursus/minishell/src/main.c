@@ -144,7 +144,7 @@ void	read_prompt(t_data *data)
 	//TODO EXPAND $
 	if (expand_env_var(data))
 		return ;
-	print_split(data->split_info->splitted_prompt);
+	//print_split(data->split_info->splitted_prompt);
 	//TODO Transform splitted on tokens
 	if (tokenizer(data))
 		//return ;

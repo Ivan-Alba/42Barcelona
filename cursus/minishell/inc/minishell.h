@@ -31,6 +31,7 @@
 enum	e_token_type
 {
 	WORD,
+	SPC,
 	PIPE,
 	ENV_VAR,
 	IN_F,
@@ -77,6 +78,8 @@ int		tokenizer(t_data *data);
 void	token_great_less(t_data *data, int *i);
 void	token_pipe_or_and(t_data *data, int *i);
 void	token_quotes(t_data *data, int *i);
+void	token_word(t_data *data, int *i);
+void	token_brackets(t_data *data, int *i); 
 //token_lst_utils
 t_token	*ft_token_last(t_token *lst);
 t_token	*ft_token_new(char *str, enum e_token_type type);

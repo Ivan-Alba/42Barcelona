@@ -94,3 +94,22 @@ void	token_quotes(t_data *data, int *i)
 	if (x > 0)
 		ft_token_add_back(&(data->tokens), ft_token_new(res, WORD));
 }
+
+void	token_brackets(t_data *data, int *i)
+{
+	char	*current;
+
+	current = data->split_info->splitted_prompt[*i];
+	if (current[0] == '(')
+	{
+
+	}
+}
+
+void	token_word(t_data *data, int *i)
+{
+	char	*current;
+
+	current = data->split_info->splitted_prompt[*i];
+	ft_token_add_back(&(data->tokens), ft_token_new(ft_strdup(current), WORD));
+}

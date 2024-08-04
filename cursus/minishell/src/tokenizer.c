@@ -16,14 +16,14 @@ void	print_tokens(t_data *data)
 {
 	t_token	*current_token;
 
-	printf("PRINT TOKENS: \n");
+	printf("--------PRINT TOKENS--------\n");
 	current_token = data->tokens;
 	while (current_token)
 	{
 		printf("%s\n", current_token->str);
 		current_token = current_token->next;
 	}
-	printf("TERMINAN TOKENS\n");
+	printf("--------END TOKENS---------\n");
 }
 
 void	create_token(t_data *data, int *i)
@@ -37,12 +37,12 @@ void	create_token(t_data *data, int *i)
 		token_pipe_or_and(data, i);
 	else if (current[0] == '\'' || current[0] == '"')
 		token_quotes(data, i);
-	/*else if (current[0] == '$')
-		token_env_variable(data, i);
+	/*else if (current[0] == '(' || current[0] == ')')
+		token_brackets(data, i);*/
 	else if (current[0] == ' ')
-		return ;
+        ft_token_add_back(&(data->tokens), ft_token_new(ft_strdup(current), SPC));	
 	else
-		token_word(data, i);*/
+		token_word(data, i);
 }
 
 int	tokenizer(t_data *data)
@@ -56,7 +56,8 @@ int	tokenizer(t_data *data)
 		create_token(data, &i);
 		i++;
 	}
-	print_tokens(data);
+	//TODO concatenar tokens tipo WORD
 	//TODO check tokens format
+	print_tokens(data);
 	return (0);
 }

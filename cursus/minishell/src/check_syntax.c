@@ -62,7 +62,12 @@ int	check_brackets(t_data *data)
 		if (data->prompt[i] == '(')
 			bracket_open++;
 		else if (data->prompt[i] == ')')
-			bracket_close++;
+		{
+			if (bracket_close < bracket_open)
+				bracket_close++;
+			else
+				return (1);
+		}
 		i++;
 	}
 	if (bracket_close != bracket_open)
