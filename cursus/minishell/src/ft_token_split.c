@@ -50,7 +50,7 @@ void	insert_substr(char *str, int len, int word_idx, t_data *data)
 	data->split_info->splitted_prompt[word_idx]
 		= malloc(sizeof(char) * (len + 1));
 	if (!data->split_info->splitted_prompt[word_idx])
-		print_error_exit("Error: memory allocation", data);
+		print_error_exit(MALLOC_ERROR, data);
 	i = 0;
 	while (i < len)
 	{
@@ -93,7 +93,7 @@ void	init_split_info_data(t_data *data)
 {
 	data->split_info = malloc(sizeof(t_split));
 	if (!data->split_info)
-		print_error_exit("Error: allocating memory", data);
+		print_error_exit(MALLOC_ERROR, data);
 	data->split_info->words = 0;
 	data->split_info->len = 0;
 	data->split_info->word_idx = -1;
@@ -107,8 +107,8 @@ void	ft_token_split(char *separators, t_data *data)
 	data->split_info->splitted_prompt = malloc(sizeof(char *)
 			* (data->split_info->words + 1));
 	if (!data->split_info->splitted_prompt)
-		print_error_exit("Error: memory allocation", data);
-	ft_printf("Palabras: %d\n", data->split_info->words);
+		print_error_exit(MALLOC_ERROR, data);
+	//ft_printf("Palabras: %d\n", data->split_info->words);
 	create_substr(separators, data);
 	data->split_info->words = 0;
 	data->split_info->len = 0;

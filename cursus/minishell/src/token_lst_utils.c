@@ -38,8 +38,9 @@ t_token	*ft_token_new(char *str, enum e_token_type type)
 	t_token	*new;
 
 	new = (t_token *) malloc(sizeof(t_token));
+	//TODO REVISAR RETURN NULL FREE DATA
 	if (!new)
-		return (print_error_exit("Error: Allocating memory", NULL), NULL);
+		return (print_error_exit(MALLOC_ERROR, NULL), NULL);
 	new->str = str;
 	new->type = type;
 	new->next = NULL;

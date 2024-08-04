@@ -87,7 +87,7 @@ void	token_quotes(t_data *data, int *i)
 			free(aux);
 		}
 		if (!res)
-			print_error_exit("Error: Allocating memory", data);
+			print_error_exit(MALLOC_ERROR, data);
 		x++;
 	}
 	(*i) += x;

@@ -21,6 +21,13 @@
 # include <readline/history.h>
 # include <stdlib.h>
 
+# define MALLOC_ERROR "Error allocating memory"
+# define INVALID_VAR_NAME "Error: Invalid variable name"
+# define BRACKET_FORMAT_ERROR "Error: Brackets not closed correctly"
+# define INVALID_CHARS_ERROR "Error: There are characters not accepted (; \\)"
+# define QUOTE_FORMAT_ERROR	"Error: Incorrect quoting mark format"
+# define NO_ARGS_REQUIRED "Error: No args required"
+
 enum	e_token_type
 {
 	WORD,

@@ -74,17 +74,17 @@ int	check_syntax(t_data *data)
 {
 	if (check_quotes(data))
 	{
-		print_error("Error: Incorrect quoting mark format");
+		print_error(QUOTE_FORMAT_ERROR);
 		return (1);
 	}
 	if (check_non_accepted_chars(data))
 	{
-		print_error("Error: There are characters not accepted");
+		print_error(INVALID_CHARS_ERROR);
 		return (1);
 	}
 	if (check_brackets(data))
 	{
-		print_error("Error: brackets not closed correctly");
+		print_error(BRACKET_FORMAT_ERROR);
 		return (1);
 	}
 	return (0);
