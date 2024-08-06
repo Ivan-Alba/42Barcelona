@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 16:10:36 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/03 16:19:22 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/06 16:38:07 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,17 +79,17 @@ int	check_syntax(t_data *data)
 {
 	if (check_quotes(data))
 	{
-		print_error(QUOTE_FORMAT_ERROR);
+		print_error(QUOTE_FORMAT_ERROR, NULL);
 		return (1);
 	}
 	if (check_non_accepted_chars(data))
 	{
-		print_error(INVALID_CHARS_ERROR);
+		print_error(INVALID_CHARS_ERROR, NULL);
 		return (1);
 	}
 	if (check_brackets(data))
 	{
-		print_error(BRACKET_FORMAT_ERROR);
+		print_error(BRACKET_FORMAT_ERROR, NULL);
 		return (1);
 	}
 	return (0);

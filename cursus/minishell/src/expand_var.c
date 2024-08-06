@@ -108,7 +108,7 @@ int     expand_var(t_data *data)
                 {
                         if (expand(data, i))
                         {
-                                print_error(INVALID_VAR_NAME);
+                                print_error(INVALID_VAR_NAME, NULL);
                                 free_split(&(data->split_info->splitted_prompt));
                                 return (1);
                         }

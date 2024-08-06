@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:30:27 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/03 16:29:18 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/06 16:09:20 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	read_prompt(t_data *data)
 	//print_split(data->split_info->splitted_prompt);
 	//TODO Transform splitted on tokens
 	if (tokenizer(data))
-		//return ;
+		return ;
 	free_split(&(data->split_info->splitted_prompt));
 }
 

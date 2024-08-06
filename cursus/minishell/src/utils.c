@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:28:42 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/02 17:36:10 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/06 16:16:26 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,12 @@ void	free_data(t_data *data)
 	}
 }
 
-void	print_error(char *msg)
+void	print_error(char *msg, char	*token)
 {
-	ft_printf("%s\n", msg);
+	if (!token)
+		ft_printf("%s\n", msg);
+	else
+		ft_printf("%s \'%s\'\n", msg, token);
 }
 
 void	print_error_exit(char *msg, t_data *data)

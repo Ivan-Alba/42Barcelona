@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:29:08 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/02 17:56:40 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/06 15:41:41 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,30 @@
 
 void	token_great_less(t_data	*data, int *i)
 {
-	if (data->split_info->splitted_prompt[*i][0] == '<')
+	char	**prompt;
+
+	prompt = data->split_info->splitted_prompt;
+	if (prompt[*i][0] == '<')
 	{
-		if (data->split_info->splitted_prompt[*i + 1][0] == '<')
+		if (prompt[*i + 1] && prompt[*i + 1][0] == '<')
 		{
-			ft_token_add_back(&(data->tokens), ft_token_new(ft_strdup("<<"),
+			ft_token_add(&(data->tokens), ft_token_new(ft_strdup("<<"),
 					HEREDOC));
 			(*i)++;
 		}
 		else
-			ft_token_add_back(&(data->tokens), ft_token_new(ft_strdup("<"),
-					IN_F));
+			ft_token_add(&(data->tokens), ft_token_new(ft_strdup("<"), IN_F));
 	}
-	else if (data->split_info->splitted_prompt[*i][0] == '>')
+	else if (prompt[*i][0] == '>')
 	{
-		if (data->split_info->splitted_prompt[*i + 1][0] == '>')
+		if (prompt[*i + 1] && prompt[*i + 1][0] == '>')
 		{
-			ft_token_add_back(&(data->tokens), ft_token_new(ft_strdup(">>"),
+			ft_token_add(&(data->tokens), ft_token_new(ft_strdup(">>"),
 					OUT_AP_F));
 			(*i)++;
 		}
 		else
-			ft_token_add_back(&(data->tokens), ft_token_new(ft_strdup(">"),
-					OUT_F));
+			ft_token_add(&(data->tokens), ft_token_new(ft_strdup(">"), OUT_F));
 	}
 }
 
@@ -49,19 +50,18 @@ void	token_pipe_or_and(t_data *data, int *i)
 	next = data->split_info->splitted_prompt[(*i) + 1];
 	if (current[0] == '|')
 	{
-		if (next[0] == '|')
+		if (next && next[0] == '|')
 		{
-			ft_token_add_back(&(data->tokens),
+			ft_token_add(&(data->tokens),
 				ft_token_new(ft_strdup("||"), OR));
 			(*i)++;
 		}
 		else
-			ft_token_add_back(&(data->tokens),
-				ft_token_new(ft_strdup("|"), PIPE));
+			ft_token_add(&(data->tokens), ft_token_new(ft_strdup("|"), PIPE));
 	}
-	else if (current[0] == '&' && next[0] == '&')
+	else if (current[0] == '&' && next && next[0] == '&')
 	{
-		ft_token_add_back(&(data->tokens), ft_token_new(ft_strdup("&&"), AND));
+		ft_token_add(&(data->tokens), ft_token_new(ft_strdup("&&"), AND));
 		(*i)++;
 	}
 }
@@ -92,7 +92,7 @@ void	token_quotes(t_data *data, int *i)
 	}
 	(*i) += x;
 	if (x > 0)
-		ft_token_add_back(&(data->tokens), ft_token_new(res, WORD));
+		ft_token_add(&(data->tokens), ft_token_new(res, WORD));
 }
 
 void	token_brackets(t_data *data, int *i)
@@ -101,11 +101,11 @@ void	token_brackets(t_data *data, int *i)
 
 	current = data->split_info->splitted_prompt[*i];
 	if (current[0] == '(')
-		ft_token_add_back(&(data->tokens),
+		ft_token_add(&(data->tokens),
 			ft_token_new(ft_strdup("("), OPEN_BRACKET));
 	else
-		ft_token_add_back(&(data->tokens),
-			ft_token_new(ft_strdup(")"), CLOSE_BRACKET));
+		ft_token_add(&(data->tokens), ft_token_new(ft_strdup(")"),
+				CLOSE_BRACKET));
 }
 
 void	token_word(t_data *data, int *i)
@@ -113,5 +113,5 @@ void	token_word(t_data *data, int *i)
 	char	*current;
 
 	current = data->split_info->splitted_prompt[*i];
-	ft_token_add_back(&(data->tokens), ft_token_new(ft_strdup(current), WORD));
+	ft_token_add(&(data->tokens), ft_token_new(ft_strdup(current), WORD));
 }

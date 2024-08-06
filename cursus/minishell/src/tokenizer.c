@@ -6,25 +6,11 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:00:14 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/02 17:37:12 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/06 16:42:52 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-void	print_tokens(t_data *data)
-{
-	t_token	*current_token;
-
-	printf("--------PRINT TOKENS--------\n");
-	current_token = data->tokens;
-	while (current_token)
-	{
-		printf("%s\n", current_token->str);
-		current_token = current_token->next;
-	}
-	printf("--------END TOKENS---------\n");
-}
 
 void	create_token(t_data *data, int *i)
 {
@@ -40,7 +26,7 @@ void	create_token(t_data *data, int *i)
 	else if (current[0] == '(' || current[0] == ')')
 		token_brackets(data, i);
 	else if (current[0] == ' ')
-        ft_token_add_back(&(data->tokens), ft_token_new(ft_strdup(current), SPC));	
+		ft_token_add(&(data->tokens), ft_token_new(ft_strdup(current), SPC));
 	else
 		token_word(data, i);
 }
@@ -54,7 +40,8 @@ void	merge_tokens(t_data *data)
 	current = data->tokens;
 	while (current)
 	{
-		if (current->type == WORD && current->next && (current->next)->type == WORD)
+		if (current->type == WORD && current->next
+			&& (current->next)->type == WORD)
 		{
 			aux = current->next->next;
 			str1 = ft_strdup(current->str);
@@ -70,17 +57,28 @@ void	merge_tokens(t_data *data)
 	}
 }
 
-/*void	check_tokens_format(t_data *data)
+int	check_tokens_format(t_data *data)
 {
 	t_token	*current;
 
 	current = data->tokens;
 	while (current)
 	{
-		
+		if (current->next)
+		{
+			if (current->type != WORD && current->next->type != WORD
+				&& current->type != OPEN_BRACKET && current->next->type
+				!= OPEN_BRACKET && current->type != CLOSE_BRACKET
+				&& current->next->type != CLOSE_BRACKET)
+			{
+				print_error(UNEXPECTED_TOKEN, current->next->str);
+				return (1);
+			}
+		}
 		current = current->next;
 	}
-}*/
+	return (0);
+}
 
 void	delete_space_tokens(t_data *data)
 {
@@ -113,12 +111,10 @@ int	tokenizer(t_data *data)
 		create_token(data, &i);
 		i++;
 	}
-	//Concatenar tokens tipo WORD
 	merge_tokens(data);
-	//TODO delete spaces
 	delete_space_tokens(data);
-	//TODO check tokens format
-	//check_tokens_format(data);
 	print_tokens(data);
+	if (check_tokens_format(data))
+		return (1);
 	return (0);
 }

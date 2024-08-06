@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:53:07 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/02 17:33:17 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/06 16:29:37 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_token	*ft_token_new(char *str, enum e_token_type type)
 	return (new);
 }
 
-void	ft_token_add_back(t_token **lst, t_token *new)
+void	ft_token_add(t_token **lst, t_token *new)
 {
 	t_token	*last;
 
@@ -63,4 +63,18 @@ void	ft_token_add_back(t_token **lst, t_token *new)
 			last->next = new;
 		}
 	}
+}
+
+void	print_tokens(t_data *data)
+{
+	t_token	*current_token;
+
+	printf("--------PRINT TOKENS--------\n");
+	current_token = data->tokens;
+	while (current_token)
+	{
+		printf("%s\n", current_token->str);
+		current_token = current_token->next;
+	}
+	printf("--------END TOKENS---------\n");
 }
