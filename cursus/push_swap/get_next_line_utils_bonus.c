@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:06:29 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/02/22 19:06:31 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/07 12:11:44 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	check_stack(char **saved, int i, char **res)
 	{
 		*saved = cut_after_next_line(&*saved);
 		if (!*saved)
-			return ((int)free_and_out(&*res));
+			return (free_and_out(&*res), 0);
 	}
 	else
 	{

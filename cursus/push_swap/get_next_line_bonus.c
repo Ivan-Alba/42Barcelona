@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:05:59 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/02/22 19:06:03 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/07 12:08:37 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,9 +125,9 @@ char	*read_next_line(char **saved, int fd)
 char	*get_next_line(int fd)
 {
 	char			*next_line;
-	static t_static	saved[OPEN_MAX + 1];
+	static t_static	saved[1024];
 
-	if (fd < 0 || fd > OPEN_MAX + 1)
+	if (fd < 0 || fd > 1024 + 1)
 		return (NULL);
 	if (saved[fd].line != NULL && is_next_line(saved[fd].line))
 	{
