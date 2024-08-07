@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:34:21 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/06 16:19:21 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/07 16:22:11 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,14 @@ void	ft_token_split(char *separators, t_data *data);
 void	free_data(t_data *data);
 //tokenizer
 int		tokenizer(t_data *data);
+//token_types
 void	token_great_less(t_data *data, int *i);
 void	token_pipe_or_and(t_data *data, int *i);
 void	token_quotes(t_data *data, int *i);
 void	token_word(t_data *data, int *i);
 void	token_brackets(t_data *data, int *i);
+//check_tokens
+int		check_tokens_format(t_data *data);
 //token_lst_utils
 t_token	*ft_token_last(t_token *lst);
 t_token	*ft_token_new(char *str, enum e_token_type type);

@@ -6,14 +6,14 @@
 #    By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/21 21:07:38 by igarcia2          #+#    #+#              #
-#    Updated: 2024/08/02 11:33:02 by igarcia2         ###   ########.fr        #
+#    Updated: 2024/08/07 16:22:38 by igarcia2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell 
 
 SRC = utils.c main.c ft_token_split.c check_syntax.c tokenizer.c token_types.c \
-	  token_lst_utils.c expand_var.c
+	  check_tokens.c token_lst_utils.c expand_var.c
 
 SRC_DIR = src/
 
