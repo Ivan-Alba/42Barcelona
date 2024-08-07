@@ -62,10 +62,35 @@ int	check_tokens_format(t_data *data)
 	t_token	*current;
 
 	current = data->tokens;
+	if (current->type != WORD && current->type != HEREDOC && current->type != IN_F)
+	{
+		print_error(UNEXPECTED_TOKEN, current->str);
+		return (1);
+	}
 	while (current)
 	{
 		if (current->next)
 		{
+			if ((current->type == AND || current->type == OR) && (current->next->type
+				!= WORD && current->next->type != OPEN_BRACKET))
+			{
+				print_error(UNEXPECTED_TOKEN, current->next->str);
+				return (1);
+			}
+			if (current->type == OPEN_BRACKET && current->next->type != OPEN_BRACKET
+				&& current->next->type != WORD)
+			{
+				print_error(UNEXPECTED_TOKEN, current->next->str);
+				return (1);
+			}
+			if (current->type == CLOSE_BRACKET && current->next->type != CLOSE_BRACKET
+				&& current->next->type != PIPE && current->next->type != AND
+				&& current->next->type != OR)
+			{
+				print_error(UNEXPECTED_TOKEN, current->next->str);
+				return (1);
+			}
+
 			if (current->type != WORD && current->next->type != WORD
 				&& current->type != OPEN_BRACKET && current->next->type
 				!= OPEN_BRACKET && current->type != CLOSE_BRACKET
