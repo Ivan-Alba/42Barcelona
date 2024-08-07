@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 12:08:04 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/17 11:21:44 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/07 12:25:55 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,11 @@ void	philos_start(t_data *data)
 	init_mutexs(data);
 	i = -1;
 	while (++i < data->philo_num)
-		pthread_create(&(data->philos[i].thread), NULL, philo_run,
-			(void *)&(data->philos[i]));
+	{
+		if (pthread_create(&(data->philos[i].thread), NULL, philo_run,
+				(void *)&(data->philos[i])) == -1)
+			return ;
+	}
 	pthread_mutex_unlock(&(data->start_lock));
 	data->start_time = get_time_ms();
 	monitoring(data);

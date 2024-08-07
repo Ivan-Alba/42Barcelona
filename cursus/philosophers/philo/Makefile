@@ -6,7 +6,7 @@
 #    By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/21 21:07:38 by igarcia2          #+#    #+#              #
-#    Updated: 2024/07/16 16:45:07 by igarcia2         ###   ########.fr        #
+#    Updated: 2024/08/07 12:38:22 by igarcia2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = philo
 
 MAIN = main.c
 
-SRC = actions.c run.c monitor.c utils.c
+SRC = check_args.c actions.c run.c monitor.c utils.c
 
 DEPS = $(SRC:.c=.d) $(MAIN:.c=.d)
 
@@ -31,7 +31,7 @@ RM = rm -f
 all:	$(NAME)
 
 $(NAME): $(OBJ) $(MAIN_OBJ)
-	$(CC) -o $(NAME) $(OBJ) $(MAIN_OBJ)
+	$(CC) -o $(NAME) $(OBJ) $(MAIN_OBJ) -fsanitize=address
    
 clean:
 	$(RM) $(OBJ) $(MAIN_OBJ) $(DEPS)

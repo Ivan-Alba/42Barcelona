@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 03:50:29 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/10 15:52:29 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/07 12:46:08 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@
 # include <sys/time.h>
 # include <stdio.h>
 # include <pthread.h>
+
+# define MIN_VALUES_ERROR "Times must be at least 60ms\n"
+# define MALLOC_ERROR "Error allocating memory\n"
+# define ARGS_NUM_ERROR "Error: there must be 4 or 5 numerical arguments\n"
+# define ARGS_ERROR "Error: arguments must be numerical and cannot be 0\n"
 
 typedef struct s_philo
 {
@@ -53,14 +58,22 @@ typedef struct s_data
 	t_philo			*philos;
 }	t_data;
 
+void	init_data(t_data *data, int argc, char **argv);
+//check_args
+int		check_int(char *arg);
+int		check_args(int argc, char **argv, t_data *data);
+int		check_min_values(t_data *data);
+//utils
 int		ft_strlen(char *str);
 int		ft_strncmp(const char *s1, const char *s2);
 void	print_error(char *str, t_data *data);
 void	free_data(t_data *data);
 long	get_time_ms(void);
+//run
 void	philos_start(t_data *data);
+//monitor
 void	monitoring(t_data *data);
-//Actions
+//actions
 void	philo_eat(t_philo *philo);
 void	philo_sleep(t_philo *philo);
 void	philo_think(t_philo *philo);
