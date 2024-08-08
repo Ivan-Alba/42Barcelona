@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:28:04 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/07/28 18:18:19 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/08 17:02:36 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,6 @@ void	ft_token_split(char *separators, t_data *data)
 			* (data->split_info->words + 1));
 	if (!data->split_info->splitted_prompt)
 		print_error_exit(MALLOC_ERROR, data);
-	//ft_printf("Palabras: %d\n", data->split_info->words);
 	create_substr(separators, data);
 	data->split_info->words = 0;
 	data->split_info->len = 0;

@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:00:14 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/08 14:23:04 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/08 17:03:38 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,19 +86,14 @@ int	check_tokens_format(t_data *data, int checking)
 		return (1);
 	while (current && current->next)
 	{
-		//AND & OR
 		if (current->type == AND || current->type == OR)
 			checking = check_and_or(current);
-		//OPEN BRACKET
 		else if (current->type == OPEN_BRACKET)
 			checking = check_open_bracket(current);
-		//CLOSE_BRACKET
-		else if (current->type == CLOSE_BRACKET) 
+		else if (current->type == CLOSE_BRACKET)
 			checking = check_close_bracket(current);
-		//PIPE
 		else if (current->type == PIPE)
 			checking = check_pipe(current);
-		//WORD
 		else if (current->type == WORD && current->next->type == OPEN_BRACKET)
 			return (print_error(UNEXPECTED_TOKEN, current->next->str), 1);
 		else if (current->next->type != WORD)

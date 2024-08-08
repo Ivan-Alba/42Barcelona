@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 16:20:17 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/08 14:21:40 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/08 17:05:24 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	check_and_or(t_token *current)
 
 int	check_open_bracket(t_token *current)
 {
-	if (current->next->type != OPEN_BRACKET	&& current->next->type != WORD
+	if (current->next->type != OPEN_BRACKET && current->next->type != WORD
 		&& current->next->type != HEREDOC && current->next->type != IN_F
 		&& current->next->type != OUT_F && current->next->type != OUT_AP_F)
 	{
@@ -62,7 +62,7 @@ int	check_pipe(t_token *current)
 int	check_first_token(t_token *current)
 {
 	if (current->type == CLOSE_BRACKET || current->type == PIPE
-		|| current->type == AND || current->type == OR)	
+		|| current->type == AND || current->type == OR)
 	{
 		print_error(UNEXPECTED_TOKEN, current->str);
 		return (1);
