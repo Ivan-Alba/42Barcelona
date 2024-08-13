@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:34:21 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/13 15:42:57 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/13 16:49:20 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,10 @@ typedef struct s_data
 	int		last_exit_status;
 }	t_data;
 
-void	print_error_exit(char *msg, t_data *data);
-void	print_error(char *msg, char *token);
+//check_syntax
 int		check_syntax(t_data *data);
-void	free_split(char ***splitted);
-void	print_split(char **splitted);
+//ft_token_split
 void	ft_token_split(char *separators, t_data *data);
-void	free_data(t_data *data);
 //tokenizer
 int		tokenizer(t_data *data);
 //token_types
@@ -102,7 +99,7 @@ int		check_and_or(t_token *current);
 int		check_open_bracket(t_token *current);
 int		check_close_bracket(t_token *current);
 int		check_pipe(t_token *current);
-int		check_first_last_token(t_token *token, int	is_first);
+int		check_first_last_token(t_token *token, int is_first);
 //token_lst_utils
 t_token	*ft_token_last(t_token *lst);
 t_token	*ft_token_new(char *str, enum e_token_type type);
@@ -111,5 +108,13 @@ void	ft_token_lstclear(t_token **lst);
 void	print_tokens(t_data *data);
 //expand_var
 int		expand_var(t_data *data);
+//free_utils
+void	clean_prompt_data(t_data *data);
+void	free_split(char ***splitted);
+void	free_data(t_data *data);
+//utils
+void	print_error_exit(char *msg, t_data *data);
+void	print_error(char *msg, char *token);
+void	print_split(char **splitted);
 
 #endif

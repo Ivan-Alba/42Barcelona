@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:30:27 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/13 15:08:55 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/13 16:47:08 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,11 @@ void	read_prompt(t_data *data)
 	if (check_syntax(data))
 		return ;
 	ft_token_split("<>|& ()\"\'", data);
-	//TODO expand only if not export
+	//TODO expand only if not export || unset
 	//if (expand_var(data))
 		//return ;
 	if (tokenizer(data))
 		return ;
-}
-
-void clean_prompt_data(t_data *data)
-{
-	free(data->prompt_init);
-	data->prompt_init = NULL;
-	free_split(&(data->split_info->splitted_prompt));
-	ft_token_lstclear(&data->tokens);
 }
 
 //Main function
