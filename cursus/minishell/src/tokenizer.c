@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:00:14 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/08 17:03:38 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/13 15:23:39 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,6 @@ int	check_tokens_format(t_data *data, int checking)
 	t_token	*current;
 
 	current = data->tokens;
-	if (check_first_token(current))
-		return (1);
 	while (current && current->next)
 	{
 		if (current->type == AND || current->type == OR)
@@ -96,18 +94,20 @@ int	check_tokens_format(t_data *data, int checking)
 			checking = check_pipe(current);
 		else if (current->type == WORD && current->next->type == OPEN_BRACKET)
 			return (print_error(UNEXPECTED_TOKEN, current->next->str), 1);
-		else if (current->next->type != WORD)
+		else if (current->type != WORD && current->next->type != WORD)
 			return (print_error(UNEXPECTED_TOKEN, current->next->str), 1);
 		if (checking)
 			return (1);
 		current = current->next;
 	}
+	if (check_first_last_token(current, 0))
+		return (1);
 	return (0);
 }
 
 int	tokenizer(t_data *data)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	data->tokens = NULL;
@@ -119,6 +119,8 @@ int	tokenizer(t_data *data)
 	merge_tokens(data);
 	delete_space_tokens(data);
 	print_tokens(data);
+	if (check_first_last_token(data->tokens, 1))
+		return (1);
 	if (check_tokens_format(data, 0))
 		return (1);
 	return (0);

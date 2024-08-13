@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:28:42 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/06 16:16:26 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/13 15:02:03 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	free_split(char ***splitted)
 	int	i;
 
 	i = 0;
-	if (*splitted)
+	if (splitted && *splitted)
 	{
 		while ((*splitted)[i])
 		{

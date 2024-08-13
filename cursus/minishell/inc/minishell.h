@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:34:21 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/08 14:23:21 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/13 15:42:57 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,18 @@ enum	e_token_type
 	OR
 };
 
+typedef struct s_section
+{
+	char				**command;
+	struct s_section	*next;
+	enum e_token_type	next_conn_type;
+	struct s_section	*inner;
+	struct s_section	*outer;
+	enum e_token_type	outer_conn_type;
+	int					fd_out;
+	int					fd_in;
+}	t_section;
+
 typedef struct s_token
 {
 	enum e_token_type	type;
@@ -67,6 +79,7 @@ typedef struct s_data
 	char	*prompt_init;
 	t_split	*split_info;
 	t_token	*tokens;
+	int		last_exit_status;
 }	t_data;
 
 void	print_error_exit(char *msg, t_data *data);
@@ -89,7 +102,7 @@ int		check_and_or(t_token *current);
 int		check_open_bracket(t_token *current);
 int		check_close_bracket(t_token *current);
 int		check_pipe(t_token *current);
-int		check_first_token(t_token *current);
+int		check_first_last_token(t_token *token, int	is_first);
 //token_lst_utils
 t_token	*ft_token_last(t_token *lst);
 t_token	*ft_token_new(char *str, enum e_token_type type);
