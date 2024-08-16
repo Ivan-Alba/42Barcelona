@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:30:27 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/16 13:27:16 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/16 20:58:30 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ void	read_prompt(t_data *data)
 	if (tokenizer(data))
 		return ;
 	//TODO create sections
+	sectionizer(data);
+	print_sections(data->sections);
 }
 
 //Main function
@@ -86,7 +88,7 @@ int	main(int argc, char **argv, char **env)
 			add_history(data->prompt);
 		read_prompt(data);
 		clean_prompt_data(data);
-		//free_data(data);
-		//exit(0);
+		free_data(data);
+		exit(0);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 16:45:47 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/14 16:10:53 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/16 21:08:20 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	clean_prompt_data(t_data *data)
 	data->prompt_init = NULL;
 	free_split(&(data->split_info->splitted_prompt));
 	ft_token_lstclear(&data->tokens);
+	free_sections(&data->sections);
 }
 
 //Receive a char** and free all of its contents
@@ -55,6 +56,34 @@ void	free_data(t_data *data)
 			free(data->prompt_init);
 		if (data->tokens)
 			ft_token_lstclear(&data->tokens);
+		if (data->sections)
+			free_sections(&data->sections);
 		free(data);
 	}
+}
+
+//Frees the allocated memory of the nodes of a list of type t_section
+void	free_sections(t_section **section)
+{
+	if (!section || !(*section))
+		return ;
+	free_sections((void *)&(*section)->inner);
+	free_sections((void *)&(*section)->next);
+	if ((*section)->cmd)
+		free_split(&(*section)->cmd);
+	(*section)->cmd = NULL;
+	if ((*section)->infiles)
+		free_split(&(*section)->infiles);
+	(*section)->infiles = NULL;
+	if ((*section)->outfiles)
+		free_split(&(*section)->outfiles);
+	(*section)->outfiles = NULL;
+	if ((*section)->heredocs)
+		free_split(&(*section)->heredocs);
+	(*section)->heredocs = NULL;
+	if ((*section)->outfiles_app)
+		free_split(&(*section)->outfiles_app);
+	(*section)->outfiles_app = NULL;
+	free(*section);
+	*section = NULL;
 }

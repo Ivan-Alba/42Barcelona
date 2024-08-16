@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:34:21 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/14 15:30:16 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/16 21:09:15 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,26 @@ enum	e_token_type
 	AMPER
 };
 
+typedef struct s_function
+{
+	enum e_token_type	type;
+	void				*function_related;
+	struct s_function	*next;
+}	t_function;
+
 typedef struct s_section
 {
-	char				**command;
+	char				**cmd;
 	struct s_section	*next;
 	enum e_token_type	next_conn_type;
+	struct s_section	*previous;
 	struct s_section	*inner;
 	struct s_section	*outer;
 	enum e_token_type	outer_conn_type;
+	char				**infiles;
+	char				**outfiles;
+	char				**outfiles_app;
+	char				**heredocs;
 	int					*fd_out;
 	int					*fd_in;
 }	t_section;
@@ -108,15 +120,19 @@ t_token	*ft_token_new(char *str, enum e_token_type type);
 void	ft_token_add(t_token **lst, t_token *new);
 void	ft_token_lstclear(t_token **lst);
 void	print_tokens(t_data *data);
+//sectionizer
+void	sectionizer(t_data *data);
 //expand_var
 int		expand_var(t_data *data);
 //free_utils
 void	clean_prompt_data(t_data *data);
 void	free_split(char ***splitted);
 void	free_data(t_data *data);
+void	free_sections(t_section **sections);
 //utils
 void	print_error_exit(char *msg, t_data *data);
 void	print_error(char *msg, char *token);
 void	print_split(char **splitted);
+void	print_sections(t_section *section);
 
 #endif

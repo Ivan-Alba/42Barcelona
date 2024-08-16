@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:53:07 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/14 16:12:46 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/16 21:19:27 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ t_token	*ft_token_new(char *str, enum e_token_type type)
 	return (new);
 }
 
+//Add a new node at the end of a t_token list 
 void	ft_token_add(t_token **lst, t_token *new)
 {
 	t_token	*last;
@@ -68,6 +69,7 @@ void	ft_token_add(t_token **lst, t_token *new)
 	}
 }
 
+//(TEST) Prints the contents of the token list received by parameter
 void	print_tokens(t_data *data)
 {
 	t_token	*current_token;
