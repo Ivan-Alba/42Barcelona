@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:30:27 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/13 16:47:08 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/16 13:27:16 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,28 @@ void	init_data(t_data *data, char **env)
 	data->last_exit_status = 0;
 	data->tokens = NULL;
 	data->split_info = NULL;
+	data->sections = NULL;
+}
+
+//Function that checks if there is any export or unset command at the prompt
+int	is_unset_or_export(t_data *data)
+{
+	int		i;
+	char	*current;
+
+	i = 0;
+	current = NULL;
+	if (data->split_info->splitted_prompt)
+		current = data->split_info->splitted_prompt[i];
+	while (current)
+	{
+		if (ft_strncmp("export", current, 7) == 0)
+			return (1);
+		if (ft_strncmp("unset", current, 6) == 0)
+			return (1);
+		current = data->split_info->splitted_prompt[++i];
+	}
+	return (0);
 }
 
 //Function that manages the reading of the prompt entered by the user
@@ -34,10 +56,14 @@ void	read_prompt(t_data *data)
 		return ;
 	ft_token_split("<>|& ()\"\'", data);
 	//TODO expand only if not export || unset
-	//if (expand_var(data))
-		//return ;
+	if (!is_unset_or_export(data))
+	{
+		if (expand_var(data))
+			return ;
+	}
 	if (tokenizer(data))
 		return ;
+	//TODO create sections
 }
 
 //Main function
@@ -60,11 +86,7 @@ int	main(int argc, char **argv, char **env)
 			add_history(data->prompt);
 		read_prompt(data);
 		clean_prompt_data(data);
-		/*free(data->prompt_init);
-		data->prompt_init = NULL;
-		free_split(&(data->split_info->splitted_prompt));
-		ft_token_lstclear(&data->tokens);
-		free_data(data);
-		exit(0);*/
+		//free_data(data);
+		//exit(0);
 	}
 }

@@ -6,13 +6,14 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 16:45:47 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/13 16:47:29 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/14 16:10:53 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void clean_prompt_data(t_data *data)
+//Cleans and frees the necessary data between one prompt and the next one
+void	clean_prompt_data(t_data *data)
 {
 	free(data->prompt_init);
 	data->prompt_init = NULL;
@@ -20,6 +21,7 @@ void clean_prompt_data(t_data *data)
 	ft_token_lstclear(&data->tokens);
 }
 
+//Receive a char** and free all of its contents
 void	free_split(char ***splitted)
 {
 	int	i;
@@ -38,6 +40,7 @@ void	free_split(char ***splitted)
 	}
 }
 
+//Releases all the data necessary to finalize the program execution
 void	free_data(t_data *data)
 {
 	if (data)

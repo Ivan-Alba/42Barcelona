@@ -6,12 +6,13 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 16:10:36 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/06 16:38:07 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/14 15:51:34 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+//Check that the quotation marks are correctly closed
 int	check_quotes(t_data	*data)
 {
 	int	i;
@@ -34,6 +35,7 @@ int	check_quotes(t_data	*data)
 	return (0);
 }
 
+//Check that there are no prohibited characters
 int	check_non_accepted_chars(t_data *data)
 {
 	int	i;
@@ -48,6 +50,7 @@ int	check_non_accepted_chars(t_data *data)
 	return (0);
 }
 
+//Check that the parentheses are correctly closed
 int	check_brackets(t_data *data)
 {
 	int	bracket_open;
@@ -75,6 +78,7 @@ int	check_brackets(t_data *data)
 	return (0);
 }
 
+//Calls the functions responsible to check the syntax of the prompt
 int	check_syntax(t_data *data)
 {
 	if (check_quotes(data))

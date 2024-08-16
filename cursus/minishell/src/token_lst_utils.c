@@ -6,12 +6,13 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:53:07 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/08 13:07:35 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/14 16:12:46 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+//Receives the pointer to a list of t_token and frees all its contents
 void	ft_token_lstclear(t_token **lst)
 {
 	if ((!lst) || !(*lst))
@@ -24,6 +25,7 @@ void	ft_token_lstclear(t_token **lst)
 	*lst = NULL;
 }
 
+//Recieve the pointer to a list of t_token and returns the last element
 t_token	*ft_token_last(t_token *lst)
 {
 	if (!lst)
@@ -33,6 +35,7 @@ t_token	*ft_token_last(t_token *lst)
 	return (lst);
 }
 
+//Create a new node of type t_token and returns it
 t_token	*ft_token_new(char *str, enum e_token_type type)
 {
 	t_token	*new;

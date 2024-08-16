@@ -6,12 +6,13 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:00:14 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/13 15:23:39 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/16 14:10:52 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+//Checks the type of token to be created and calls the corresponding function
 void	create_token(t_data *data, int *i)
 {
 	char	*current;
@@ -19,8 +20,10 @@ void	create_token(t_data *data, int *i)
 	current = data->split_info->splitted_prompt[*i];
 	if (current[0] == '<' || current[0] == '>')
 		token_great_less(data, i);
-	else if (current[0] == '|' || current[0] == '&')
-		token_pipe_or_and(data, i);
+	else if (current[0] == '|')
+		token_pipe_or(data, i);
+	else if (current[0] == '&')
+		token_amper_and(data, i);
 	else if (current[0] == '\'' || current[0] == '"')
 		token_quotes(data, i);
 	else if (current[0] == '(' || current[0] == ')')
@@ -28,9 +31,10 @@ void	create_token(t_data *data, int *i)
 	else if (current[0] == ' ')
 		ft_token_add(&(data->tokens), ft_token_new(ft_strdup(current), SPC));
 	else
-		token_word(data, i);
+		ft_token_add(&(data->tokens), ft_token_new(ft_strdup(current), WORD));
 }
 
+//Merges WORD type tokens that do not contain SPC type tokens between them
 void	merge_tokens(t_data *data)
 {
 	t_token	*current;
@@ -57,6 +61,7 @@ void	merge_tokens(t_data *data)
 	}
 }
 
+//Removes SPC tokens from the token list
 void	delete_space_tokens(t_data *data)
 {
 	t_token	*current;
@@ -77,6 +82,7 @@ void	delete_space_tokens(t_data *data)
 	}
 }
 
+//Manages token list format checking
 int	check_tokens_format(t_data *data, int checking)
 {
 	t_token	*current;
@@ -84,7 +90,8 @@ int	check_tokens_format(t_data *data, int checking)
 	current = data->tokens;
 	while (current && current->next)
 	{
-		if (current->type == AND || current->type == OR)
+		if (current->type == AND || current->type == OR
+			|| current->type == AMPER)
 			checking = check_and_or(current);
 		else if (current->type == OPEN_BRACKET)
 			checking = check_open_bracket(current);
@@ -105,17 +112,15 @@ int	check_tokens_format(t_data *data, int checking)
 	return (0);
 }
 
+//Manages the creation of the token list and the checking of its format
 int	tokenizer(t_data *data)
 {
 	int		i;
 
-	i = 0;
+	i = -1;
 	data->tokens = NULL;
-	while (data->split_info->splitted_prompt[i])
-	{
+	while (data->split_info->splitted_prompt[++i])
 		create_token(data, &i);
-		i++;
-	}
 	merge_tokens(data);
 	delete_space_tokens(data);
 	print_tokens(data);

@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 17:05:50 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/08 17:13:52 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/14 15:12:14 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,11 +119,7 @@ int	expand_var(t_data *data)
 		else if (current[0] == '$' && single_quote % 2 == 0)
 		{
 			if (expand(data, i))
-			{
-				print_error(INVALID_VAR_NAME, NULL);
-				free_split(&(data->split_info->splitted_prompt));
-				return (1);
-			}
+				return (print_error(INVALID_VAR_NAME, NULL), 1);
 		}
 		current = data->split_info->splitted_prompt[++i];
 	}

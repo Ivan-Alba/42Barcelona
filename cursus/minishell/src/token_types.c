@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:29:08 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/06 15:41:41 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/14 14:26:03 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	token_great_less(t_data	*data, int *i)
 	}
 }
 
-void	token_pipe_or_and(t_data *data, int *i)
+void	token_pipe_or(t_data *data, int *i)
 {
 	char	*current;
 	char	*next;
@@ -59,10 +59,24 @@ void	token_pipe_or_and(t_data *data, int *i)
 		else
 			ft_token_add(&(data->tokens), ft_token_new(ft_strdup("|"), PIPE));
 	}
-	else if (current[0] == '&' && next && next[0] == '&')
+}
+
+void	token_amper_and(t_data *data, int *i)
+{
+	char	*current;
+	char	*next;
+
+	current = data->split_info->splitted_prompt[*i];
+	next = data->split_info->splitted_prompt[(*i) + 1];
+	if (current[0] == '&')
 	{
-		ft_token_add(&(data->tokens), ft_token_new(ft_strdup("&&"), AND));
-		(*i)++;
+		if (next && next[0] == '&')
+		{
+			ft_token_add(&(data->tokens), ft_token_new(ft_strdup("&&"), AND));
+			(*i)++;
+		}
+		else
+			ft_token_add(&(data->tokens), ft_token_new(ft_strdup("&"), AMPER));
 	}
 }
 
@@ -108,10 +122,10 @@ void	token_brackets(t_data *data, int *i)
 				CLOSE_BRACKET));
 }
 
-void	token_word(t_data *data, int *i)
+/*void	token_word(t_data *data, int *i)
 {
 	char	*current;
 
 	current = data->split_info->splitted_prompt[*i];
 	ft_token_add(&(data->tokens), ft_token_new(ft_strdup(current), WORD));
-}
+}*/

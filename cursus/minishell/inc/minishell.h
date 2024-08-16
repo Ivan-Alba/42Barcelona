@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:34:21 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/13 16:49:20 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/14 15:30:16 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ enum	e_token_type
 	OPEN_BRACKET,
 	CLOSE_BRACKET,
 	AND,
-	OR
+	OR,
+	AMPER
 };
 
 typedef struct s_section
@@ -53,8 +54,8 @@ typedef struct s_section
 	struct s_section	*inner;
 	struct s_section	*outer;
 	enum e_token_type	outer_conn_type;
-	int					fd_out;
-	int					fd_in;
+	int					*fd_out;
+	int					*fd_in;
 }	t_section;
 
 typedef struct s_token
@@ -74,12 +75,13 @@ typedef struct s_split
 
 typedef struct s_data
 {
-	char	**env;
-	char	*prompt;
-	char	*prompt_init;
-	t_split	*split_info;
-	t_token	*tokens;
-	int		last_exit_status;
+	char		**env;
+	char		*prompt;
+	char		*prompt_init;
+	t_split		*split_info;
+	t_token		*tokens;
+	t_section	*sections;
+	int			last_exit_status;
 }	t_data;
 
 //check_syntax
@@ -90,9 +92,9 @@ void	ft_token_split(char *separators, t_data *data);
 int		tokenizer(t_data *data);
 //token_types
 void	token_great_less(t_data *data, int *i);
-void	token_pipe_or_and(t_data *data, int *i);
+void	token_pipe_or(t_data *data, int *i);
+void	token_amper_and(t_data *data, int *i);
 void	token_quotes(t_data *data, int *i);
-void	token_word(t_data *data, int *i);
 void	token_brackets(t_data *data, int *i);
 //check_tokens
 int		check_and_or(t_token *current);
