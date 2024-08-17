@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:28:42 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/17 15:33:37 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/17 17:14:09 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	print_sections(t_section *section)
 		return ;
 	while (section)
 	{
-		printf("-------SECTION--------\n");
+		printf("-------SECTION %d--------\n", section->id);
 		printf("CMD: \n");
 		print_split(section->cmd);
 		printf("infiles:\n");

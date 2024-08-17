@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 13:38:59 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/17 16:38:22 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/17 17:15:01 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,19 @@ char	**create_command(t_token **first)
 t_section	*new_section(t_section *outer, t_section *previous)
 {
 	t_section	*new;
+	static int	i;
 
 	new = malloc(sizeof(t_section));
 	//TODO check malloc error
 	if (!new)
 		return (NULL);
+	new->outer = NULL;
+	new->previous = NULL;
 	if (outer)
 		new->outer = outer;
 	if (previous)
 		new->previous = previous;
+	new->id = i++;
 	new->cmd = NULL;
 	new->next = NULL;
 	new->next_conn_type = -1;

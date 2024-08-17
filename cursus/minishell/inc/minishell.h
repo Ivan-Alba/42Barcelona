@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:34:21 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/17 16:32:48 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/17 17:05:18 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_function
 
 typedef struct s_section
 {
+	int					id;
 	char				**cmd;
 	struct s_section	*next;
 	enum e_token_type	next_conn_type;
