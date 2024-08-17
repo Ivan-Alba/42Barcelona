@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:30:27 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/16 20:58:30 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/17 15:33:54 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	read_prompt(t_data *data)
 	data->prompt_init = data->prompt;
 	if (check_syntax(data))
 		return ;
-	ft_token_split("<>|& ()\"\'", data);
+	ft_token_split("<>|& ()\"\';\\", data);
 	//TODO expand only if not export || unset
 	if (!is_unset_or_export(data))
 	{

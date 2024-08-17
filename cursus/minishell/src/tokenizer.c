@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:00:14 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/16 14:10:52 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/17 15:42:00 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	create_token(t_data *data, int *i)
 		token_brackets(data, i);
 	else if (current[0] == ' ')
 		ft_token_add(&(data->tokens), ft_token_new(ft_strdup(current), SPC));
+	else if (current[0] == '\\' || current[0] == ';')
+		ft_token_add(&(data->tokens), ft_token_new(ft_strdup(current), FORBB));
 	else
 		ft_token_add(&(data->tokens), ft_token_new(ft_strdup(current), WORD));
 }
@@ -91,7 +93,7 @@ int	check_tokens_format(t_data *data, int checking)
 	while (current && current->next)
 	{
 		if (current->type == AND || current->type == OR
-			|| current->type == AMPER)
+			|| current->type == AMPER || current->type == FORBB)
 			checking = check_and_or(current);
 		else if (current->type == OPEN_BRACKET)
 			checking = check_open_bracket(current);
@@ -123,6 +125,7 @@ int	tokenizer(t_data *data)
 		create_token(data, &i);
 	merge_tokens(data);
 	delete_space_tokens(data);
+	//TEST print
 	print_tokens(data);
 	if (check_first_last_token(data->tokens, 1))
 		return (1);

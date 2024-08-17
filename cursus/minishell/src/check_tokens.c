@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 16:20:17 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/14 15:32:31 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/17 15:41:36 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 //Checks the tokens allowed after a token of type AND or OR
 int	check_and_or(t_token *current)
 {
-	if (current->type == AMPER)
+	if (current->type == AMPER || current->type == FORBB)
 	{
 		print_error(UNEXPECTED_TOKEN, current->str);
 		return (1);

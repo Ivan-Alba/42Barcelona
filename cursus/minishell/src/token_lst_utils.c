@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:53:07 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/16 21:19:27 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/17 14:22:02 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	print_tokens(t_data *data)
 	current_token = data->tokens;
 	while (current_token)
 	{
-		printf("%s\n", current_token->str);
+		printf("%s - Type:%d\n", current_token->str, current_token->type);
 		current_token = current_token->next;
 	}
 	printf("--------END TOKENS---------\n");
