@@ -6,18 +6,18 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 13:52:55 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/17 17:15:21 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/17 19:09:37 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
 //Manages the creation of a new section when a bracket is found
-void	brackets_section(t_section **curr_sec, t_token **curr_tok)
+void	brackets_section(t_section **curr_sec, t_token **curr_tok, t_data *data)
 {
 	if ((*curr_tok)->type == OPEN_BRACKET)
 	{
-		(*curr_sec)->inner = new_section(*curr_sec, NULL);
+		(*curr_sec)->inner = new_section(*curr_sec, NULL, data);
 		//(*curr_sec)->inner->outer = *curr_sec;
 		*curr_sec = (*curr_sec)->inner;
 	}
@@ -43,20 +43,20 @@ void	files_section(t_section **curr_sec, t_token **curr_tok)
 }
 
 //Creates the command based on token of type WORD and stores it in the section
-void	word_section(t_section **curr_sec, t_token **curr_tok)
+void	word_section(t_section **curr_sec, t_token **curr_tok, t_data *data)
 {
-	(*curr_sec)->cmd = create_command(curr_tok);
+	(*curr_sec)->cmd = create_command(curr_tok, data);
 }
 
 //Manages the creation of sections and connections when a separator is found
-void	connection_section(t_section **curr_sec, t_token **curr_tok)
+void	connection_section(t_section **curr_sec, t_token **curr_tok, t_data *data)
 {
 	if ((*curr_tok)->type == PIPE || (*curr_tok)->type == AND
 		|| (*curr_tok)->type == OR)
 	{
 		if ((*curr_tok)->next->type == OPEN_BRACKET)
 		{
-			(*curr_sec)->inner = new_section(*curr_sec, NULL);
+			(*curr_sec)->inner = new_section(*curr_sec, NULL, data);
 			(*curr_sec)->inner->outer_conn_type = (*curr_tok)->type;
 			*curr_tok = (*curr_tok)->next;
 			(*curr_sec) = (*curr_sec)->inner;
@@ -64,7 +64,7 @@ void	connection_section(t_section **curr_sec, t_token **curr_tok)
 		else
 		{
 			(*curr_sec)->next_conn_type = (*curr_tok)->type;
-			(*curr_sec)->next = new_section(NULL, *curr_sec);
+			(*curr_sec)->next = new_section(NULL, *curr_sec, data);
 			*curr_sec = (*curr_sec)->next;
 		}
 	}

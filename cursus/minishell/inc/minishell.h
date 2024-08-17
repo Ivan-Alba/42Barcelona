@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:34:21 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/17 17:05:18 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/17 18:34:04 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ enum	e_token_type
 	FORBB
 };
 
-typedef struct s_function
+/*typedef struct s_function
 {
 	enum e_token_type	type;
 	void				*function_related;
 	struct s_function	*next;
-}	t_function;
+}	t_function;*/
 
 typedef struct s_section
 {
@@ -91,6 +91,7 @@ typedef struct s_data
 	char		*prompt_init;
 	t_split		*split_info;
 	t_token		*tokens;
+	int			section_id;
 	t_section	*sections;
 	int			last_exit_status;
 }	t_data;
@@ -121,13 +122,13 @@ void		ft_token_lstclear(t_token **lst);
 void		print_tokens(t_data *data);
 //sectionizer
 void		sectionizer(t_data *data);
-t_section	*new_section(t_section *outer, t_section *previous);
-char		**create_command(t_token **first);
+t_section	*new_section(t_section *outer, t_section *previous, t_data *data);
+char		**create_command(t_token **first, t_data *data);
 //section_token
-void		brackets_section(t_section **curr_sec, t_token **curr_tok);
+void		brackets_section(t_section **curr_sec, t_token **curr_tok, t_data *data);
 void		files_section(t_section **curr_sec, t_token **curr_tok);
-void		word_section(t_section **curr_sec, t_token **curr_tok);
-void		connection_section(t_section **curr_sec, t_token **curr_tok);
+void		word_section(t_section **curr_sec, t_token **curr_tok, t_data *data);
+void		connection_section(t_section **curr_sec, t_token **curr_tok, t_data *data);
 //expand_var
 int			expand_var(t_data *data);
 //free_utils

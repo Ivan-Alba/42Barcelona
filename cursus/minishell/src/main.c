@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:30:27 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/17 17:49:22 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/17 18:24:36 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	init_data(t_data *data, char **env)
 	data->last_exit_status = 0;
 	data->tokens = NULL;
 	data->split_info = NULL;
+	data->section_id = 0;
 	data->sections = NULL;
 	data->prompt_init = NULL;
 	data->prompt = NULL;

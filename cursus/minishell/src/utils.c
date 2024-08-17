@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:28:42 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/17 17:14:09 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/17 19:05:40 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,23 +50,28 @@ void	print_sections(t_section *section)
 {
 	if (!section)
 		return ;
-	while (section)
+	printf("-------SECTION %d--------\n", section->id);
+	printf("CMD: \n");
+	print_split(section->cmd);
+	printf("infiles:\n");
+	print_split(section->files[IN_F]);
+	printf("outfiles:\n");
+	print_split(section->files[OUT_F]);
+	printf("outfiles_app:\n");
+	print_split(section->files[OUT_AP_F]);
+	printf("heredocs:\n");
+	print_split(section->files[HEREDOC]);
+	printf("next_conn_type %d\n", section->next_conn_type);
+	printf("outer_conn_type %d\n", section->outer_conn_type);
+	if (section->inner)
 	{
-		printf("-------SECTION %d--------\n", section->id);
-		printf("CMD: \n");
-		print_split(section->cmd);
-		printf("infiles:\n");
-		print_split(section->files[IN_F]);
-		printf("outfiles:\n");
-		print_split(section->files[OUT_F]);
-		printf("outfiles_app:\n");
-		print_split(section->files[OUT_AP_F]);
-		printf("heredocs:\n");
-		print_split(section->files[HEREDOC]);
-		//print_sections(section->inner);
-		printf("next_conn_type %d\n", section->next_conn_type);
-		//print_sections(section->next);
-		section = section->next;
+		printf("inner section: %d\n", section->inner->id);
+		print_sections(section->inner);
+	}
+	if (section->next)
+	{
+		printf("next section: %d\n", section->next->id);
+		print_sections(section->next);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 16:45:47 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/17 17:54:58 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/17 18:40:38 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	clean_prompt_data(t_data *data)
 		free(data->split_info);
 		data->split_info = NULL;
 	}
+	data->section_id = 0;
 	ft_token_lstclear(&data->tokens);
 	free_sections(&data->sections);
 }
@@ -77,8 +78,8 @@ void	free_sections(t_section **section)
 
 	if (!section || !(*section))
 		return ;
-	free_sections((void *)&(*section)->inner);
-	free_sections((void *)&(*section)->next);
+	free_sections(&(*section)->inner);
+	free_sections(&(*section)->next);
 	if ((*section)->cmd)
 		free_split(&(*section)->cmd);
 	(*section)->cmd = NULL;
