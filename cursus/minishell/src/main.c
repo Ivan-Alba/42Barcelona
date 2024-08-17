@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:30:27 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/17 15:33:54 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/17 17:49:22 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	init_data(t_data *data, char **env)
 	data->tokens = NULL;
 	data->split_info = NULL;
 	data->sections = NULL;
+	data->prompt_init = NULL;
+	data->prompt = NULL;
 }
 
 //Function that checks if there is any export or unset command at the prompt
@@ -49,18 +51,18 @@ void	read_prompt(t_data *data)
 	char	*aux;
 
 	aux = data->prompt;
-	data->prompt = ft_strtrim(data->prompt, " ");
+	data->prompt_init = ft_strtrim(data->prompt, " ");
 	free(aux);
-	data->prompt_init = data->prompt;
+	data->prompt = data->prompt_init;
 	if (check_syntax(data))
 		return ;
 	ft_token_split("<>|& ()\"\';\\", data);
 	//TODO expand only if not export || unset
-	if (!is_unset_or_export(data))
+	/*if (!is_unset_or_export(data))
 	{
 		if (expand_var(data))
 			return ;
-	}
+	}*/
 	if (tokenizer(data))
 		return ;
 	//TODO create sections
@@ -85,10 +87,16 @@ int	main(int argc, char **argv, char **env)
 	{
 		data->prompt = readline("minishell: ");
 		if (data->prompt && data->prompt[0])
+		{
 			add_history(data->prompt);
-		read_prompt(data);
-		clean_prompt_data(data);
-		free_data(data);
-		exit(0);
+			read_prompt(data);
+			clean_prompt_data(data);
+		}
+		else if (!data->prompt)
+			break;
+		else
+			free(data->prompt);
 	}
+	free_data(data);
+	exit(0);
 }

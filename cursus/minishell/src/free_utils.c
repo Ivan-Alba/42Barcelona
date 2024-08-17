@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 16:45:47 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/17 15:54:00 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/17 17:54:58 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,17 @@
 //Cleans and frees the necessary data between one prompt and the next one
 void	clean_prompt_data(t_data *data)
 {
-	free(data->prompt_init);
-	data->prompt_init = NULL;
-	free_split(&(data->split_info->splitted_prompt));
+	if (data->prompt_init)
+	{
+		free(data->prompt_init);
+		data->prompt_init = NULL;
+	}
+	if (data->split_info)
+	{
+		free_split(&(data->split_info->splitted_prompt));
+		free(data->split_info);
+		data->split_info = NULL;
+	}
 	ft_token_lstclear(&data->tokens);
 	free_sections(&data->sections);
 }
@@ -53,7 +61,7 @@ void	free_data(t_data *data)
 			free(data->split_info);
 		}
 		if (data->prompt_init)
-			free(data->prompt_init);
+			free(data->prompt_init);	
 		if (data->tokens)
 			ft_token_lstclear(&data->tokens);
 		if (data->sections)
