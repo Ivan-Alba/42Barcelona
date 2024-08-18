@@ -29,52 +29,6 @@ void	print_error_exit(char *msg, t_data *data)
 	exit(1);
 }
 
-//(TEST) Receives a char** as a parameter and prints its content by console
-void	print_split(char **splitted)
-{
-	int	i;
-
-	i = 0;
-	if (splitted)
-	{
-		while (splitted[i])
-		{
-			ft_printf("[%d]: %s\n", i, splitted[i]);
-			i++;
-		}
-	}
-}
-
-//(TEST) Prints the content of each node of a list of type t_section
-void	print_sections(t_section *section)
-{
-	if (!section)
-		return ;
-	printf("-------SECTION %d--------\n", section->id);
-	printf("CMD: \n");
-	print_split(section->cmd);
-	printf("infiles:\n");
-	print_split(section->files[IN_F]);
-	printf("outfiles:\n");
-	print_split(section->files[OUT_F]);
-	printf("outfiles_app:\n");
-	print_split(section->files[OUT_AP_F]);
-	printf("heredocs:\n");
-	print_split(section->files[HEREDOC]);
-	printf("next_conn_type %d\n", section->next_conn_type);
-	printf("outer_conn_type %d\n", section->outer_conn_type);
-	if (section->inner)
-	{
-		printf("inner section: %d\n", section->inner->id);
-		print_sections(section->inner);
-	}
-	if (section->next)
-	{
-		printf("next section: %d\n", section->next->id);
-		print_sections(section->next);
-	}
-}
-
 //Add to an existing char** a new value, freeing the memory and re-allocating it
 char	**add_to_array(char	***current, char *new_value)
 {
@@ -90,7 +44,6 @@ char	**add_to_array(char	***current, char *new_value)
 			i++;
 		new = malloc(sizeof(char *) * (i + 2));
 	}
-	//TODO check malloc error
 	if (!new)
 		return (NULL);
 	i = 0;

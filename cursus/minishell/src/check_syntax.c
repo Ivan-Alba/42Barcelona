@@ -86,11 +86,6 @@ int	check_syntax(t_data *data)
 		print_error(QUOTE_FORMAT_ERROR, NULL);
 		return (1);
 	}
-	/*if (check_non_accepted_chars(data))
-	{
-		print_error(INVALID_CHARS_ERROR, NULL);
-		return (1);
-	}*/
 	if (check_brackets(data))
 	{
 		print_error(BRACKET_FORMAT_ERROR, NULL);

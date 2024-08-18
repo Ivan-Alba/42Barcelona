@@ -13,12 +13,11 @@
 #include "../inc/minishell.h"
 
 //Manages the creation of a new section when a bracket is found
-void	brackets_section(t_section **curr_sec, t_token **curr_tok, t_data *data)
+void	brack_sect(t_section **curr_sec, t_token **curr_tok, t_data *data)
 {
 	if ((*curr_tok)->type == OPEN_BRACKET)
 	{
 		(*curr_sec)->inner = new_section(*curr_sec, NULL, data);
-		//(*curr_sec)->inner->outer = *curr_sec;
 		*curr_sec = (*curr_sec)->inner;
 	}
 	else if ((*curr_tok)->type == CLOSE_BRACKET)
@@ -30,7 +29,7 @@ void	brackets_section(t_section **curr_sec, t_token **curr_tok, t_data *data)
 }
 
 //Manages the storage of incoming and outgoing files within the section
-void	files_section(t_section **curr_sec, t_token **curr_tok)
+void	files_sect(t_section **curr_sec, t_token **curr_tok)
 {
 	if ((*curr_tok)->type == IN_F || (*curr_tok)->type == OUT_F
 		|| (*curr_tok)->type == OUT_AP_F || (*curr_tok)->type == HEREDOC)
@@ -43,13 +42,13 @@ void	files_section(t_section **curr_sec, t_token **curr_tok)
 }
 
 //Creates the command based on token of type WORD and stores it in the section
-void	word_section(t_section **curr_sec, t_token **curr_tok, t_data *data)
+void	word_sect(t_section **curr_sec, t_token **curr_tok, t_data *data)
 {
 	(*curr_sec)->cmd = create_command(curr_tok, data);
 }
 
 //Manages the creation of sections and connections when a separator is found
-void	connection_section(t_section **curr_sec, t_token **curr_tok, t_data *data)
+void	conn_sect(t_section **curr_sec, t_token **curr_tok, t_data *data)
 {
 	if ((*curr_tok)->type == PIPE || (*curr_tok)->type == AND
 		|| (*curr_tok)->type == OR)
@@ -57,6 +56,7 @@ void	connection_section(t_section **curr_sec, t_token **curr_tok, t_data *data)
 		if ((*curr_tok)->next->type == OPEN_BRACKET)
 		{
 			(*curr_sec)->inner = new_section(*curr_sec, NULL, data);
+			(*curr_sec)->inner_conn_type = (*curr_tok)->type;
 			(*curr_sec)->inner->outer_conn_type = (*curr_tok)->type;
 			*curr_tok = (*curr_tok)->next;
 			(*curr_sec) = (*curr_sec)->inner;

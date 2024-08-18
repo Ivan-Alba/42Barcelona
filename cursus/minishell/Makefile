@@ -13,8 +13,8 @@
 NAME = minishell 
 
 SRC = utils.c main.c ft_token_split.c check_syntax.c tokenizer.c token_types.c \
-	  check_tokens.c token_lst_utils.c expand_var.c free_utils.c sectionizer.c \
-	  section_token.c
+	  check_tokens.c token_lst_utils.c expand_var.c free_data.c sectionizer.c \
+	  section_token.c test_utils.c
 
 SRC_DIR = src/
 

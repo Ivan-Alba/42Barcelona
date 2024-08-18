@@ -41,9 +41,8 @@ t_token	*ft_token_new(char *str, enum e_token_type type)
 	t_token	*new;
 
 	new = (t_token *) malloc(sizeof(t_token));
-	//TODO REVISAR RETURN NULL FREE DATA
 	if (!new)
-		return (print_error_exit(MALLOC_ERROR, NULL), NULL);
+		return (NULL);
 	new->str = str;
 	new->type = type;
 	new->next = NULL;
@@ -69,17 +68,13 @@ void	ft_token_add(t_token **lst, t_token *new)
 	}
 }
 
-//(TEST) Prints the contents of the token list received by parameter
-void	print_tokens(t_data *data)
+//Manages the creation of a new t_token node and adds it to the list
+void	add_new_token(t_data *data, char *str, enum e_token_type type)
 {
-	t_token	*current_token;
+	t_token	*new_token;
 
-	printf("--------PRINT TOKENS--------\n");
-	current_token = data->tokens;
-	while (current_token)
-	{
-		printf("%s - Type:%d\n", current_token->str, current_token->type);
-		current_token = current_token->next;
-	}
-	printf("--------END TOKENS---------\n");
+	new_token = ft_token_new(str, type);
+	if (!new_token)
+		print_error_exit(MALLOC_ERROR, data);
+	ft_token_add(&(data->tokens), new_token);
 }

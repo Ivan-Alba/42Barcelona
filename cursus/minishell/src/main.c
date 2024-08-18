@@ -13,16 +13,19 @@
 #include "../inc/minishell.h"
 
 //Function that initializes the necessary data of the main structure
-void	init_data(t_data *data, char **env)
+void	init_data(t_data **data, char **env)
 {
-	data->env = env;
-	data->last_exit_status = 0;
-	data->tokens = NULL;
-	data->split_info = NULL;
-	data->section_id = 0;
-	data->sections = NULL;
-	data->prompt_init = NULL;
-	data->prompt = NULL;
+	*data = malloc(sizeof(t_data));
+	if (!(*data))
+		print_error_exit(MALLOC_ERROR, NULL);
+	(*data)->env = env;
+	(*data)->last_exit_status = 0;
+	(*data)->tokens = NULL;
+	(*data)->split_info = NULL;
+	(*data)->section_id = 0;
+	(*data)->sections = NULL;
+	(*data)->prompt_init = NULL;
+	(*data)->prompt = NULL;
 }
 
 //Function that checks if there is any export or unset command at the prompt
@@ -66,8 +69,8 @@ void	read_prompt(t_data *data)
 	}*/
 	if (tokenizer(data))
 		return ;
-	//TODO create sections
 	sectionizer(data);
+	//TODO TEST PRINT
 	print_sections(data->sections);
 }
 
@@ -80,10 +83,7 @@ int	main(int argc, char **argv, char **env)
 	if (argc != 1)
 		print_error_exit(NO_ARGS_REQUIRED, NULL);
 	data = NULL;
-	data = malloc(sizeof(t_data));
-	if (!data)
-		print_error_exit(MALLOC_ERROR, NULL);
-	init_data(data, env);
+	init_data(&data, env);
 	while (1)
 	{
 		data->prompt = readline("minishell: ");
@@ -91,10 +91,11 @@ int	main(int argc, char **argv, char **env)
 		{
 			add_history(data->prompt);
 			read_prompt(data);
+			//TODO EXECUTE
 			clean_prompt_data(data);
 		}
 		else if (!data->prompt)
-			break;
+			break ;
 		else
 			free(data->prompt);
 	}

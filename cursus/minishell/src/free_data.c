@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_utils.c                                       :+:      :+:    :+:   */
+/*   free_data.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -62,7 +62,7 @@ void	free_data(t_data *data)
 			free(data->split_info);
 		}
 		if (data->prompt_init)
-			free(data->prompt_init);	
+			free(data->prompt_init);
 		if (data->tokens)
 			ft_token_lstclear(&data->tokens);
 		if (data->sections)

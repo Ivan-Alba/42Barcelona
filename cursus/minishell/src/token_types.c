@@ -12,6 +12,7 @@
 
 #include "../inc/minishell.h"
 
+//Adds a new token of type "<", "<<", ">" or ">>" to the t_token list
 void	token_great_less(t_data	*data, int *i)
 {
 	char	**prompt;
@@ -21,26 +22,25 @@ void	token_great_less(t_data	*data, int *i)
 	{
 		if (prompt[*i + 1] && prompt[*i + 1][0] == '<')
 		{
-			ft_token_add(&(data->tokens), ft_token_new(ft_strdup("<<"),
-					HEREDOC));
+			add_new_token(data, ft_strdup("<<"), HEREDOC);
 			(*i)++;
 		}
 		else
-			ft_token_add(&(data->tokens), ft_token_new(ft_strdup("<"), IN_F));
+			add_new_token(data, ft_strdup("<"), IN_F);
 	}
 	else if (prompt[*i][0] == '>')
 	{
 		if (prompt[*i + 1] && prompt[*i + 1][0] == '>')
 		{
-			ft_token_add(&(data->tokens), ft_token_new(ft_strdup(">>"),
-					OUT_AP_F));
+			add_new_token(data, ft_strdup(">>"), OUT_AP_F);
 			(*i)++;
 		}
 		else
-			ft_token_add(&(data->tokens), ft_token_new(ft_strdup(">"), OUT_F));
+			add_new_token(data, ft_strdup(">"), OUT_F);
 	}
 }
 
+//Adds a new token of type "|" or "||" to the t_token list
 void	token_pipe_or(t_data *data, int *i)
 {
 	char	*current;
@@ -52,15 +52,15 @@ void	token_pipe_or(t_data *data, int *i)
 	{
 		if (next && next[0] == '|')
 		{
-			ft_token_add(&(data->tokens),
-				ft_token_new(ft_strdup("||"), OR));
+			add_new_token(data, ft_strdup("||"), OR);
 			(*i)++;
 		}
 		else
-			ft_token_add(&(data->tokens), ft_token_new(ft_strdup("|"), PIPE));
+			add_new_token(data, ft_strdup("|"), PIPE);
 	}
 }
 
+//Adds a new token of type "&" or "&&" to the t_token list
 void	token_amper_and(t_data *data, int *i)
 {
 	char	*current;
@@ -72,14 +72,15 @@ void	token_amper_and(t_data *data, int *i)
 	{
 		if (next && next[0] == '&')
 		{
-			ft_token_add(&(data->tokens), ft_token_new(ft_strdup("&&"), AND));
+			add_new_token(data, ft_strdup("&&"), AND);
 			(*i)++;
 		}
 		else
-			ft_token_add(&(data->tokens), ft_token_new(ft_strdup("&"), AMPER));
+			add_new_token(data, ft_strdup("&"), AMPER);
 	}
 }
 
+//Adds a new token of type "WORD", founded between quotes to the t_token list
 void	token_quotes(t_data *data, int *i)
 {
 	int		x;
@@ -106,26 +107,17 @@ void	token_quotes(t_data *data, int *i)
 	}
 	(*i) += x;
 	if (x > 0)
-		ft_token_add(&(data->tokens), ft_token_new(res, WORD));
+		add_new_token(data, res, WORD);
 }
 
+//Adds a new token of type "(" or ")" to the t_token list
 void	token_brackets(t_data *data, int *i)
 {
 	char	*current;
 
 	current = data->split_info->splitted_prompt[*i];
 	if (current[0] == '(')
-		ft_token_add(&(data->tokens),
-			ft_token_new(ft_strdup("("), OPEN_BRACKET));
+		add_new_token(data, ft_strdup("("), OPEN_BRACKET);
 	else
-		ft_token_add(&(data->tokens), ft_token_new(ft_strdup(")"),
-				CLOSE_BRACKET));
+		add_new_token(data, ft_strdup(")"), CLOSE_BRACKET);
 }
-
-/*void	token_word(t_data *data, int *i)
-{
-	char	*current;
-
-	current = data->split_info->splitted_prompt[*i];
-	ft_token_add(&(data->tokens), ft_token_new(ft_strdup(current), WORD));
-}*/

@@ -62,6 +62,7 @@ typedef struct s_section
 	enum e_token_type	next_conn_type;
 	struct s_section	*previous;
 	struct s_section	*inner;
+	enum e_token_type	inner_conn_type;
 	struct s_section	*outer;
 	enum e_token_type	outer_conn_type;
 	int					*fd_out;
@@ -115,20 +116,17 @@ int			check_close_bracket(t_token *current);
 int			check_pipe(t_token *current);
 int			check_first_last_token(t_token *token, int is_first);
 //token_lst_utils
-t_token		*ft_token_last(t_token *lst);
-t_token		*ft_token_new(char *str, enum e_token_type type);
-void		ft_token_add(t_token **lst, t_token *new);
 void		ft_token_lstclear(t_token **lst);
-void		print_tokens(t_data *data);
+void		add_new_token(t_data *data, char *str, enum e_token_type type);
 //sectionizer
 void		sectionizer(t_data *data);
 t_section	*new_section(t_section *outer, t_section *previous, t_data *data);
 char		**create_command(t_token **first, t_data *data);
 //section_token
-void		brackets_section(t_section **curr_sec, t_token **curr_tok, t_data *data);
-void		files_section(t_section **curr_sec, t_token **curr_tok);
-void		word_section(t_section **curr_sec, t_token **curr_tok, t_data *data);
-void		connection_section(t_section **curr_sec, t_token **curr_tok, t_data *data);
+void		brack_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
+void		files_sect(t_section **curr_sec, t_token **curr_tok);
+void		word_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
+void		conn_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
 //expand_var
 int			expand_var(t_data *data);
 //free_utils
@@ -139,8 +137,10 @@ void		free_sections(t_section **sections);
 //utils
 void		print_error_exit(char *msg, t_data *data);
 void		print_error(char *msg, char *token);
+char		**add_to_array(char ***current, char *new_value);
+//test_utils
+void		print_tokens(t_data *data);
 void		print_split(char **splitted);
 void		print_sections(t_section *section);
-char		**add_to_array(char ***current, char *new_value);
 
 #endif

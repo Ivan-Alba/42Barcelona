@@ -29,11 +29,11 @@ void	create_token(t_data *data, int *i)
 	else if (current[0] == '(' || current[0] == ')')
 		token_brackets(data, i);
 	else if (current[0] == ' ')
-		ft_token_add(&(data->tokens), ft_token_new(ft_strdup(current), SPC));
+		add_new_token(data, ft_strdup(current), SPC);
 	else if (current[0] == '\\' || current[0] == ';')
-		ft_token_add(&(data->tokens), ft_token_new(ft_strdup(current), FORBB));
+		add_new_token(data, ft_strdup(current), FORBB);
 	else
-		ft_token_add(&(data->tokens), ft_token_new(ft_strdup(current), WORD));
+		add_new_token(data, ft_strdup(current), WORD);
 }
 
 //Merges WORD type tokens that do not contain SPC type tokens between them
@@ -125,7 +125,7 @@ int	tokenizer(t_data *data)
 		create_token(data, &i);
 	merge_tokens(data);
 	delete_space_tokens(data);
-	//TEST print
+	//TODO TEST PRINT
 	print_tokens(data);
 	if (check_first_last_token(data->tokens, 1))
 		return (1);
