@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 13:38:59 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/17 18:40:23 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/19 15:44:59 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,17 @@ t_section	*new_section(t_section *outer, t_section *previous, t_data *data)
 	return (new);
 }
 
+void	count_pipes_heredocs(t_section *curr_sec, t_data *data)
+{
+	if (!curr_sec)
+		return ;
+	count_pipes_heredocs(curr_sec->inner, data);
+	count_pipes_heredocs(curr_sec->next, data);
+	if (curr_sec->files[HEREDOC])
+		data->pipes_needed += 1;
+	//printf("Pipes needed: %d\n", data->pipes_needed + data->section_id);
+}
+
 //Manages creation of t_section list with the information of the t_token list
 void	sectionizer(t_data *data)
 {
@@ -82,7 +93,6 @@ void	sectionizer(t_data *data)
 	t_section	*curr_sec;
 
 	curr_tok = data->tokens;
-	curr_sec = NULL;
 	if (curr_tok)
 	{
 		curr_sec = new_section(NULL, NULL, data);
@@ -103,4 +113,5 @@ void	sectionizer(t_data *data)
 		if (curr_tok)
 			curr_tok = curr_tok->next;
 	}
+	count_pipes_heredocs(data->sections, data);
 }

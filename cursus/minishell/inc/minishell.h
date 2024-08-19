@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:34:21 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/17 18:34:04 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/19 15:54:09 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define QUOTE_FORMAT_ERROR	"Error: Incorrect quoting mark format"
 # define NO_ARGS_REQUIRED "Error: No args required"
 # define UNEXPECTED_TOKEN "Syntax error near unexpected token"
+# define PIPES_ERROR "Error creating pipes"
 
 enum	e_token_type
 {
@@ -94,6 +95,8 @@ typedef struct s_data
 	t_token		*tokens;
 	int			section_id;
 	t_section	*sections;
+	int			pipes_needed;
+	int			*pipes;
 	int			last_exit_status;
 }	t_data;
 

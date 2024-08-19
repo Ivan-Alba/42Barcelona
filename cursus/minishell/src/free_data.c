@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_data.c                                       :+:      :+:    :+:   */
+/*   free_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 16:45:47 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/17 18:40:38 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/19 15:53:07 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,11 @@ void	clean_prompt_data(t_data *data)
 		data->split_info = NULL;
 	}
 	data->section_id = 0;
+	data->pipes_needed = 0;
 	ft_token_lstclear(&data->tokens);
 	free_sections(&data->sections);
+	if (data->pipes)
+		free(data->pipes);
 }
 
 //Receive a char** and free all of its contents
@@ -68,6 +71,8 @@ void	free_data(t_data *data)
 		if (data->sections)
 			free_sections(&data->sections);
 		free(data);
+		if (data->pipes)
+			free(data->pipes);
 	}
 }
 

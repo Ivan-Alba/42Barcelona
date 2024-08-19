@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:30:27 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/17 18:24:36 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/19 15:50:48 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	init_data(t_data **data, char **env)
 	(*data)->split_info = NULL;
 	(*data)->section_id = 0;
 	(*data)->sections = NULL;
+	(*data)->pipes_needed = 0;
+	(*data)->pipes = NULL;
 	(*data)->prompt_init = NULL;
 	(*data)->prompt = NULL;
 }
@@ -61,17 +63,13 @@ void	read_prompt(t_data *data)
 	if (check_syntax(data))
 		return ;
 	ft_token_split("<>|& ()\"\';\\", data);
-	//TODO expand only if not export || unset
-	/*if (!is_unset_or_export(data))
-	{
-		if (expand_var(data))
-			return ;
-	}*/
 	if (tokenizer(data))
 		return ;
 	sectionizer(data);
+	data->pipes_needed += (data->section_id - 1);
 	//TODO TEST PRINT
 	print_sections(data->sections);
+	printf("\nPipes needed: %d\n", data->pipes_needed);
 }
 
 //Main function
