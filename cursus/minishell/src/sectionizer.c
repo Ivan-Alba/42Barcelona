@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 13:38:59 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/19 15:44:59 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/21 17:09:04 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,6 @@ char	**create_command(t_token **first, t_data *data)
 	return (command);
 }
 
-//Allocates the necessary memory and initializes the char*** of a new section
-char	***init_files_section(void)
-{
-	char	***files;
-
-	files = malloc(sizeof(char **) * (4 + 1));
-	if (!files)
-		return (NULL);
-	files[0] = NULL;
-	files[1] = NULL;
-	files[2] = NULL;
-	files[3] = NULL;
-	files[4] = NULL;
-	return (files);
-}
-
 //Creates a new node of type t_section * and initializes its values
 t_section	*new_section(t_section *outer, t_section *previous, t_data *data)
 {
@@ -69,21 +53,26 @@ t_section	*new_section(t_section *outer, t_section *previous, t_data *data)
 	new->inner = NULL;
 	new->inner_conn_type = -1;
 	new->outer_conn_type = -1;
-	new->files = init_files_section();
-	if (!new->files)
-		return (print_error_exit(MALLOC_ERROR, data), NULL);
+	new->files = NULL;
 	return (new);
 }
 
+//Counts the number of pipes necessary to execute the prompt
 void	count_pipes_heredocs(t_section *curr_sec, t_data *data)
 {
+	t_files	*current;
+
 	if (!curr_sec)
 		return ;
 	count_pipes_heredocs(curr_sec->inner, data);
 	count_pipes_heredocs(curr_sec->next, data);
-	if (curr_sec->files[HEREDOC])
-		data->pipes_needed += 1;
-	//printf("Pipes needed: %d\n", data->pipes_needed + data->section_id);
+	current = curr_sec->files;
+	while (current)
+	{
+		if (current->file_type == HEREDOC)
+			data->pipes_needed += 1;
+		current = current->next;
+	}
 }
 
 //Manages creation of t_section list with the information of the t_token list

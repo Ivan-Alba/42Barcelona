@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 15:19:05 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/19 15:19:07 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/21 17:04:53 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,18 +46,18 @@ void	print_split(char **splitted)
 //(TEST) Prints the content of each node of a list of type t_section
 void	print_sections(t_section *section)
 {
+	t_files	*current;
+
 	if (!section)
 		return ;
 	printf("-------SECTION %d--------\nCMD: \n", section->id);
 	print_split(section->cmd);
-	printf("infiles:\n");
-	print_split(section->files[IN_F]);
-	printf("outfiles:\n");
-	print_split(section->files[OUT_F]);
-	printf("outfiles_app:\n");
-	print_split(section->files[OUT_AP_F]);
-	printf("heredocs:\n");
-	print_split(section->files[HEREDOC]);
+	current = section->files;
+	while (current)
+	{
+		printf("%s : type: %d\n", current->str, current->file_type);
+		current = current->next;
+	}
 	if (section->outer)
 		printf("outer section: %d - conn_type: %d\n",
 			section->outer->id, section->outer_conn_type);

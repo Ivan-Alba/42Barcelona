@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 16:45:47 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/19 15:53:07 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/21 17:07:48 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,6 @@ void	free_data(t_data *data)
 //Frees the allocated memory of the nodes of a list of type t_section
 void	free_sections(t_section **section)
 {
-	int	i;
-
 	if (!section || !(*section))
 		return ;
 	free_sections(&(*section)->inner);
@@ -88,16 +86,7 @@ void	free_sections(t_section **section)
 	if ((*section)->cmd)
 		free_split(&(*section)->cmd);
 	(*section)->cmd = NULL;
-	if ((*section)->files)
-	{
-		i = -1;
-		while (++i < 4)
-		{
-			if ((*section)->files[i])
-				free_split(&((*section)->files[i]));
-		}
-		free((*section)->files);
-	}
+	ft_files_lstclear(&(*section)->files);
 	free(*section);
 	*section = NULL;
 }

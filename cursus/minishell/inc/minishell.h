@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:34:21 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/19 15:54:09 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/21 16:57:39 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,13 @@ enum	e_token_type
 	struct s_function	*next;
 }	t_function;*/
 
+typedef struct s_files
+{
+	char				*str;
+	enum e_token_type	file_type;
+	struct s_files		*next;
+}	t_files;
+
 typedef struct s_section
 {
 	int					id;
@@ -66,9 +73,10 @@ typedef struct s_section
 	enum e_token_type	inner_conn_type;
 	struct s_section	*outer;
 	enum e_token_type	outer_conn_type;
-	int					*fd_out;
-	int					*fd_in;
-	char				***files;
+	//int				*fd_out;
+	//int				*fd_in;
+	//char				***files;
+	t_files				*files;
 }	t_section;
 
 typedef struct s_token
@@ -145,5 +153,9 @@ char		**add_to_array(char ***current, char *new_value);
 void		print_tokens(t_data *data);
 void		print_split(char **splitted);
 void		print_sections(t_section *section);
+//files_lst_utils
+void		ft_files_lstclear(t_files **lst);
+void		ft_files_add(t_files **lst, t_files *new);
+t_files		*ft_files_new(char *str, enum e_token_type type);
 
 #endif

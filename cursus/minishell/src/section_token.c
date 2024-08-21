@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 13:52:55 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/17 19:09:37 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/21 17:07:29 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,8 @@ void	files_sect(t_section **curr_sec, t_token **curr_tok)
 	if ((*curr_tok)->type == IN_F || (*curr_tok)->type == OUT_F
 		|| (*curr_tok)->type == OUT_AP_F || (*curr_tok)->type == HEREDOC)
 	{
-		(*curr_sec)->files[(*curr_tok)->type] = add_to_array(
-				&((*curr_sec)->files[(*curr_tok)->type]),
-				(*curr_tok)->next->str);
+		ft_files_add(&(*curr_sec)->files, ft_files_new(
+				ft_strdup((*curr_tok)->next->str), (*curr_tok)->type));
 		*curr_tok = (*curr_tok)->next;
 	}
 }
