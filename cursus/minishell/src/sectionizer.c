@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 13:38:59 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/21 17:09:04 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/21 19:12:37 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,18 +61,25 @@ t_section	*new_section(t_section *outer, t_section *previous, t_data *data)
 void	count_pipes_heredocs(t_section *curr_sec, t_data *data)
 {
 	t_files	*current;
+	int		heredoc_found;
 
 	if (!curr_sec)
 		return ;
-	count_pipes_heredocs(curr_sec->inner, data);
-	count_pipes_heredocs(curr_sec->next, data);
+	data->pipes_needed += 1;
+	heredoc_found = 0;
 	current = curr_sec->files;
 	while (current)
 	{
 		if (current->file_type == HEREDOC)
-			data->pipes_needed += 1;
+		{
+			heredoc_found = 1;
+			current->pipe = data->pipes_needed;
+		}
 		current = current->next;
 	}
+	data->pipes_needed += heredoc_found;
+	count_pipes_heredocs(curr_sec->inner, data);
+	count_pipes_heredocs(curr_sec->next, data);
 }
 
 //Manages creation of t_section list with the information of the t_token list

@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 16:41:11 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/21 16:58:23 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/21 18:38:24 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ t_files	*ft_files_new(char *str, enum e_token_type type)
 		return (NULL);
 	new->str = str;
 	new->file_type = type;
+	new->pipe = -1;
 	new->next = NULL;
 	return (new);
 }

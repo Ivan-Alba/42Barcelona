@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 16:45:47 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/21 17:07:48 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/21 19:22:29 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ void	clean_prompt_data(t_data *data)
 		data->split_info = NULL;
 	}
 	data->section_id = 0;
-	data->pipes_needed = 0;
+	data->pipes_needed = -1;
 	ft_token_lstclear(&data->tokens);
 	free_sections(&data->sections);
 	if (data->pipes)
-		free(data->pipes);
+		free_close_pipes(data);
 }
 
 //Receive a char** and free all of its contents
@@ -72,7 +72,7 @@ void	free_data(t_data *data)
 			free_sections(&data->sections);
 		free(data);
 		if (data->pipes)
-			free(data->pipes);
+			free_close_pipes(data);
 	}
 }
 
@@ -89,4 +89,23 @@ void	free_sections(t_section **section)
 	ft_files_lstclear(&(*section)->files);
 	free(*section);
 	*section = NULL;
+}
+
+//Free and closes all pipes
+void	free_close_pipes(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	if (data->pipes)
+	{
+		while (i < data->pipes_needed)
+		{
+			close(data->pipes[i * 2]);
+			close(data->pipes[i * 2 + 1]);
+			i++;
+		}
+		free(data->pipes);
+		data->pipes = NULL;
+	}
 }

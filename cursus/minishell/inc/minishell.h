@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:34:21 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/21 16:57:39 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/21 19:20:01 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct s_files
 {
 	char				*str;
 	enum e_token_type	file_type;
+	int					pipe;
 	struct s_files		*next;
 }	t_files;
 
@@ -145,6 +146,7 @@ void		clean_prompt_data(t_data *data);
 void		free_split(char ***splitted);
 void		free_data(t_data *data);
 void		free_sections(t_section **sections);
+void		free_close_pipes(t_data *data);
 //utils
 void		print_error_exit(char *msg, t_data *data);
 void		print_error(char *msg, char *token);

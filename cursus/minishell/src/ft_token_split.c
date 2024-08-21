@@ -6,12 +6,13 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:28:04 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/08 17:02:36 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/21 17:17:59 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+//Count up the amount of char* that our char** will have
 void	count_words(t_data *data, char *separators)
 {
 	int	i;
@@ -41,6 +42,7 @@ void	count_words(t_data *data, char *separators)
 		data->split_info->words++;
 }
 
+//Insert in our variable char** the char* of size len
 void	insert_substr(char *str, int len, int word_idx, t_data *data)
 {
 	int	i;
@@ -60,6 +62,7 @@ void	insert_substr(char *str, int len, int word_idx, t_data *data)
 	data->split_info->splitted_prompt[word_idx][i] = '\0';
 }
 
+//Manages the creation of char* between separators
 void	create_substr(char *separators, t_data *data)
 {
 	int	i;
@@ -89,6 +92,7 @@ void	create_substr(char *separators, t_data *data)
 	data->split_info->splitted_prompt[++(data->split_info->word_idx)] = NULL;
 }
 
+//Initializes the required data of our s_split structure
 void	init_split_info_data(t_data *data)
 {
 	data->split_info = malloc(sizeof(t_split));
@@ -100,6 +104,7 @@ void	init_split_info_data(t_data *data)
 	data->split_info->splitted_prompt = NULL;
 }
 
+//Creates a char** with the strings resulting from splitting the original string
 void	ft_token_split(char *separators, t_data *data)
 {
 	init_split_info_data(data);
