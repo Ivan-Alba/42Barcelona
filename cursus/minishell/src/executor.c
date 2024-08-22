@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 15:19:24 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/22 19:16:52 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/22 20:25:29 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,9 @@ void	executor(t_data *data)
 	if (!data->pipes)
 		print_error_exit(MALLOC_ERROR, data);
 	generate_pipes(data);
-	//HEREDOCS
+	//TODO CREAMOS ARCHIVOS TEMPORALES HEREDOCS
 	manage_heredocs(data);
-
-	//TODO OPEN FDS (NOT && or ||)
+	//TODO SET FD_IN Y FD_OUT DE CADA SECCION (NOT && or ||)
 
 	//TODO EXECUTE FORK RECURSIVE INNER->NEXT 
 }

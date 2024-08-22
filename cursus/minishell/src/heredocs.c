@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 18:55:08 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/22 19:16:03 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/22 20:22:26 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,11 @@ void	read_heredoc(t_data *data, t_files *file)
 	char	*line;
 	int		std_out_fd;
 
+	//TODO cambiar a crear archivo temporal
 	reset_pipe(data, file);
 	std_out_fd = dup(STDOUT_FILENO);
-	dup2(data->pipes[(file->pipe * 2) + 1], STDOUT_FILENO);
+	if (dup2(data->pipes[(file->pipe * 2) + 1], STDOUT_FILENO) == -1)
+		print_error_exit(DUP_ERROR, data);
 	line = get_next_line(0);
 	while (line && ft_strncmp(file->str, line,
 			ft_strlen(file->str)) != 0)
@@ -58,8 +60,7 @@ void	read_heredoc(t_data *data, t_files *file)
 		line = NULL;
 		line = get_next_line(0);
 	}
-	//TODO Test print
-	write(2, "cierro heredoc\n", 15);
+	write(2, "cierro heredoc\n", 15); //TODO test print
 	if (line)
 		free(line);
 	close(STDOUT_FILENO);
@@ -95,7 +96,7 @@ void	manage_heredocs(t_data *data)
 	current_sec = data->sections;
 	while (current_sec)
 	{
-		printf("Section: %d\n", current_sec->id);
+		printf("Section: %d\n", current_sec->id); //TODO test print
 		current_file = current_sec->files;
 		while (current_file)
 		{

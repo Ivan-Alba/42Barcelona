@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:34:21 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/22 18:56:19 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/22 20:22:57 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define NO_ARGS_REQUIRED "Error: No args required"
 # define UNEXPECTED_TOKEN "Syntax error near unexpected token"
 # define PIPES_ERROR "Error creating pipes"
+# define DUP_ERROR "Error creating fd copy using dup2"
 
 enum	e_token_type
 {
@@ -53,6 +54,7 @@ typedef struct s_files
 	char				*str;
 	enum e_token_type	file_type;
 	int					pipe;
+	int					fd;
 	struct s_files		*next;
 }	t_files;
 
@@ -67,6 +69,8 @@ typedef struct s_section
 	enum e_token_type	inner_conn_type;
 	struct s_section	*outer;
 	enum e_token_type	outer_conn_type;
+	int					fd_in;
+	int					fd_out;
 	t_files				*files;
 }	t_section;
 
@@ -133,6 +137,7 @@ void		conn_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
 void		executor(t_data *data);
 //heredocs
 void		manage_heredocs(t_data *data);
+t_section	*get_next_section(t_section *current, int last_section_id);
 //expand_var
 int			expand_var(t_data *data);
 //free_utils

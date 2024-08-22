@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 13:38:59 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/21 19:12:37 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/22 20:13:11 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ t_section	*new_section(t_section *outer, t_section *previous, t_data *data)
 	new->inner = NULL;
 	new->inner_conn_type = -1;
 	new->outer_conn_type = -1;
+	new->fd_in = -1;
+	new->fd_out = -1;
 	new->files = NULL;
 	return (new);
 }
