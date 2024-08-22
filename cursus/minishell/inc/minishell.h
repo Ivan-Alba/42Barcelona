@@ -29,6 +29,7 @@
 # define NO_ARGS_REQUIRED "Error: No args required"
 # define UNEXPECTED_TOKEN "Syntax error near unexpected token"
 # define PIPES_ERROR "Error creating pipes"
+# define OPEN_ERROR "Error opening file"
 # define DUP_ERROR "Error creating fd copy using dup2"
 
 enum	e_token_type
@@ -55,6 +56,7 @@ typedef struct s_files
 	enum e_token_type	file_type;
 	int					pipe;
 	int					fd;
+	char				*hrdc_file_name;
 	struct s_files		*next;
 }	t_files;
 
@@ -91,16 +93,17 @@ typedef struct s_split
 
 typedef struct s_data
 {
-	char		**env;
-	char		*prompt;
-	char		*prompt_init;
-	t_split		*split_info;
-	t_token		*tokens;
-	int			section_id;
-	t_section	*sections;
-	int			pipes_needed;
-	int			*pipes;
-	int			last_exit_status;
+	char			**env;
+	char			*prompt;
+	char			*prompt_init;
+	t_split			*split_info;
+	t_token			*tokens;
+	int				section_id;
+	t_section		*sections;
+	int				pipes_needed;
+	int				*pipes;
+	int				heredoc_file_n;
+	int				last_exit_status;
 }	t_data;
 
 //check_syntax
@@ -137,6 +140,7 @@ void		conn_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
 void		executor(t_data *data);
 //heredocs
 void		manage_heredocs(t_data *data);
+void		remove_heredoc_files(t_section **section);
 t_section	*get_next_section(t_section *current, int last_section_id);
 //expand_var
 int			expand_var(t_data *data);

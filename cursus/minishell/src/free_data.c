@@ -27,6 +27,7 @@ void	clean_prompt_data(t_data *data)
 		data->split_info = NULL;
 	}
 	data->section_id = 0;
+	data->heredoc_file_n = 0;
 	data->pipes_needed = -1;
 	ft_token_lstclear(&data->tokens);
 	free_sections(&data->sections);
@@ -86,6 +87,8 @@ void	free_sections(t_section **section)
 	if ((*section)->cmd)
 		free_split(&(*section)->cmd);
 	(*section)->cmd = NULL;
+	//TODO REMOVE HEREDOC FILES
+	remove_heredoc_files(&(*section));
 	ft_files_lstclear(&(*section)->files);
 	free(*section);
 	*section = NULL;

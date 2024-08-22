@@ -27,7 +27,7 @@ void	print_pipe(int fd)
 }
 
 //Deletes the contents of a pipe, closes it and reopens it again
-void	reset_pipe(t_data *data, t_files *file)
+/*void	reset_pipe(t_data *data, t_files *file)
 {
 	int		bytes_read;
 	char	buffer[1024];
@@ -38,33 +38,59 @@ void	reset_pipe(t_data *data, t_files *file)
 		bytes_read = read(data->pipes[file->pipe * 2], buffer, sizeof(buffer));
 	close(data->pipes[file->pipe * 2]);
 	pipe(data->pipes + (2 * file->pipe));
+}*/
+
+//Removes temporary files created by heredocs
+void	remove_heredoc_files(t_section **section)
+{
+	t_files	*current_file;
+
+	current_file = (*section)->files;
+	while (current_file)
+	{
+		if (current_file->file_type == HEREDOC
+			&& current_file->hrdc_file_name)
+		{
+			//TODO test prints
+			if (unlink(current_file->hrdc_file_name) != -1)
+				printf("Heredoc file \"%s\" deleted\n",
+					current_file->hrdc_file_name);
+			else
+				printf("Error deleting %s file\n",
+					current_file->hrdc_file_name);
+		}
+		current_file = current_file->next;
+	}
 }
 
 //Function that manages the reading of data when using a limiter
 void	read_heredoc(t_data *data, t_files *file)
 {
-	char	*line;
-	int		std_out_fd;
+	char		*line;
+	char		*suffix;
 
-	//TODO cambiar a crear archivo temporal
-	reset_pipe(data, file);
-	std_out_fd = dup(STDOUT_FILENO);
-	if (dup2(data->pipes[(file->pipe * 2) + 1], STDOUT_FILENO) == -1)
-		print_error_exit(DUP_ERROR, data);
+	suffix = ft_itoa(data->heredoc_file_n++);
+	if (!suffix)
+		print_error_exit(MALLOC_ERROR, data);
+	file->hrdc_file_name = ft_strcat(".hrdc_", suffix);
+	free(suffix);
+	if (!(file->hrdc_file_name))
+		print_error_exit(MALLOC_ERROR, data);
+	file->fd = open(file->hrdc_file_name, O_CREAT | O_RDWR, 0666);
+	if (file->fd == -1)
+		print_error_exit(OPEN_ERROR, data);
 	line = get_next_line(0);
-	while (line && ft_strncmp(file->str, line,
-			ft_strlen(file->str)) != 0)
+	while (line && ft_strncmp(file->str, line, ft_strlen(file->str)) != 0)
 	{
-		write(1, line, ft_strlen(line));
+		write(file->fd, line, ft_strlen(line));
 		free(line);
 		line = NULL;
 		line = get_next_line(0);
 	}
-	write(2, "cierro heredoc\n", 15); //TODO test print
+	write(1, "cierro heredoc\n", 15); //TODO test print
 	if (line)
 		free(line);
-	close(STDOUT_FILENO);
-	dup2(std_out_fd, STDOUT_FILENO);
+	close(file->fd);
 }
 
 //Receives a node from a list t_section and returns the following node

@@ -21,6 +21,8 @@ void	ft_files_lstclear(t_files **lst)
 	if ((*lst)->str)
 		free((*lst)->str);
 	(*lst)->str = NULL;
+	if ((*lst)->hrdc_file_name)
+		free((*lst)->hrdc_file_name);
 	free(*lst);
 	*lst = NULL;
 }
@@ -54,6 +56,7 @@ t_files	*ft_files_new(char *str, enum e_token_type type)
 		new->str = str;
 	new->pipe = -1;
 	new->fd = -1;
+	new->hrdc_file_name = NULL;
 	new->next = NULL;
 	return (new);
 }
