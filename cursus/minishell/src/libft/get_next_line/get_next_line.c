@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:39:30 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/05/14 20:25:49 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/22 17:09:26 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*search_for_next_line(char **saved)
 }
 
 //Funcion que concatena lo almacenado en saved con la nueva lectura de buffer
-char	*ft_strcat(char **saved, char *buff, int buff_size)
+char	*ft_strncat(char **saved, char *buff, int buff_size)
 {
 	char	*res;
 	int		i;
@@ -110,7 +110,7 @@ char	*read_next_line(char **saved, int fd)
 		}
 		if (readed > 0)
 		{
-			*saved = ft_strcat(&*saved, buffer, readed);
+			*saved = ft_strncat(&*saved, buffer, readed);
 			if (!*saved)
 				return (free_out(&buffer));
 		}

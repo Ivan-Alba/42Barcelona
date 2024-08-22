@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:34:21 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/21 19:20:01 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/22 18:56:19 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,6 @@ enum	e_token_type
 	FORBB
 };
 
-/*typedef struct s_function
-{
-	enum e_token_type	type;
-	void				*function_related;
-	struct s_function	*next;
-}	t_function;*/
-
 typedef struct s_files
 {
 	char				*str;
@@ -74,9 +67,6 @@ typedef struct s_section
 	enum e_token_type	inner_conn_type;
 	struct s_section	*outer;
 	enum e_token_type	outer_conn_type;
-	//int				*fd_out;
-	//int				*fd_in;
-	//char				***files;
 	t_files				*files;
 }	t_section;
 
@@ -139,6 +129,10 @@ void		brack_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
 void		files_sect(t_section **curr_sec, t_token **curr_tok);
 void		word_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
 void		conn_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
+//executor
+void		executor(t_data *data);
+//heredocs
+void		manage_heredocs(t_data *data);
 //expand_var
 int			expand_var(t_data *data);
 //free_utils

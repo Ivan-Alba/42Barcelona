@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:30:27 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/21 19:06:50 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/22 18:29:04 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ void	read_prompt(t_data *data)
 	//TODO TEST PRINT
 	print_sections(data->sections);
 	printf("\nPipes needed: %d\n", data->pipes_needed);
+	//TODO EXECUTE
+	executor(data);
 }
 
 //Main function
@@ -89,7 +91,6 @@ int	main(int argc, char **argv, char **env)
 		{
 			add_history(data->prompt);
 			read_prompt(data);
-			//TODO EXECUTE
 			clean_prompt_data(data);
 		}
 		else if (!data->prompt)
