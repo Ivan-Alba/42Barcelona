@@ -29,6 +29,19 @@ void	print_error_exit(char *msg, t_data *data)
 	exit(1);
 }
 
+//Returns a char* from a char
+char	*string_from_char(char	c)
+{
+	char	*result;
+
+	result = malloc(sizeof(char) * (1 + 1));
+	if (!result)
+		return (NULL);
+	result[0] = c;
+	result[1] = '\0';
+	return (result);
+}
+
 //Add to an existing char** a new value, freeing the memory and re-allocating it
 char	**add_to_array(char	***current, char *new_value)
 {

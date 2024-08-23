@@ -144,7 +144,7 @@ void		manage_heredocs(t_data *data);
 void		remove_heredoc_files(t_section **section);
 t_section	*get_next_section(t_section *current, int last_section_id);
 //expand_var
-int			expand_var(t_data *data);
+int			expand_vars(t_section *section, t_data *data);
 //free_utils
 void		clean_prompt_data(t_data *data);
 void		free_split(char ***splitted);

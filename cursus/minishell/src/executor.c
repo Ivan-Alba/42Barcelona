@@ -33,6 +33,21 @@ void	generate_pipes(t_data *data)
 	}
 }
 
+
+void	execute(t_data *data)
+{
+	t_section	*curr_sect;
+
+	curr_sect = data->sections;
+	while (curr_sec)
+	{
+		expand_vars(curr_sec, t_data *data);
+		if(curr_sec->inner && curr_sec->inner_conn_type != AND
+			&& curr_sec->inner_conn_type != OR)
+			curr_sec = get_next_section(curr_sec, data->section_id - 1);
+	}
+}
+
 //Manages the opening of fd's, creation of processes and execution of commands
 void	executor(t_data *data)
 {
@@ -41,6 +56,7 @@ void	executor(t_data *data)
 	//TODO CREAMOS ARCHIVOS TEMPORALES HEREDOCS
 	manage_heredocs(data);	
 	//TODO EXECUTE FORK RECURSIVE INNER->NEXT
+	execute(data);
 		//TODO SET FD_IN Y FD_OUT DE CADA SECCION (NOT && or ||)
 		//TODO EXPAND VARS
 }

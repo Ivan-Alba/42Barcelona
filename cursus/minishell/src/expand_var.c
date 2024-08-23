@@ -31,7 +31,7 @@ int	check_var_format(t_data *data, int i)
 }
 
 //Searches for var on environment variable and stores it
-char	*get_var(t_data *data, char *var)
+char	*get_var_value(t_data *data, char *var)
 {
 	int		i;
 	int		found;
@@ -87,41 +87,93 @@ char	*get_var(t_data *data, char *var)
                 data->path = NULL;
 }*/
 
-int	expand(t_data *data, int i)
+int	add_new_var(char ***vars, int *i, char *current)
 {
-	char	*value;
+	int		len;
+	char	*aux;
 
-	if (check_var_format(data, i))
-		return (1);
-	value = get_var(data, &(data->split_info->splitted_prompt[i][1]));
-	free(data->split_info->splitted_prompt[i]);
-	data->split_info->splitted_prompt[i] = value;
-	return (0);
+	len = 1;
+	(*i)++;
+	while (current[(*i)] != '$' && current[(*i)] != '\0')
+	{
+		len++;
+		i++;
+	}
+	aux = ft_strcut(current[i - len], len);
+	add_to_array(vars, aux);
+	free(aux);
+	(*i)--;
 }
 
-int	expand_var(t_data *data)
+char	*expand(char **vars, t_data *data)
 {
-	int		single_quote;
-	int		double_quote;
 	int		i;
-	char	*current;
+	char	*value;
+	char	*result;
 
-	i = 0;
-	single_quote = 0;
-	double_quote = 0;
-	current = data->split_info->splitted_prompt[i];
-	while (current)
+	i = -1;
+	value = NULL;
+	result = NULL;
+	while (vars[++i])
 	{
-		if (current[0] == '\'' && double_quote % 2 == 0)
-			single_quote++;
-		else if (current[0] == '"' && single_quote % 2 == 0)
-			double_quote++;
-		else if (current[0] == '$' && single_quote % 2 == 0)
+		if (vars[i][0] == '$')
 		{
-			if (expand(data, i))
-				return (print_error(INVALID_VAR_NAME, NULL), 1);
+			value = get_var_value(&vars[i][1], data);
+			if (!value)
+				print_error_exit(MALLOC_ERROR, data);
+			result = ft_strcat(result, value);
+			free(value);
 		}
-		current = data->split_info->splitted_prompt[++i];
+		else
+			result = ft_strcat(result, vars[i]);
+		if (!result)
+			print_error_exit(MALLOC_ERROR, data);
 	}
-	return (0);
+}
+
+char	*trim_env_vars(char *current, t_data *data)
+{
+	char	**vars;
+	int		i;
+	char	*aux;
+
+	//TODO add vars to data for frees
+	i = 0;
+	while (current[++i])
+	{
+		if (current[i] == '$' && current[i + 1] == '$' && i++ > 0)
+			add_to_array(&vars, "67228");
+		else if (current[i] == '$')
+			add_new_var(&vars, &i, current);
+		else
+		{
+			aux = string_from_char(current[i]);
+			if (!aux)
+				print_error_exit(MALLOC_ERROR, data);
+			add_to_array(&vars, aux);
+			free(aux);
+		}
+		if (!vars)
+			print_error_exit(MALLOC_ERROR, data);
+	}
+	//TODO test print
+	print_split(vars);
+	free(current);
+	return (expand(vars, data));
+}
+
+int	expand_vars(t_section *section, t_data *data)
+{
+	int	i;
+
+	if (section->cmd)
+	{
+		i = 0;
+		while (section->cmd[i])
+		{
+			if (section->cmd[i][0] == '"')
+				section->cmd[i] = trim_env_vars(current, data);
+			i++;
+		}
+	}
 }
