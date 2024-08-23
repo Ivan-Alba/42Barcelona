@@ -16,18 +16,28 @@
 char	**create_command(t_token **first, t_data *data)
 {
 	char	**command;
-	t_token	*current;
+	char	*word;
 
-	current = *first;
 	command = NULL;
-	while (current && current->type == WORD)
+	while (*first && (*first)->type == WORD)
 	{
-		command = add_to_array(&command, current->str);
-		if (command == NULL)
+		if ((*first)->can_expand && ft_strchr((*first)->str, '$')
+			&& (ft_strchr((*first)->str, '$'))[1] != '\0')
+		{
+			word = ft_strcat("\"", (*first)->str);
+			if (!word)
+				print_error_exit(MALLOC_ERROR, data);
+			command = add_to_array(&command, word);
+			free(word);
+		}
+		else
+			command = add_to_array(&command, (*first)->str);
+		if (!command)
 			return (print_error_exit(MALLOC_ERROR, data), NULL);
-		if (current->next && current->next->type == WORD)
+		if ((*first)->next && (*first)->next->type == WORD)
 			*first = (*first)->next;
-		current = current->next;
+		else
+			break ;
 	}
 	return (command);
 }
@@ -102,7 +112,7 @@ void	sectionizer(t_data *data)
 			brack_sect(&curr_sec, &curr_tok, data);
 		else if (curr_tok->type == IN_F || curr_tok->type == OUT_F
 			|| curr_tok->type == OUT_AP_F || curr_tok->type == HEREDOC)
-			files_sect(&curr_sec, &curr_tok);
+			files_sect(&curr_sec, &curr_tok, data);
 		else if (curr_tok->type == WORD)
 			word_sect(&curr_sec, &curr_tok, data);
 		else if (curr_tok->type == PIPE || curr_tok->type == AND

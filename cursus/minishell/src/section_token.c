@@ -29,13 +29,28 @@ void	brack_sect(t_section **curr_sec, t_token **curr_tok, t_data *data)
 }
 
 //Manages the storage of incoming and outgoing files within the section
-void	files_sect(t_section **curr_sec, t_token **curr_tok)
+void	files_sect(t_section **curr_sec, t_token **curr_tok, t_data *data)
 {
+	char	*file_name;
+
+	file_name = NULL;
 	if ((*curr_tok)->type == IN_F || (*curr_tok)->type == OUT_F
 		|| (*curr_tok)->type == OUT_AP_F || (*curr_tok)->type == HEREDOC)
 	{
-		ft_files_add(&(*curr_sec)->files, ft_files_new(
-				ft_strdup((*curr_tok)->next->str), (*curr_tok)->type));
+		if ((*curr_tok)->type != HEREDOC && (*curr_tok)->next->can_expand
+			&& ft_strchr((*curr_tok)->next->str, '$')
+			&& (ft_strchr((*curr_tok)->next->str, '$'))[1] != '\0')
+		{
+			file_name = ft_strcat("\"", (*curr_tok)->next->str);
+			if (!file_name)
+				print_error_exit(MALLOC_ERROR, data);
+			ft_files_add(&(*curr_sec)->files,
+				ft_files_new(file_name, (*curr_tok)->type));
+		}
+		else
+			ft_files_add(&(*curr_sec)->files,
+				ft_files_new(
+					ft_strdup((*curr_tok)->next->str), (*curr_tok)->type));
 		*curr_tok = (*curr_tok)->next;
 	}
 }
@@ -43,10 +58,26 @@ void	files_sect(t_section **curr_sec, t_token **curr_tok)
 //Creates the command based on token of type WORD and stores it in the section
 void	word_sect(t_section **curr_sec, t_token **curr_tok, t_data *data)
 {
+	char	*word;
+
+	word = NULL;
 	if ((*curr_sec)->cmd == NULL)
 		(*curr_sec)->cmd = create_command(curr_tok, data);
 	else
-		(*curr_sec)->cmd = add_to_array(&(*curr_sec)->cmd, (*curr_tok)->str);
+	{
+		if ((*curr_tok)->can_expand && ft_strchr((*curr_tok)->str, '$')
+			&& (ft_strchr((*curr_tok)->str, '$'))[1] != '\0')
+		{
+			word = ft_strcat("\"", (*curr_tok)->str);
+			if (!word)
+				print_error_exit(MALLOC_ERROR, data);
+			(*curr_sec)->cmd = add_to_array(&(*curr_sec)->cmd, word);
+			free(word);
+		}
+		else
+			(*curr_sec)->cmd = add_to_array(
+					&(*curr_sec)->cmd, (*curr_tok)->str);
+	}
 }
 
 //Manages the creation of sections and connections when a separator is found

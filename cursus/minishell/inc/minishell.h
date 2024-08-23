@@ -134,7 +134,7 @@ t_section	*new_section(t_section *outer, t_section *previous, t_data *data);
 char		**create_command(t_token **first, t_data *data);
 //section_token
 void		brack_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
-void		files_sect(t_section **curr_sec, t_token **curr_tok);
+void		files_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
 void		word_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
 void		conn_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
 //executor
