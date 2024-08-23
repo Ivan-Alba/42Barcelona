@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:28:42 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/17 19:05:40 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/23 17:42:04 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	print_error_exit(char *msg, t_data *data)
 }
 
 //Returns a char* from a char
-char	*string_from_char(char	c)
+char	*string_from_char(char c)
 {
 	char	*result;
 

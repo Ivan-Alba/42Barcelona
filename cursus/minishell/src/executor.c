@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 15:19:24 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/22 20:25:29 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/23 19:58:46 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,20 @@ void	generate_pipes(t_data *data)
 	}
 }
 
-
 void	execute(t_data *data)
 {
-	t_section	*curr_sect;
+	t_section	*curr_sec;
 
-	curr_sect = data->sections;
+	printf("entro aqui\n");
+	curr_sec = data->sections;
 	while (curr_sec)
 	{
-		expand_vars(curr_sec, t_data *data);
+		expand_vars(curr_sec, data);
 		if(curr_sec->inner && curr_sec->inner_conn_type != AND
 			&& curr_sec->inner_conn_type != OR)
 			curr_sec = get_next_section(curr_sec, data->section_id - 1);
+		else
+			break ;
 	}
 }
 
@@ -56,7 +58,7 @@ void	executor(t_data *data)
 	//TODO CREAMOS ARCHIVOS TEMPORALES HEREDOCS
 	manage_heredocs(data);	
 	//TODO EXECUTE FORK RECURSIVE INNER->NEXT
-	execute(data);
+	//execute(data);
 		//TODO SET FD_IN Y FD_OUT DE CADA SECCION (NOT && or ||)
 		//TODO EXPAND VARS
 }

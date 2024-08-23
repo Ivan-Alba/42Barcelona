@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:34:21 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/22 20:22:57 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/23 17:44:01 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ void		manage_heredocs(t_data *data);
 void		remove_heredoc_files(t_section **section);
 t_section	*get_next_section(t_section *current, int last_section_id);
 //expand_var
-int			expand_vars(t_section *section, t_data *data);
+void		expand_vars(t_section *section, t_data *data);
 //free_utils
 void		clean_prompt_data(t_data *data);
 void		free_split(char ***splitted);
@@ -154,6 +154,7 @@ void		free_close_pipes(t_data *data);
 //utils
 void		print_error_exit(char *msg, t_data *data);
 void		print_error(char *msg, char *token);
+char		*string_from_char(char c);
 char		**add_to_array(char ***current, char *new_value);
 //test_utils
 void		print_tokens(t_data *data);

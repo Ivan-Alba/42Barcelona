@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 17:05:50 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/14 15:12:14 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/23 17:58:19 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	check_var_format(t_data *data, int i)
 }
 
 //Searches for var on environment variable and stores it
-char	*get_var_value(t_data *data, char *var)
+char	*get_var_value(char *var, t_data *data)
 {
 	int		i;
 	int		found;
@@ -53,9 +53,7 @@ char	*get_var_value(t_data *data, char *var)
 	}
 	free(var_equal);
 	if (found)
-	{
 		return (ft_strdup(ft_strchr(data->env[i], '=') + 1));
-	}
 	else
 		return (ft_strdup(""));
 }
@@ -87,24 +85,6 @@ char	*get_var_value(t_data *data, char *var)
                 data->path = NULL;
 }*/
 
-int	add_new_var(char ***vars, int *i, char *current)
-{
-	int		len;
-	char	*aux;
-
-	len = 1;
-	(*i)++;
-	while (current[(*i)] != '$' && current[(*i)] != '\0')
-	{
-		len++;
-		i++;
-	}
-	aux = ft_strcut(current[i - len], len);
-	add_to_array(vars, aux);
-	free(aux);
-	(*i)--;
-}
-
 char	*expand(char **vars, t_data *data)
 {
 	int		i;
@@ -129,6 +109,27 @@ char	*expand(char **vars, t_data *data)
 		if (!result)
 			print_error_exit(MALLOC_ERROR, data);
 	}
+	return (result);
+}
+
+void	add_new_var(char **vars, int *i, char *current)
+{
+	int		len;
+	char	*aux;
+
+	len = 1;
+	(*i)++;
+	printf("current add_new_var: %s\n", &current[*i]);
+	while (current[(*i)] != '$' && current[(*i)] != '\0')
+	{
+		len++;
+		(*i)++;
+	}
+	aux = ft_strcut(&(current[(*i) - len]), len);
+	printf("aux: %s\n", aux);
+	add_to_array(&vars, aux);
+	free(aux);
+	(*i)--;
 }
 
 char	*trim_env_vars(char *current, t_data *data)
@@ -138,13 +139,15 @@ char	*trim_env_vars(char *current, t_data *data)
 	char	*aux;
 
 	//TODO add vars to data for frees
+	printf("current: %s\n", current);
 	i = 0;
+	aux = NULL;
 	while (current[++i])
 	{
 		if (current[i] == '$' && current[i + 1] == '$' && i++ > 0)
 			add_to_array(&vars, "67228");
 		else if (current[i] == '$')
-			add_new_var(&vars, &i, current);
+			add_new_var(vars, &i, current);
 		else
 		{
 			aux = string_from_char(current[i]);
@@ -162,7 +165,7 @@ char	*trim_env_vars(char *current, t_data *data)
 	return (expand(vars, data));
 }
 
-int	expand_vars(t_section *section, t_data *data)
+void	expand_vars(t_section *section, t_data *data)
 {
 	int	i;
 
@@ -172,7 +175,7 @@ int	expand_vars(t_section *section, t_data *data)
 		while (section->cmd[i])
 		{
 			if (section->cmd[i][0] == '"')
-				section->cmd[i] = trim_env_vars(current, data);
+				section->cmd[i] = trim_env_vars(section->cmd[i], data);
 			i++;
 		}
 	}
