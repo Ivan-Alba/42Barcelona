@@ -17,8 +17,15 @@ void	generate_pipes(t_data *data)
 {
 	int	i;
 
+	if (data->section_id - 1 > 0)
+	{
+		data->pipes = malloc((data->section_id - 1) * 2 * sizeof(int));
+		if (!data->pipes)
+			print_error_exit(MALLOC_ERROR, data);
+	}
+
 	i = 0;
-	while (i < data->pipes_needed)
+	while (i < data->section_id -1)
 	{
 		if (pipe(data->pipes + 2 * i) == -1)
 			print_error_exit(PIPES_ERROR, data);
@@ -30,13 +37,10 @@ void	generate_pipes(t_data *data)
 void	executor(t_data *data)
 {
 	//GENERATE PIPES
-	data->pipes = malloc(data->pipes_needed * 2 * sizeof(int));
-	if (!data->pipes)
-		print_error_exit(MALLOC_ERROR, data);
 	generate_pipes(data);
 	//TODO CREAMOS ARCHIVOS TEMPORALES HEREDOCS
-	manage_heredocs(data);
-	//TODO SET FD_IN Y FD_OUT DE CADA SECCION (NOT && or ||)
-
-	//TODO EXECUTE FORK RECURSIVE INNER->NEXT 
+	manage_heredocs(data);	
+	//TODO EXECUTE FORK RECURSIVE INNER->NEXT
+		//TODO SET FD_IN Y FD_OUT DE CADA SECCION (NOT && or ||)
+		//TODO EXPAND VARS
 }

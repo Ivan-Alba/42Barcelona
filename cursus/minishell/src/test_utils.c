@@ -56,8 +56,7 @@ void	print_sections(t_section *section)
 	current = section->files;
 	while (current)
 	{
-		printf("%s : type: %d : pipe: %d\n", current->str, current->file_type,
-			current->pipe);
+		printf("%s type: %d\n", current->str, current->file_type);
 		current = current->next;
 	}
 	if (section->outer)
@@ -71,4 +70,18 @@ void	print_sections(t_section *section)
 			section->next->id, section->next_conn_type);
 	print_sections(section->inner);
 	print_sections(section->next);
+}
+
+//(TEST) Prints the content of a pipe
+void	print_pipe(int fd)
+{
+	int		bytes_read;
+	char	buffer[1024];
+
+	bytes_read = read(fd, buffer, sizeof(buffer) - 1);
+	if (bytes_read >= 0)
+	{
+		buffer[bytes_read] = '\0';
+		write(STDOUT_FILENO, buffer, bytes_read);
+	}
 }

@@ -43,7 +43,10 @@ void	files_sect(t_section **curr_sec, t_token **curr_tok)
 //Creates the command based on token of type WORD and stores it in the section
 void	word_sect(t_section **curr_sec, t_token **curr_tok, t_data *data)
 {
-	(*curr_sec)->cmd = create_command(curr_tok, data);
+	if ((*curr_sec)->cmd == NULL)
+		(*curr_sec)->cmd = create_command(curr_tok, data);
+	else
+		(*curr_sec)->cmd = add_to_array(&(*curr_sec)->cmd, (*curr_tok)->str);
 }
 
 //Manages the creation of sections and connections when a separator is found

@@ -15,7 +15,7 @@
 //Checks the tokens allowed after a token of type AND or OR
 int	check_and_or(t_token *current)
 {
-	if (current->type == AMPER || current->type == FORBB)
+	if (current->type == AMPER || current->type == FORB)
 	{
 		print_error(UNEXPECTED_TOKEN, current->str);
 		return (1);

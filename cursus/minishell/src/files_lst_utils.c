@@ -54,7 +54,6 @@ t_files	*ft_files_new(char *str, enum e_token_type type)
 	}
 	else
 		new->str = str;
-	new->pipe = -1;
 	new->fd = -1;
 	new->hrdc_file_name = NULL;
 	new->next = NULL;

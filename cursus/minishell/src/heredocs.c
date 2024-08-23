@@ -12,20 +12,6 @@
 
 #include "../inc/minishell.h"
 
-//(TEST) Prints the content of a pipe
-void	print_pipe(int fd)
-{
-	int		bytes_read;
-	char	buffer[1024];
-
-	bytes_read = read(fd, buffer, sizeof(buffer) - 1);
-	if (bytes_read >= 0)
-	{
-		buffer[bytes_read] = '\0';
-		write(STDOUT_FILENO, buffer, bytes_read);
-	}
-}
-
 //Deletes the contents of a pipe, closes it and reopens it again
 /*void	reset_pipe(t_data *data, t_files *file)
 {

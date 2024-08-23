@@ -26,13 +26,12 @@ void	clean_prompt_data(t_data *data)
 		free(data->split_info);
 		data->split_info = NULL;
 	}
-	data->section_id = 0;
-	data->heredoc_file_n = 0;
-	data->pipes_needed = -1;
-	ft_token_lstclear(&data->tokens);
-	free_sections(&data->sections);
 	if (data->pipes)
 		free_close_pipes(data);
+	data->section_id = 0;
+	data->heredoc_file_n = 0;
+	ft_token_lstclear(&data->tokens);
+	free_sections(&data->sections);
 }
 
 //Receive a char** and free all of its contents
@@ -102,7 +101,7 @@ void	free_close_pipes(t_data *data)
 	i = 0;
 	if (data->pipes)
 	{
-		while (i < data->pipes_needed)
+		while (i < data->section_id - 1)
 		{
 			close(data->pipes[i * 2]);
 			close(data->pipes[i * 2 + 1]);

@@ -24,7 +24,6 @@ void	init_data(t_data **data, char **env)
 	(*data)->split_info = NULL;
 	(*data)->section_id = 0;
 	(*data)->sections = NULL;
-	(*data)->pipes_needed = -1;
 	(*data)->pipes = NULL;
 	(*data)->heredoc_file_n = 0;
 	(*data)->prompt_init = NULL;
@@ -70,7 +69,7 @@ void	read_prompt(t_data *data)
 	//data->pipes_needed += (data->section_id - 1);
 	//TODO TEST PRINT
 	print_sections(data->sections);
-	printf("\nPipes needed: %d\n", data->pipes_needed);
+	printf("\nPipes needed: %d\n", data->section_id - 1);
 	//TODO EXECUTE
 	executor(data);
 }

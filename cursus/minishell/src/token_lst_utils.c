@@ -36,7 +36,7 @@ t_token	*ft_token_last(t_token *lst)
 }
 
 //Create a new node of type t_token and returns it
-t_token	*ft_token_new(char *str, enum e_token_type type)
+t_token	*ft_token_new(char *str, enum e_token_type type, int can_expand)
 {
 	t_token	*new;
 
@@ -45,6 +45,7 @@ t_token	*ft_token_new(char *str, enum e_token_type type)
 		return (NULL);
 	new->str = str;
 	new->type = type;
+	new->can_expand = can_expand;
 	new->next = NULL;
 	return (new);
 }
@@ -69,11 +70,12 @@ void	ft_token_add(t_token **lst, t_token *new)
 }
 
 //Manages the creation of a new t_token node and adds it to the list
-void	add_new_token(t_data *data, char *str, enum e_token_type type)
+void	add_new_token(t_data *data, char *str, enum e_token_type type,
+		int can_expand)
 {
 	t_token	*new_token;
 
-	new_token = ft_token_new(str, type);
+	new_token = ft_token_new(str, type, can_expand);
 	if (!new_token)
 		print_error_exit(MALLOC_ERROR, data);
 	ft_token_add(&(data->tokens), new_token);

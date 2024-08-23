@@ -47,14 +47,13 @@ enum	e_token_type
 	AND,
 	OR,
 	AMPER,
-	FORBB
+	FORB
 };
 
 typedef struct s_files
 {
 	char				*str;
 	enum e_token_type	file_type;
-	int					pipe;
 	int					fd;
 	char				*hrdc_file_name;
 	struct s_files		*next;
@@ -80,6 +79,7 @@ typedef struct s_token
 {
 	enum e_token_type	type;
 	char				*str;
+	int					can_expand;
 	struct s_token		*next;
 }	t_token;
 
@@ -100,7 +100,7 @@ typedef struct s_data
 	t_token			*tokens;
 	int				section_id;
 	t_section		*sections;
-	int				pipes_needed;
+	//int				pipes_needed;
 	int				*pipes;
 	int				heredoc_file_n;
 	int				last_exit_status;
@@ -126,7 +126,8 @@ int			check_pipe(t_token *current);
 int			check_first_last_token(t_token *token, int is_first);
 //token_lst_utils
 void		ft_token_lstclear(t_token **lst);
-void		add_new_token(t_data *data, char *str, enum e_token_type type);
+void		add_new_token(t_data *data, char *str, enum e_token_type type,
+				int can_expand);
 //sectionizer
 void		sectionizer(t_data *data);
 t_section	*new_section(t_section *outer, t_section *previous, t_data *data);
@@ -158,6 +159,7 @@ char		**add_to_array(char ***current, char *new_value);
 void		print_tokens(t_data *data);
 void		print_split(char **splitted);
 void		print_sections(t_section *section);
+void		print_pipe(int fd);
 //files_lst_utils
 void		ft_files_lstclear(t_files **lst);
 void		ft_files_add(t_files **lst, t_files *new);
