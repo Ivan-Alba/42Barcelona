@@ -81,15 +81,16 @@ int	check_brackets(t_data *data)
 //Calls the functions responsible to check the syntax of the prompt
 int	check_syntax(t_data *data)
 {
+	char	*error;
+
+	error = NULL;
 	if (check_quotes(data))
-	{
-		print_error(QUOTE_FORMAT_ERROR, NULL);
-		return (1);
-	}
+		error = QUOTE_FORMAT_ERROR;
+	if (check_non_accepted_chars(data))
+		error = INVALID_CHARS_ERROR;
 	if (check_brackets(data))
-	{
-		print_error(BRACKET_FORMAT_ERROR, NULL);
-		return (1);
-	}
+		error = BRACKET_FORMAT_ERROR;
+	if (error)
+		return (print_error(error, NULL), 1);
 	return (0);
 }

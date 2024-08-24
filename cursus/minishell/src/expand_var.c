@@ -12,7 +12,7 @@
 
 #include "../inc/minishell.h"
 
-int	check_var_format(t_data *data, int i)
+/*int	check_var_format(t_data *data, int i)
 {
 	char	*current;
 	int		x;
@@ -28,7 +28,7 @@ int	check_var_format(t_data *data, int i)
 		x++;
 	}
 	return (0);
-}
+}*/
 
 //Searches for var on environment variable and stores it
 char	*get_var_value(char *var, t_data *data)
@@ -85,49 +85,51 @@ char	*get_var_value(char *var, t_data *data)
                 data->path = NULL;
 }*/
 
-char	*expand(char **vars, t_data *data)
+char	*expand(char ***vars, t_data *data)
 {
 	int		i;
 	char	*value;
 	char	*result;
+	char	*tmp;
 
 	i = -1;
-	value = NULL;
 	result = NULL;
-	while (vars[++i])
+	while ((*vars)[++i])
 	{
-		if (vars[i][0] == '$')
+		tmp = result;
+		if ((*vars)[i][0] == '$')
 		{
-			value = get_var_value(&vars[i][1], data);
+			value = get_var_value(&(*vars)[i][1], data);
 			if (!value)
 				print_error_exit(MALLOC_ERROR, data);
 			result = ft_strcat(result, value);
 			free(value);
 		}
 		else
-			result = ft_strcat(result, vars[i]);
+			result = ft_strcat(result, (*vars)[i]);
+		if (tmp)
+			free(tmp);
 		if (!result)
 			print_error_exit(MALLOC_ERROR, data);
 	}
+	free_split(vars);
 	return (result);
 }
 
-void	add_new_var(char **vars, int *i, char *current)
+void	add_new_var(char ***vars, int *i, char *current)
 {
 	int		len;
 	char	*aux;
 
 	len = 1;
 	(*i)++;
-	printf("current add_new_var: %s\n", &current[*i]);
 	while (current[(*i)] != '$' && current[(*i)] != '\0')
 	{
 		len++;
 		(*i)++;
 	}
 	aux = ft_strcut(&(current[(*i) - len]), len);
-	printf("aux: %s\n", aux);
-	add_to_array(&vars, aux);
+	(*vars) = add_to_array(vars, aux);
 	free(aux);
 	(*i)--;
 }
@@ -138,31 +140,27 @@ char	*trim_env_vars(char *current, t_data *data)
 	int		i;
 	char	*aux;
 
-	//TODO add vars to data for frees
-	printf("current: %s\n", current);
 	i = 0;
-	aux = NULL;
+	vars = NULL;
 	while (current[++i])
 	{
 		if (current[i] == '$' && current[i + 1] == '$' && i++ > 0)
-			add_to_array(&vars, "67228");
+			vars = add_to_array(&vars, "67228");
 		else if (current[i] == '$')
-			add_new_var(vars, &i, current);
+			add_new_var(&vars, &i, current);
 		else
 		{
 			aux = string_from_char(current[i]);
 			if (!aux)
 				print_error_exit(MALLOC_ERROR, data);
-			add_to_array(&vars, aux);
+			vars = add_to_array(&vars, aux);
 			free(aux);
 		}
 		if (!vars)
 			print_error_exit(MALLOC_ERROR, data);
 	}
-	//TODO test print
-	print_split(vars);
 	free(current);
-	return (expand(vars, data));
+	return (expand(&vars, data));
 }
 
 void	expand_vars(t_section *section, t_data *data)
@@ -172,10 +170,12 @@ void	expand_vars(t_section *section, t_data *data)
 	if (section->cmd)
 	{
 		i = 0;
+		printf("CMD EXPANDED:\n");
 		while (section->cmd[i])
 		{
-			if (section->cmd[i][0] == '"')
+			if (ft_strchr(section->cmd[i], '\\'))
 				section->cmd[i] = trim_env_vars(section->cmd[i], data);
+			printf("[%d]%s\n", i, section->cmd[i]);
 			i++;
 		}
 	}

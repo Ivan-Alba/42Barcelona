@@ -52,7 +52,7 @@ enum	e_token_type
 
 typedef struct s_files
 {
-	char				*str;
+	char				*file_name;
 	enum e_token_type	file_type;
 	int					fd;
 	char				*hrdc_file_name;
@@ -79,7 +79,6 @@ typedef struct s_token
 {
 	enum e_token_type	type;
 	char				*str;
-	int					can_expand;
 	struct s_token		*next;
 }	t_token;
 
@@ -100,7 +99,6 @@ typedef struct s_data
 	t_token			*tokens;
 	int				section_id;
 	t_section		*sections;
-	//int				pipes_needed;
 	int				*pipes;
 	int				heredoc_file_n;
 	int				last_exit_status;
@@ -118,7 +116,7 @@ void		token_pipe_or(t_data *data, int *i);
 void		token_amper_and(t_data *data, int *i);
 void		token_quotes(t_data *data, int *i);
 void		token_brackets(t_data *data, int *i);
-//check_tokens
+//check_tokens_syntax
 int			check_and_or(t_token *current);
 int			check_open_bracket(t_token *current);
 int			check_close_bracket(t_token *current);
@@ -127,7 +125,7 @@ int			check_first_last_token(t_token *token, int is_first);
 //token_lst_utils
 void		ft_token_lstclear(t_token **lst);
 void		add_new_token(t_data *data, char *str, enum e_token_type type,
-				int can_expand);
+				int expand);
 //sectionizer
 void		sectionizer(t_data *data);
 t_section	*new_section(t_section *outer, t_section *previous, t_data *data);
@@ -137,6 +135,8 @@ void		brack_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
 void		files_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
 void		word_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
 void		conn_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
+//expand_marks
+char		*expand_marks(char *str);
 //executor
 void		executor(t_data *data);
 //heredocs
@@ -164,6 +164,6 @@ void		print_pipe(int fd);
 //files_lst_utils
 void		ft_files_lstclear(t_files **lst);
 void		ft_files_add(t_files **lst, t_files *new);
-t_files		*ft_files_new(char *str, enum e_token_type type);
+t_files		*ft_files_new(char *file_name, enum e_token_type type);
 
 #endif

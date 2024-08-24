@@ -16,22 +16,11 @@
 char	**create_command(t_token **first, t_data *data)
 {
 	char	**command;
-	char	*word;
 
 	command = NULL;
 	while (*first && (*first)->type == WORD)
 	{
-		if ((*first)->can_expand && ft_strchr((*first)->str, '$')
-			&& (ft_strchr((*first)->str, '$'))[1] != '\0')
-		{
-			word = ft_strcat("\"", (*first)->str);
-			if (!word)
-				print_error_exit(MALLOC_ERROR, data);
-			command = add_to_array(&command, word);
-			free(word);
-		}
-		else
-			command = add_to_array(&command, (*first)->str);
+		command = add_to_array(&command, (*first)->str);
 		if (!command)
 			return (print_error_exit(MALLOC_ERROR, data), NULL);
 		if ((*first)->next && (*first)->next->type == WORD)

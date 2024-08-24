@@ -18,9 +18,9 @@ void	ft_files_lstclear(t_files **lst)
 	if ((!lst) || !(*lst))
 		return ;
 	ft_files_lstclear((void *)&(*lst)->next);
-	if ((*lst)->str)
-		free((*lst)->str);
-	(*lst)->str = NULL;
+	if ((*lst)->file_name)
+		free((*lst)->file_name);
+	(*lst)->file_name = NULL;
 	if ((*lst)->hrdc_file_name)
 		free((*lst)->hrdc_file_name);
 	free(*lst);
@@ -38,7 +38,7 @@ t_files	*ft_files_last(t_files *lst)
 }
 
 //Create a new node of type t_files and returns it
-t_files	*ft_files_new(char *str, enum e_token_type type)
+t_files	*ft_files_new(char *file_name, enum e_token_type type)
 {
 	t_files	*new;
 
@@ -48,12 +48,12 @@ t_files	*ft_files_new(char *str, enum e_token_type type)
 	new->file_type = type;
 	if (type == HEREDOC)
 	{
-		new->str = ft_strcat(str, "\n");
-		free(str);
-		str = NULL;
+		new->file_name = ft_strcat(file_name, "\n");
+		free(file_name);
+		file_name = NULL;
 	}
 	else
-		new->str = str;
+		new->file_name = file_name;
 	new->fd = -1;
 	new->hrdc_file_name = NULL;
 	new->next = NULL;

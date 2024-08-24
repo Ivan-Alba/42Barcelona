@@ -46,18 +46,18 @@ void	print_split(char **splitted)
 //(TEST) Prints the content of each node of a list of type t_section
 void	print_sections(t_section *section)
 {
-	t_files	*current;
+	t_files	*curr_file;
 
 	if (!section)
 		return ;
 	printf("-------SECTION %d--------\nCMD: \n", section->id);
 	print_split(section->cmd);
 	printf("FILES: \n");
-	current = section->files;
-	while (current)
+	curr_file = section->files;
+	while (curr_file)
 	{
-		printf("%s type: %d\n", current->str, current->file_type);
-		current = current->next;
+		printf("%s type: %d\n", curr_file->file_name, curr_file->file_type);
+		curr_file = curr_file->next;
 	}
 	if (section->outer)
 		printf("outer section: %d - conn_type: %d\n",

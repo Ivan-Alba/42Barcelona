@@ -66,7 +66,8 @@ void	read_heredoc(t_data *data, t_files *file)
 	if (file->fd == -1)
 		print_error_exit(OPEN_ERROR, data);
 	line = get_next_line(0);
-	while (line && ft_strncmp(file->str, line, ft_strlen(file->str)) != 0)
+	while (line && ft_strncmp(file->file_name, line,
+			ft_strlen(file->file_name)) != 0)
 	{
 		write(file->fd, line, ft_strlen(line));
 		free(line);
@@ -108,7 +109,6 @@ void	manage_heredocs(t_data *data)
 	current_sec = data->sections;
 	while (current_sec)
 	{
-		printf("Section: %d\n", current_sec->id); //TODO test print
 		current_file = current_sec->files;
 		while (current_file)
 		{
