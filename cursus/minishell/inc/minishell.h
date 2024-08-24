@@ -101,6 +101,7 @@ typedef struct s_data
 	t_section		*sections;
 	int				*pipes;
 	int				heredoc_file_n;
+	char			**expand_vars;
 	int				last_exit_status;
 }	t_data;
 

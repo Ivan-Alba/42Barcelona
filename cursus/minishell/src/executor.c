@@ -57,5 +57,4 @@ void	executor(t_data *data)
 	//TODO EXECUTE FORK RECURSIVE INNER->NEXT
 	execute(data);
 		//TODO SET FD_IN Y FD_OUT DE CADA SECCION (NOT && or ||)
-		//TODO EXPAND VARS
 }

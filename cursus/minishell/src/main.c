@@ -77,8 +77,8 @@ void	read_prompt(t_data *data)
  *	Function Name: init_data
  *
  *	Description:
- *		This function receives the pointer to a struct variable t_data and
- *		initializes it with all the necessary values.
+ *		This function receives a pointer to the address of the struct variable
+ *		t_data and initializes it with all the necessary values.
  *		This t_data structure will be used during the whole execution.
  *
  *	Parameters:
@@ -99,6 +99,7 @@ void	init_data(t_data **data, char **env)
 	(*data)->pipes = NULL;
 	(*data)->heredoc_file_n = 0;
 	(*data)->prompt_init = NULL;
+	(*data)->expand_vars = NULL;
 	(*data)->prompt = NULL;
 }
 

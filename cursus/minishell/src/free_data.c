@@ -28,6 +28,8 @@ void	clean_prompt_data(t_data *data)
 	}
 	if (data->pipes)
 		free_close_pipes(data);
+	if (data->expand_vars)
+		free_split(&data->expand_vars);
 	data->section_id = 0;
 	data->heredoc_file_n = 0;
 	ft_token_lstclear(&data->tokens);
@@ -70,9 +72,11 @@ void	free_data(t_data *data)
 			ft_token_lstclear(&data->tokens);
 		if (data->sections)
 			free_sections(&data->sections);
-		free(data);
 		if (data->pipes)
 			free_close_pipes(data);
+		if (data->expand_vars)
+			free_split(&data->expand_vars);
+		free(data);
 	}
 }
 
