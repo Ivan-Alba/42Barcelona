@@ -12,7 +12,79 @@
 
 #include "../inc/minishell.h"
 
-//Function that initializes the necessary data of the main structure
+/**
+ *	Function Name: minishell
+ *
+ *	Description:
+ *		Main function that manages the calls to the rest of the necessary
+ *		functions for program execution.
+ *
+ *	Parameters:
+ *		t_data *data - The pointer to the t_data structure with all execution data. 
+ */
+void	minishell(t_data *data)
+{
+	char	*aux;
+
+	aux = data->prompt;
+	data->prompt_init = ft_strtrim(data->prompt, " ");
+	free(aux);
+	data->prompt = data->prompt_init;
+	if (check_syntax(data))
+		return ;
+	ft_token_split("<>|& ()\"\';\\", data);
+	if (tokenizer(data))
+		return ;
+	sectionizer(data);
+	/*------TODO TEST PRINTS------*/
+	print_sections(data->sections);
+	printf("\nPipes needed: %d\n", data->section_id - 1);
+	/*---------------------------*/
+	executor(data);
+}
+
+/**
+ *	Function Name: read_prompt
+ *
+ *	Description:
+ *		This function waits for the prompt input from the user, calls the
+ *		functions in charge of its execution and releases the necessary data
+ *		between inputs.
+ *		If the function receives a NULL, the execution is ended.
+ *
+ *	Parameters:
+ *		t_data *data - The pointer to the t_data structure with all execution data. 
+ */
+void	read_prompt(t_data *data)
+{
+	while (1)
+	{
+		data->prompt = readline("minishell: ");
+		if (data->prompt && data->prompt[0])
+		{
+			add_history(data->prompt);
+			minishell(data);
+			clean_prompt_data(data);
+		}
+		else if (!data->prompt)
+			break ;
+		else
+			free(data->prompt);
+	}
+}
+
+/**
+ *	Function Name: init_data
+ *
+ *	Description:
+ *		This function receives the pointer to a struct variable t_data and
+ *		initializes it with all the necessary values.
+ *		This t_data structure will be used during the whole execution.
+ *
+ *	Parameters:
+ *		t_data **data	- The pointer to the variable to initialize.
+ *		char **env		- Environment variables that we will store in t_data struct.
+ */
 void	init_data(t_data **data, char **env)
 {
 	*data = malloc(sizeof(t_data));
@@ -30,51 +102,28 @@ void	init_data(t_data **data, char **env)
 	(*data)->prompt = NULL;
 }
 
-//Function that checks if there is any export or unset command at the prompt
-int	is_unset_or_export(t_data *data)
-{
-	int		i;
-	char	*current;
-
-	i = 0;
-	current = NULL;
-	if (data->split_info->splitted_prompt)
-		current = data->split_info->splitted_prompt[i];
-	while (current)
-	{
-		if (ft_strncmp("export", current, 7) == 0)
-			return (1);
-		if (ft_strncmp("unset", current, 6) == 0)
-			return (1);
-		current = data->split_info->splitted_prompt[++i];
-	}
-	return (0);
-}
-
-//Function that manages the reading of the prompt entered by the user
-void	read_prompt(t_data *data)
-{
-	char	*aux;
-
-	aux = data->prompt;
-	data->prompt_init = ft_strtrim(data->prompt, " ");
-	free(aux);
-	data->prompt = data->prompt_init;
-	if (check_syntax(data))
-		return ;
-	ft_token_split("<>|& ()\"\';\\", data);
-	if (tokenizer(data))
-		return ;
-	sectionizer(data);
-	//data->pipes_needed += (data->section_id - 1);
-	//TODO TEST PRINT
-	print_sections(data->sections);
-	printf("\nPipes needed: %d\n", data->section_id - 1);
-	//TODO EXECUTE
-	executor(data);
-}
-
-//Main function
+/**
+ *	Function Name: main
+ *
+ *	Description:
+ *		The entry point of the program. This function is called when the program
+ *		starts.
+ *		It processes command-line arguments and environment variables passed to
+ *		the program.
+ *		The program will not accept arguments, only the executable name.
+ *
+ *	Parameters:
+ *		int	argc 	-	The number of command-line arguments passed to the program,
+ *						including the program name.
+ *		char **argv	-	An array of strings representing the command-line arguments.
+ *						The first element is the program name.
+ *		char **env	-	An array of strings representing the environment variables.
+ *						Each string is of the form "KEY=VALUE".
+ *
+ * Return Value:
+ *    int - Returns an integer value to the operating system.
+ *			Returns 0 if successful execution, or non-zero value if error.
+ */
 int	main(int argc, char **argv, char **env)
 {
 	t_data	*data;
@@ -84,20 +133,7 @@ int	main(int argc, char **argv, char **env)
 		print_error_exit(NO_ARGS_REQUIRED, NULL);
 	data = NULL;
 	init_data(&data, env);
-	while (1)
-	{
-		data->prompt = readline("minishell: ");
-		if (data->prompt && data->prompt[0])
-		{
-			add_history(data->prompt);
-			read_prompt(data);
-			clean_prompt_data(data);
-		}
-		else if (!data->prompt)
-			break ;
-		else
-			free(data->prompt);
-	}
+	read_prompt(data);
 	free_data(data);
 	exit(0);
 }

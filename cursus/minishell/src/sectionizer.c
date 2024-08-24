@@ -48,10 +48,10 @@ t_section	*new_section(t_section *outer, t_section *previous, t_data *data)
 	new->id = data->section_id++;
 	new->cmd = NULL;
 	new->next = NULL;
-	new->next_conn_type = -1;
+	new->next_conn = -1;
 	new->inner = NULL;
-	new->inner_conn_type = -1;
-	new->outer_conn_type = -1;
+	new->in_conn = -1;
+	new->out_conn = -1;
 	new->fd_in = -1;
 	new->fd_out = -1;
 	new->files = NULL;

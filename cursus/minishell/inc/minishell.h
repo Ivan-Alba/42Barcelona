@@ -64,12 +64,12 @@ typedef struct s_section
 	int					id;
 	char				**cmd;
 	struct s_section	*next;
-	enum e_token_type	next_conn_type;
+	enum e_token_type	next_conn;
 	struct s_section	*previous;
 	struct s_section	*inner;
-	enum e_token_type	inner_conn_type;
+	enum e_token_type	in_conn;
 	struct s_section	*outer;
-	enum e_token_type	outer_conn_type;
+	enum e_token_type	out_conn;
 	int					fd_in;
 	int					fd_out;
 	t_files				*files;
@@ -135,6 +135,9 @@ void		brack_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
 void		files_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
 void		word_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
 void		conn_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
+//navigate_sections
+t_section	*get_next_section(t_section *current, int last_section_id);
+t_section	*get_next_pipe_section(t_section *current, int last_section_id);
 //expand_marks
 char		*expand_marks(char *str);
 //executor

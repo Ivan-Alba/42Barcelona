@@ -63,18 +63,18 @@ void	conn_sect(t_section **curr_sec, t_token **curr_tok, t_data *data)
 	{
 		if ((*curr_tok)->next->type == OPEN_BRACKET)
 		{
-			(*curr_sec)->next_conn_type = (*curr_tok)->type;
+			(*curr_sec)->next_conn = (*curr_tok)->type;
 			(*curr_sec)->next = new_section(NULL, *curr_sec, data);
 			*curr_sec = (*curr_sec)->next;
 			(*curr_sec)->inner = new_section(*curr_sec, NULL, data);
-			(*curr_sec)->inner_conn_type = (*curr_tok)->type;
-			(*curr_sec)->inner->outer_conn_type = (*curr_tok)->type;
+			(*curr_sec)->in_conn = (*curr_tok)->type;
+			(*curr_sec)->inner->out_conn = (*curr_tok)->type;
 			*curr_tok = (*curr_tok)->next;
 			(*curr_sec) = (*curr_sec)->inner;
 		}
 		else
 		{
-			(*curr_sec)->next_conn_type = (*curr_tok)->type;
+			(*curr_sec)->next_conn = (*curr_tok)->type;
 			(*curr_sec)->next = new_section(NULL, *curr_sec, data);
 			*curr_sec = (*curr_sec)->next;
 		}

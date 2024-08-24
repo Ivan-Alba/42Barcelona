@@ -15,7 +15,7 @@ NAME = minishell
 SRC = utils.c main.c ft_token_split.c check_syntax.c tokenizer.c token_types.c \
 	  check_tokens_syntax.c token_lst_utils.c expand_var.c free_data.c \
 	  sectionizer.c section_token.c test_utils.c files_lst_utils.c executor.c \
-	  heredocs.c expand_marks.c
+	  heredocs.c expand_marks.c navigate_sections.c
 
 SRC_DIR = src/
 

@@ -80,26 +80,6 @@ void	read_heredoc(t_data *data, t_files *file)
 	close(file->fd);
 }
 
-//Receives a node from a list t_section and returns the following node
-t_section	*get_next_section(t_section	*current, int last_section_id)
-{
-	if (current->inner)
-		return (current->inner);
-	else if (current->next)
-		return (current->next);
-	else if (current->id == last_section_id)
-		return (NULL);
-	while (1)
-	{
-		if (current->next)
-			return (current->next);
-		while (current->previous)
-			current = current->previous;
-		if (current->outer)
-			current = current->outer;
-	}
-}
-
 //Go through the sections and manage the opening of the heredocs
 void	manage_heredocs(t_data *data)
 {

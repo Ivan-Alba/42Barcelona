@@ -61,13 +61,13 @@ void	print_sections(t_section *section)
 	}
 	if (section->outer)
 		printf("outer section: %d - conn_type: %d\n",
-			section->outer->id, section->outer_conn_type);
+			section->outer->id, section->out_conn);
 	if (section->inner)
 		printf("inner section: %d - conn_type: %d\n",
-			section->inner->id, section->inner_conn_type);
+			section->inner->id, section->in_conn);
 	if (section->next)
 		printf("next section: %d - conn_type: %d\n",
-			section->next->id, section->next_conn_type);
+			section->next->id, section->next_conn);
 	print_sections(section->inner);
 	print_sections(section->next);
 }
