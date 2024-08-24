@@ -12,20 +12,6 @@
 
 #include "../inc/minishell.h"
 
-//Deletes the contents of a pipe, closes it and reopens it again
-/*void	reset_pipe(t_data *data, t_files *file)
-{
-	int		bytes_read;
-	char	buffer[1024];
-
-	close(data->pipes[file->pipe * 2 + 1]);
-	bytes_read = read(data->pipes[file->pipe * 2], buffer, sizeof(buffer));
-	while (bytes_read > 0)
-		bytes_read = read(data->pipes[file->pipe * 2], buffer, sizeof(buffer));
-	close(data->pipes[file->pipe * 2]);
-	pipe(data->pipes + (2 * file->pipe));
-}*/
-
 //Removes temporary files created by heredocs
 void	remove_heredoc_files(t_section **section)
 {

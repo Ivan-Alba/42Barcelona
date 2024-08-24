@@ -20,7 +20,7 @@
  *		functions for program execution.
  *
  *	Parameters:
- *		t_data *data - The pointer to the t_data structure with all execution data. 
+ *		t_data *data - The pointer to the t_data struct with all execution data. 
  */
 void	minishell(t_data *data)
 {
@@ -38,7 +38,6 @@ void	minishell(t_data *data)
 	sectionizer(data);
 	/*------TODO TEST PRINTS------*/
 	print_sections(data->sections);
-	printf("\nPipes needed: %d\n", data->section_id - 1);
 	/*---------------------------*/
 	executor(data);
 }
@@ -53,7 +52,7 @@ void	minishell(t_data *data)
  *		If the function receives a NULL, the execution is ended.
  *
  *	Parameters:
- *		t_data *data - The pointer to the t_data structure with all execution data. 
+ *		t_data *data - The pointer to the t_data struct with all execution data. 
  */
 void	read_prompt(t_data *data)
 {
@@ -82,7 +81,7 @@ void	read_prompt(t_data *data)
  *		This t_data structure will be used during the whole execution.
  *
  *	Parameters:
- *		t_data **data	- The pointer to the variable to initialize.
+ *		t_data **data	- A pointer to the variable t_data* to initialize.
  *		char **env		- Environment variables that we will store in t_data struct.
  */
 void	init_data(t_data **data, char **env)

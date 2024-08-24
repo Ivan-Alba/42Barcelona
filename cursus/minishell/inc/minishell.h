@@ -131,7 +131,7 @@ void		add_new_token(t_data *data, char *str, enum e_token_type type,
 void		sectionizer(t_data *data);
 t_section	*new_section(t_section *outer, t_section *previous, t_data *data);
 char		**create_command(t_token **first, t_data *data);
-//section_token
+//section_token		
 void		brack_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
 void		files_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
 void		word_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
@@ -139,16 +139,18 @@ void		conn_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
 //navigate_sections
 t_section	*get_next_section(t_section *current, int last_section_id);
 t_section	*get_next_pipe_section(t_section *current, int last_section_id);
-//expand_marks
-char		*expand_marks(char *str);
 //executor
 void		executor(t_data *data);
 //heredocs
 void		manage_heredocs(t_data *data);
 void		remove_heredoc_files(t_section **section);
 t_section	*get_next_section(t_section *current, int last_section_id);
-//expand_var
-void		expand_vars(t_section *section, t_data *data);
+//expand_section
+void		expand_section(t_section *section, t_data *data);
+//expand_utils
+void		concat_var_value(char **current_str, char *var, t_data *data);
+char		*get_var_value(char *var_name, t_data *data);
+char		*expand_marks(char *str);
 //free_utils
 void		clean_prompt_data(t_data *data);
 void		free_split(char ***splitted);

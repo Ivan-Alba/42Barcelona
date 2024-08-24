@@ -16,7 +16,8 @@
 void	print_error(char *msg, char	*token)
 {
 	if (!token)
-		ft_printf("%s\n", msg);
+		//ft_printf("%s\n", msg);
+		perror(msg);
 	else
 		ft_printf("%s \'%s\'\n", msg, token);
 }
@@ -24,7 +25,8 @@ void	print_error(char *msg, char	*token)
 //Receives an error message by parameter and prints it on console and exits
 void	print_error_exit(char *msg, t_data *data)
 {
-	ft_printf("%s\n", msg);
+	//ft_printf("%s\n", msg);
+	perror(msg);
 	free_data(data);
 	exit(1);
 }

@@ -42,8 +42,8 @@ void	execute(t_data *data)
 	while (curr_sec)
 	{
 		//TODO PRINT TEST
-		printf("\nSECTION %d EXPANSION\n", curr_sec->id);
-		expand_vars(curr_sec, data);
+		printf("\n##### SECTION %d EXPANSION #####\n", curr_sec->id);
+		expand_section(curr_sec, data);
 		curr_sec = get_next_pipe_section(curr_sec, data->section_id - 1);
 	}
 }

@@ -17,14 +17,14 @@ void	print_tokens(t_data *data)
 {
 	t_token	*current_token;
 
-	printf("--------PRINT TOKENS--------\n");
+	printf("-------- PRINT TOKENS --------\n");
 	current_token = data->tokens;
 	while (current_token)
 	{
 		printf("%s - Type:%d\n", current_token->str, current_token->type);
 		current_token = current_token->next;
 	}
-	printf("--------END TOKENS---------\n");
+	printf("--------- END TOKENS ---------\n\n");
 }
 
 //(TEST) Receives a char** as a parameter and prints its content by console
@@ -50,7 +50,7 @@ void	print_sections(t_section *section)
 
 	if (!section)
 		return ;
-	printf("-------SECTION %d--------\nCMD: \n", section->id);
+	printf("######### SECTION %d #########\nCMD: \n", section->id);
 	print_split(section->cmd);
 	printf("FILES: \n");
 	curr_file = section->files;
