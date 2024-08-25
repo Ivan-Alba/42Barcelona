@@ -28,6 +28,11 @@ void	clean_prompt_data(t_data *data)
 	}
 	if (data->pipes)
 		free_close_pipes(data);
+	if (data->path)
+		free_split(&data->path);
+	if (data->pids)
+		free(data->pids);
+	data->pids = NULL;
 	if (data->expand_vars)
 		free_split(&data->expand_vars);
 	data->section_id = 0;
@@ -76,6 +81,10 @@ void	free_data(t_data *data)
 			free_close_pipes(data);
 		if (data->expand_vars)
 			free_split(&data->expand_vars);
+		if (data->path)
+			free_split(&data->path);
+		if (data->pids)
+			free(data->pids);
 		free(data);
 	}
 }
@@ -90,6 +99,9 @@ void	free_sections(t_section **section)
 	if ((*section)->cmd)
 		free_split(&(*section)->cmd);
 	(*section)->cmd = NULL;
+	if ((*section)->cmd_path)
+		free((*section)->cmd_path);
+	(*section)->cmd_path = NULL;
 	//TODO REMOVE HEREDOC FILES
 	remove_heredoc_files(&(*section));
 	ft_files_lstclear(&(*section)->files);

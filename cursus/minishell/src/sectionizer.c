@@ -47,6 +47,7 @@ t_section	*new_section(t_section *outer, t_section *previous, t_data *data)
 		new->previous = previous;
 	new->id = data->section_id++;
 	new->cmd = NULL;
+	new->cmd_path = NULL;
 	new->next = NULL;
 	new->next_conn = -1;
 	new->inner = NULL;

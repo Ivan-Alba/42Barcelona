@@ -19,6 +19,8 @@
 # include <unistd.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 # include <stdlib.h>
 
 # define MALLOC_ERROR "Error allocating memory"
@@ -30,7 +32,9 @@
 # define UNEXPECTED_TOKEN "Syntax error near unexpected token"
 # define PIPES_ERROR "Error creating pipes"
 # define OPEN_ERROR "Error opening file"
+# define CLOSE_ERROR "Error closing file"
 # define DUP_ERROR "Error creating fd copy using dup2"
+# define FORK_ERROR "Error creating process with fork"
 
 enum	e_token_type
 {
@@ -63,6 +67,7 @@ typedef struct s_section
 {
 	int					id;
 	char				**cmd;
+	char				*cmd_path;
 	struct s_section	*next;
 	enum e_token_type	next_conn;
 	struct s_section	*previous;
@@ -93,6 +98,8 @@ typedef struct s_split
 typedef struct s_data
 {
 	char			**env;
+	char			**path;
+	int				*pids;
 	char			*prompt;
 	char			*prompt_init;
 	t_split			*split_info;
@@ -102,6 +109,8 @@ typedef struct s_data
 	int				*pipes;
 	int				heredoc_file_n;
 	char			**expand_vars;
+	int				std_in;
+	int				std_out;
 	int				last_exit_status;
 }	t_data;
 
@@ -138,7 +147,7 @@ void		word_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
 void		conn_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
 //navigate_sections
 t_section	*get_next_section(t_section *current, int last_section_id);
-t_section	*get_next_pipe_section(t_section *current, int last_section_id);
+t_section	*get_next_pipe_section(t_section *current);
 //executor
 void		executor(t_data *data);
 //heredocs
@@ -147,6 +156,12 @@ void		remove_heredoc_files(t_section **section);
 t_section	*get_next_section(t_section *current, int last_section_id);
 //expand_section
 void		expand_section(t_section *section, t_data *data);
+//manage_fds
+int			open_fds(t_section *section);
+void		close_section_fds(t_section *section);
+//path
+void		get_path(t_data *data);
+char		*get_cmd_path(char *cmd, t_data *data);
 //expand_utils
 void		concat_var_value(char **current_str, char *var, t_data *data);
 char		*get_var_value(char *var_name, t_data *data);

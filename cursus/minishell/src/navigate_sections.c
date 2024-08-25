@@ -63,20 +63,18 @@ t_section	*get_next_section(t_section *current, int last_section_id)
  *		t_section*	- The next node to the one received as a parameter.
  *		NULL		- If it does not meet the connection type or the list has ended.
  */
-t_section	*get_next_pipe_section(t_section *current, int last_section_id)
+t_section	*get_next_pipe_section(t_section *current)
 {
-	if (current->inner && current->in_conn != AND && current->in_conn != OR)
+	/*if (current->inner && current->in_conn != AND && current->in_conn != OR)
 		return (current->inner);
 	else if (current->inner)
-		return (NULL);
-	else if (current->next && current->next_conn != AND
+		return (NULL);*/
+	if (current->next && current->next_conn != AND
 		&& current->next_conn != OR)
 		return (current->next);
-	else if (current->next)
+	else
 		return (NULL);
-	else if (current->id == last_section_id)
-		return (NULL);
-	while (1)
+	/*while (1)
 	{
 		if (current->next && current->next_conn != AND
 			&& current->next_conn != OR)
@@ -87,5 +85,5 @@ t_section	*get_next_pipe_section(t_section *current, int last_section_id)
 			current = current->previous;
 		if (current->outer)
 			current = current->outer;
-	}
+	}*/
 }

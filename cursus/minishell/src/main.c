@@ -90,6 +90,8 @@ void	init_data(t_data **data, char **env)
 	if (!(*data))
 		print_error_exit(MALLOC_ERROR, NULL);
 	(*data)->env = env;
+	(*data)->path = NULL;
+	(*data)->pids = NULL;
 	(*data)->last_exit_status = 0;
 	(*data)->tokens = NULL;
 	(*data)->split_info = NULL;
@@ -100,6 +102,8 @@ void	init_data(t_data **data, char **env)
 	(*data)->prompt_init = NULL;
 	(*data)->expand_vars = NULL;
 	(*data)->prompt = NULL;
+	(*data)->std_in = -1;
+	(*data)->std_out = -1;
 }
 
 /**
