@@ -18,6 +18,9 @@ void	brack_sect(t_section **curr_sec, t_token **curr_tok, t_data *data)
 	if ((*curr_tok)->type == OPEN_BRACKET)
 	{
 		(*curr_sec)->inner = new_section(*curr_sec, NULL, data);
+		if ((*curr_sec)->outer)
+			(*curr_sec)->in_conn = ((*curr_sec)->outer->in_conn);
+		(*curr_sec)->inner->out_conn = (*curr_sec)->in_conn;
 		*curr_sec = (*curr_sec)->inner;
 	}
 	else if ((*curr_tok)->type == CLOSE_BRACKET)

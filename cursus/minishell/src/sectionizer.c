@@ -59,31 +59,6 @@ t_section	*new_section(t_section *outer, t_section *previous, t_data *data)
 	return (new);
 }
 
-/*//Counts the number of pipes necessary to execute the prompt
-void	count_pipes_heredocs(t_section *curr_sec, t_data *data)
-{
-	t_files	*current;
-	int		heredoc_found;
-
-	if (!curr_sec)
-		return ;
-	data->pipes_needed += 1;
-	heredoc_found = 0;
-	current = curr_sec->files;
-	while (current)
-	{
-		if (current->file_type == HEREDOC)
-		{
-			heredoc_found = 1;
-			current->pipe = data->pipes_needed;
-		}
-		current = current->next;
-	}
-	data->pipes_needed += heredoc_found;
-	count_pipes_heredocs(curr_sec->inner, data);
-	count_pipes_heredocs(curr_sec->next, data);
-}*/
-
 //Manages creation of t_section list with the information of the t_token list
 void	sectionizer(t_data *data)
 {
@@ -111,5 +86,4 @@ void	sectionizer(t_data *data)
 		if (curr_tok)
 			curr_tok = curr_tok->next;
 	}
-	//count_pipes_heredocs(data->sections, data);
 }

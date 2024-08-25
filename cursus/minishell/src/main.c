@@ -104,6 +104,7 @@ void	init_data(t_data **data, char **env)
 	(*data)->prompt = NULL;
 	(*data)->std_in = -1;
 	(*data)->std_out = -1;
+	(*data)->is_child = 0;
 }
 
 /**

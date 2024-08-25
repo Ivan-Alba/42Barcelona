@@ -111,6 +111,7 @@ typedef struct s_data
 	char			**expand_vars;
 	int				std_in;
 	int				std_out;
+	int				is_child;
 	int				last_exit_status;
 }	t_data;
 

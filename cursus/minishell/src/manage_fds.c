@@ -35,12 +35,11 @@ int	set_infile(t_section *section, t_files *file)
 		filename = file->file_name;
 	else if (file->file_type == HEREDOC)
 		filename = file->hrdc_file_name;
-	//TODO CLOSE ERROR??
 	if (access(filename, F_OK) == -1
 		|| access(filename, R_OK) == -1)
 	{
 		perror(filename);
-		close_section_fds(section);
+		close_section_fds(section); //TODO CLOSE ERROR?
 		return (1);
 	}
 	fd = open(filename, O_RDONLY);
