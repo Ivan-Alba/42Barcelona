@@ -60,7 +60,7 @@ void	read_heredoc(t_data *data, t_files *file)
 		line = NULL;
 		line = get_next_line(0);
 	}
-	write(1, "cierro heredoc\n", 15); //TODO test print
+	write(1, "Heredoc closed\n", 15); //TODO test print
 	if (line)
 		free(line);
 	close(file->fd);

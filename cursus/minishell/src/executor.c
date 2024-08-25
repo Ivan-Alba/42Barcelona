@@ -60,8 +60,7 @@ void	set_stdin_stdout(t_section *section, t_data *data)
 {
 	t_section *curr_sec;
 
-	data->std_in = dup(STDIN_FILENO);
-	data->std_out = dup(STDOUT_FILENO);	
+	//TODO DIVIDIR EN DOS FUNCIONES
 	//STDIN
 	if (section->outer && section->out_conn == PIPE)
 	{
@@ -86,15 +85,18 @@ void	set_stdin_stdout(t_section *section, t_data *data)
 			curr_sec = curr_sec->outer;
 		dup_pipe(curr_sec, 1, data);
 	}
-	else if (section->inner && section->in_conn == PIPE)
+	/*else if (section->inner && section->in_conn == PIPE)
 	{
 		dup2(data->pipes[(section->id * 2) + 1], STDOUT_FILENO);
 		close(data->pipes[(section->id * 2) + 1]);
-	}
-	else if (section->next && section->next_conn == PIPE)
+	}*/
+	else if (get_next_section(section, data->section_id - 1)
+		&& get_next_section(section, data->section_id - 1)->previous->next_conn
+		== PIPE)
 	{
-		dup2(data->pipes[(section->id * 2) + 1], STDOUT_FILENO);
-		close(data->pipes[(section->id * 2) + 1]);
+		curr_sec = get_next_section(section, data->section_id - 1);
+		dup2(data->pipes[((curr_sec->id -1) * 2) + 1], STDOUT_FILENO);
+		close(data->pipes[((curr_sec->id -1) * 2) + 1]);
 	}
 	else if (section->fd_out != -1)
 		dup2(section->fd_out, STDOUT_FILENO);
@@ -150,8 +152,8 @@ int	create_process(t_section **section, t_data *data, int subshell)
 		{
 			dup2(data->std_in, STDIN_FILENO);
 			dup2(data->std_out, STDOUT_FILENO);
-			close(data->std_in);
-			close(data->std_out);
+			//close(data->std_in);
+			//close(data->std_out);
 		}
 	}
 	return (0);
@@ -161,6 +163,10 @@ int	setup_process(t_section *curr_sec, t_data *data)
 {
 	int wait_process;
 
+	//TODO lo puedo mover a init data?
+	data->std_in = dup(STDIN_FILENO);
+	data->std_out = dup(STDOUT_FILENO);	
+
 	wait_process = 0;
 	//TODO EXECUTE ALL SECTIONS ONLY CONNECTED BY PIPE
 	while (curr_sec)
@@ -168,13 +174,11 @@ int	setup_process(t_section *curr_sec, t_data *data)
 		if (curr_sec->cmd)
 		{
 		//TODO PRINT TEST
-		printf("\n##### SECTION %d EXPANSION #####\n", curr_sec->id);
 		expand_section(curr_sec, data);
 		//TODO SET FD_IN Y FD_OUT DE CADA SECCION (NOT && or ||)
 		if (open_fds(curr_sec) == 0)
 		{
 			set_stdin_stdout(curr_sec, data);
-			//TODO FORK EXECVE
 			create_process(&curr_sec, data, 0);
 			wait_process++;
 		}
@@ -199,28 +203,21 @@ int	setup_process(t_section *curr_sec, t_data *data)
 	int last_section_executed;
 	free_close_pipes(data);
 	last_section_executed = curr_sec->id;
-	printf("\nLast section executed %d\n", last_section_executed);
+	//printf("\nLast section executed %d\n", last_section_executed);
 	int	status;
-	printf("Processes waiting: %d\n", wait_process);
+	//printf("Processes waiting: %d\n", wait_process);
 	while (wait_process--)
 	{
 		if (wait(&status) == data->pids[last_section_executed])
 		{
-			// Verificar si el proceso terminó normalmente
         	if (WIFEXITED(status)) 
-			{
-				printf("exit status: %d\n", WEXITSTATUS(status));
 				data->last_exit_status = WEXITSTATUS(status);
-			}
 			else
 				data->last_exit_status = 666;
 		}
 	}
 	if (data->is_child)
-	{
-		printf("SE CIERRA CHILD\n");
 		exit(data->last_exit_status);
-	}
 	return (1);
 }
 
@@ -236,5 +233,9 @@ void	executor(t_data *data)
 	{
 		if (setup_process(data->sections, data) > 0)
 			break;
+		//TODO funcion que compruebe exit status, && y || y vuelva al bucle
 	}
+	//close(data->std_in);
+	//close(data->std_out);
+
 }

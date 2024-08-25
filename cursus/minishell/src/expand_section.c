@@ -189,22 +189,17 @@ void	expand_section(t_section *section, t_data *data)
 	t_files	*curr_file;
 
 	i = 0;
-	//TODO TEST PRINTS
-	printf("CMD EXPANDED:\n");
 	while (section->cmd && section->cmd[i])
 	{
 		if (ft_strchr(section->cmd[i], '\\'))
 			section->cmd[i] = get_str_expanded(section->cmd[i], data);
-		printf("[%d]%s\n", i, section->cmd[i]); //TEST PRINT
 		i++;
 	}
 	curr_file = section->files;
-	printf("FILES EXPANDED:\n");
 	while (curr_file)
 	{
 		if (ft_strchr(curr_file->file_name, '\\'))
 			curr_file->file_name = get_str_expanded(curr_file->file_name, data);
-		printf("%s\n", curr_file->file_name); //TEST PRINT
 		curr_file = curr_file->next;
 	}
 }

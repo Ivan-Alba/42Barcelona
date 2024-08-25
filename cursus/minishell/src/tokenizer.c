@@ -125,8 +125,6 @@ int	tokenizer(t_data *data)
 		create_token(data, &i);
 	merge_tokens(data);
 	delete_space_tokens(data);
-	//TODO TEST PRINT
-	print_tokens(data);
 	if (check_first_last_token(data->tokens, 1))
 		return (1);
 	if (check_tokens_format(data, 0))

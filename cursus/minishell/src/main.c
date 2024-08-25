@@ -37,7 +37,9 @@ void	minishell(t_data *data)
 		return ;
 	sectionizer(data);
 	/*------TODO TEST PRINTS------*/
+	//print_tokens(data);
 	print_sections(data->sections);
+	printf("\nOUTPUT:\n");
 	/*---------------------------*/
 	executor(data);
 }

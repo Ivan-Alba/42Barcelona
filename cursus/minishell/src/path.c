@@ -63,7 +63,7 @@ void	get_path(t_data *data)
 		data->path = ft_split((data->env)[i] + 5, ':');
 		if (!data->path)
 			print_error_exit(MALLOC_ERROR, data);
-		}
+	}
 	else
 		data->path = NULL;
 }
