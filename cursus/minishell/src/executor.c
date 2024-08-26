@@ -61,7 +61,10 @@ void	set_stdin(t_section *section, t_data *data)
 	t_section *curr_sec;
 
 	if (section->fd_in != -1)
+	{
+		printf("fd section->fd_in\n");
 		dup2(section->fd_in, STDIN_FILENO);
+	}
 	else if (section->outer && section->out_conn == PIPE)
 	{
 		curr_sec = section->outer;
@@ -203,7 +206,8 @@ void	execute_sections(t_section *curr_sec, t_data *data)
 			data->last_exit_status = 1;	
 		if (curr_sec->inner && ((curr_sec->in_conn != AND
 			&& curr_sec->out_conn != OR) || data->accept_inner))
-		{	
+		{
+			//data->accept_inner = 0;
 			if (create_process(&curr_sec, data, 1))
 				continue ;
 			data->wait_process++;
@@ -219,11 +223,16 @@ void	execute_sections(t_section *curr_sec, t_data *data)
 	//TODO RECURSIVA && y || maybe??
 	if (curr_sec->next)
 	{
-		data->accept_inner = 1;
 		if (curr_sec->next_conn == AND && data->last_exit_status == 0)
+		{
+			data->accept_inner = 1;
 			execute_sections(curr_sec->next, data);
+		}
 		else if (curr_sec->next_conn == OR && data->last_exit_status > 0)
-			execute_sections(curr_sec->next, data);	
+		{
+			data->accept_inner = 1;
+			execute_sections(curr_sec->next, data);
+		}
 	}
 	if (data->is_child)
 	{
@@ -237,11 +246,9 @@ void	executor(t_data *data)
 {
 	//t_section *last_section;
 
-	//generate_pipes(data);
 	manage_heredocs(data);
 	data->pids = malloc(sizeof(int) * data->section_id);
 	if (!data->pids)
 		print_error_exit(MALLOC_ERROR, data);
-	//curr_sec = data->sections;
 	execute_sections(data->sections, data);
 }

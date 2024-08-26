@@ -24,12 +24,12 @@ void	remove_heredoc_files(t_section **section)
 			&& current_file->hrdc_file_name)
 		{
 			//TODO test prints
-			/*if (unlink(current_file->hrdc_file_name) != -1)
+			if (unlink(current_file->hrdc_file_name) != -1)
 				printf("Heredoc file \"%s\" deleted\n",
 					current_file->hrdc_file_name);
 			else
 				printf("Error deleting %s file\n",
-					current_file->hrdc_file_name);*/
+					current_file->hrdc_file_name);
 		}
 		current_file = current_file->next;
 	}

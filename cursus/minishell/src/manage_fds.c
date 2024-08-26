@@ -97,10 +97,7 @@ int	open_fds(t_section *section)
 		if (curr_file->file_type == OUT_F || curr_file->file_type == OUT_AP_F)
 			error = set_outfile(section, curr_file);
 		if (error)
-		{
-			printf("Error opening file\n");
 			return (error);
-		}
 		curr_file = curr_file->next;
 	}
 	return (0);
