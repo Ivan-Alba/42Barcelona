@@ -108,6 +108,7 @@ void	init_data(t_data **data, char **env)
 	(*data)->std_out = -1;
 	(*data)->is_child = 0;
 	(*data)->wait_process = 0;
+	(*data)->accept_inner = 0;
 	(*data)->std_in = dup(STDIN_FILENO);
 	(*data)->std_out = dup(STDOUT_FILENO);
 }

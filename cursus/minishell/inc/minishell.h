@@ -112,6 +112,7 @@ typedef struct s_data
 	int				std_in;
 	int				std_out;
 	int				is_child;
+	int				accept_inner;
 	int				wait_process;
 	int				last_exit_status;
 }	t_data;

@@ -201,7 +201,8 @@ void	execute_sections(t_section *curr_sec, t_data *data)
 		}
 		else
 			data->last_exit_status = 1;	
-		if (curr_sec->inner && curr_sec->in_conn != AND && curr_sec->out_conn != OR)
+		if (curr_sec->inner && ((curr_sec->in_conn != AND
+			&& curr_sec->out_conn != OR) || data->accept_inner))
 		{	
 			if (create_process(&curr_sec, data, 1))
 				continue ;
@@ -213,17 +214,16 @@ void	execute_sections(t_section *curr_sec, t_data *data)
 			break;
 	}
 	//TODO WAIT PROCESSES FINISHING
+	data->accept_inner = 0;
 	wait_for_process_ending(curr_sec, data);
 	//TODO RECURSIVA && y || maybe??
-	t_section *next_section;
-	//Get next section no outer??
-	next_section = get_next_section(curr_sec, data->section_id - 1);
-	if (next_section)
+	if (curr_sec->next)
 	{
+		data->accept_inner = 1;
 		if (curr_sec->next_conn == AND && data->last_exit_status == 0)
-			execute_sections(next_section, data);
+			execute_sections(curr_sec->next, data);
 		else if (curr_sec->next_conn == OR && data->last_exit_status > 0)
-			execute_sections(next_section, data);	
+			execute_sections(curr_sec->next, data);	
 	}
 	if (data->is_child)
 	{
@@ -235,7 +235,7 @@ void	execute_sections(t_section *curr_sec, t_data *data)
 //Manages the opening of fd's, creation of processes and execution of commands
 void	executor(t_data *data)
 {
-	//t_section *curr_sec:
+	//t_section *last_section;
 
 	//generate_pipes(data);
 	manage_heredocs(data);
