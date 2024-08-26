@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 15:19:24 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/26 16:34:08 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/26 17:11:36 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,7 +216,8 @@ void	execute_sections(t_section *curr_sec, t_data *data)
 	wait_for_process_ending(curr_sec, data);
 	//TODO RECURSIVA && y || maybe??
 	t_section *next_section;
-	next_section = get_next_section(curr_sec, data->section_id);
+	//Get next section no outer??
+	next_section = get_next_section(curr_sec, data->section_id - 1);
 	if (next_section)
 	{
 		if (curr_sec->next_conn == AND && data->last_exit_status == 0)
