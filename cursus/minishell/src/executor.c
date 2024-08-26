@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 15:19:24 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/26 13:29:13 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/26 16:34:08 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,35 +79,24 @@ void	set_stdin(t_section *section, t_data *data)
 void	set_stdout(t_section *section, t_data *data)
 {
 	t_section *curr_sec;
-	//STDOUT
+	
 	if (section->fd_out != -1)
 		dup2(section->fd_out, STDOUT_FILENO);
 	//TODO Podria no ser ultima seccion y redirigir a un nivel superior
 	else if (section->outer && !section->next && section->id != data->section_id - 1)
 	{
-		printf("entro aqui\n");
 		curr_sec = section->outer;
 		while (curr_sec->outer && !curr_sec->next && curr_sec->fd_out == -1)
-		{
-			printf("entro bucle \n");
 			curr_sec = curr_sec->outer;
-		}
 		if (curr_sec->fd_out != -1)
-		{
-			printf("hay fd_out\n");
 			dup2(curr_sec->fd_out, STDOUT_FILENO);
-		}
 		else
-		{
-			printf("NO hay fd_out\n");
 			dup_pipe(curr_sec, 1, data);
-		}
 	}
 	else if (get_next_section(section, data->section_id - 1)
 		&& get_next_section(section, data->section_id - 1)->previous->next_conn
 		== PIPE)
 	{
-		printf("entro aqui2\n");
 		curr_sec = get_next_section(section, data->section_id - 1);
 		dup2(data->pipes[((curr_sec->id -1) * 2) + 1], STDOUT_FILENO);
 		close(data->pipes[((curr_sec->id -1) * 2) + 1]);
@@ -116,27 +105,8 @@ void	set_stdout(t_section *section, t_data *data)
 
 void	set_stdin_stdout(t_section *section, t_data *data)
 {
-	//STDIN
 	set_stdin(section, data);	
-	//STDOUT
 	set_stdout(section, data);
-	/*if (section->fd_out != -1)
-		dup2(section->fd_out, STDOUT_FILENO);
-	else if (section->outer && !section->next && section->id != data->section_id - 1)
-	{
-		curr_sec = section->outer;
-		while (curr_sec->outer && !curr_sec->next)
-			curr_sec = curr_sec->outer;
-		dup_pipe(curr_sec, 1, data);
-	}
-	else if (get_next_section(section, data->section_id - 1)
-		&& get_next_section(section, data->section_id - 1)->previous->next_conn
-		== PIPE)
-	{
-		curr_sec = get_next_section(section, data->section_id - 1);
-		dup2(data->pipes[((curr_sec->id -1) * 2) + 1], STDOUT_FILENO);
-		close(data->pipes[((curr_sec->id -1) * 2) + 1]);
-	}*/
 	close_section_fds(section);
 }
 
@@ -188,12 +158,32 @@ int	create_process(t_section **section, t_data *data, int subshell)
 	return (0);
 }
 
-int	setup_process(t_section *curr_sec, t_data *data)
+void	wait_for_process_ending(t_section *last_section, t_data *data)
 {
-	//TODO lo puedo mover a init data?
-	//data->std_in = dup(STDIN_FILENO);
-	//data->std_out = dup(STDOUT_FILENO);	
+	int	last_section_executed;
+	int	status;
 
+	free_close_pipes(data);
+	last_section_executed = last_section->id;
+	//TODO TEST PRINT
+	printf("\nLast section executed %d\n", last_section_executed);
+	printf("Processes waiting: %d\n", data->wait_process);
+	while (data->wait_process--)
+	{
+		if (wait(&status) == data->pids[last_section_executed])
+		{
+        	if (WIFEXITED(status)) 
+				data->last_exit_status = WEXITSTATUS(status);
+			else
+				data->last_exit_status = 666; //TODO patillada, senales?
+		}
+	}
+	data->wait_process = 0;
+}
+
+void	execute_sections(t_section *curr_sec, t_data *data)
+{
+	generate_pipes(data);
 	//TODO EXECUTE ALL SECTIONS ONLY CONNECTED BY PIPE
 	while (curr_sec)
 	{
@@ -223,43 +213,34 @@ int	setup_process(t_section *curr_sec, t_data *data)
 			break;
 	}
 	//TODO WAIT PROCESSES FINISHING
-	int last_section_executed;
-	free_close_pipes(data);
-	last_section_executed = curr_sec->id;
-	printf("\nLast section executed %d\n", last_section_executed);
-	int	status;
-	printf("Processes waiting: %d\n", data->wait_process);
-	while (data->wait_process--)
+	wait_for_process_ending(curr_sec, data);
+	//TODO RECURSIVA && y || maybe??
+	t_section *next_section;
+	next_section = get_next_section(curr_sec, data->section_id);
+	if (next_section)
 	{
-		if (wait(&status) == data->pids[last_section_executed])
-		{
-        	if (WIFEXITED(status)) 
-				data->last_exit_status = WEXITSTATUS(status);
-			else
-				data->last_exit_status = 666;
-		}
+		if (curr_sec->next_conn == AND && data->last_exit_status == 0)
+			execute_sections(next_section, data);
+		else if (curr_sec->next_conn == OR && data->last_exit_status > 0)
+			execute_sections(next_section, data);	
 	}
 	if (data->is_child)
+	{
+		printf("CLOSE CHILD\n");
 		exit(data->last_exit_status);
-	data->wait_process = 0;
-	return (1);
+	}
 }
 
 //Manages the opening of fd's, creation of processes and execution of commands
 void	executor(t_data *data)
 {
-	generate_pipes(data);
+	//t_section *curr_sec:
+
+	//generate_pipes(data);
 	manage_heredocs(data);
 	data->pids = malloc(sizeof(int) * data->section_id);
 	if (!data->pids)
 		print_error_exit(MALLOC_ERROR, data);
-	while (1)
-	{
-		if (setup_process(data->sections, data) > 0)
-			break;
-		//TODO funcion que compruebe exit status, && y || y vuelva al bucle
-	}
-	//close(data->std_in);
-	//close(data->std_out);
-
+	//curr_sec = data->sections;
+	execute_sections(data->sections, data);
 }
