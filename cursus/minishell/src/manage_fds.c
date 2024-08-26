@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 15:19:24 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/23 19:58:46 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/26 12:51:21 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,10 @@ int	open_fds(t_section *section)
 		if (curr_file->file_type == OUT_F || curr_file->file_type == OUT_AP_F)
 			error = set_outfile(section, curr_file);
 		if (error)
+		{
+			printf("Error opening file\n");
 			return (error);
+		}
 		curr_file = curr_file->next;
 	}
 	return (0);

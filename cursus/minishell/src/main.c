@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:30:27 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/22 18:29:04 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/26 13:25:07 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,9 @@ void	init_data(t_data **data, char **env)
 	(*data)->std_in = -1;
 	(*data)->std_out = -1;
 	(*data)->is_child = 0;
+	(*data)->wait_process = 0;
+	(*data)->std_in = dup(STDIN_FILENO);
+	(*data)->std_out = dup(STDOUT_FILENO);
 }
 
 /**

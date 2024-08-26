@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 18:55:08 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/22 20:22:26 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/26 11:58:12 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ void	remove_heredoc_files(t_section **section)
 			&& current_file->hrdc_file_name)
 		{
 			//TODO test prints
-			if (unlink(current_file->hrdc_file_name) != -1)
+			/*if (unlink(current_file->hrdc_file_name) != -1)
 				printf("Heredoc file \"%s\" deleted\n",
 					current_file->hrdc_file_name);
 			else
 				printf("Error deleting %s file\n",
-					current_file->hrdc_file_name);
+					current_file->hrdc_file_name);*/
 		}
 		current_file = current_file->next;
 	}

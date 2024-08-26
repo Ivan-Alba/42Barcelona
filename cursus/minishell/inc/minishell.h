@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:34:21 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/23 17:44:01 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/26 12:15:26 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ typedef struct s_data
 	int				std_in;
 	int				std_out;
 	int				is_child;
+	int				wait_process;
 	int				last_exit_status;
 }	t_data;
 

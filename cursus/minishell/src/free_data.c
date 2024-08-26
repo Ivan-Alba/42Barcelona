@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 16:45:47 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/21 19:22:29 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/26 13:27:15 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,30 +63,29 @@ void	free_split(char ***splitted)
 //Releases all the data necessary to finalize the program execution
 void	free_data(t_data *data)
 {
-	if (data)
+	if (data->split_info)
 	{
-		if (data->split_info)
-		{
-			if (data->split_info->splitted_prompt)
-				free_split(&(data->split_info->splitted_prompt));
-			free(data->split_info);
-		}
-		if (data->prompt_init)
-			free(data->prompt_init);
-		if (data->tokens)
-			ft_token_lstclear(&data->tokens);
-		if (data->sections)
-			free_sections(&data->sections);
-		if (data->pipes)
-			free_close_pipes(data);
-		if (data->expand_vars)
-			free_split(&data->expand_vars);
-		if (data->path)
-			free_split(&data->path);
-		if (data->pids)
-			free(data->pids);
-		free(data);
+		if (data->split_info->splitted_prompt)
+			free_split(&(data->split_info->splitted_prompt));
+		free(data->split_info);
 	}
+	if (data->prompt_init)
+		free(data->prompt_init);
+	if (data->tokens)
+		ft_token_lstclear(&data->tokens);
+	if (data->sections)
+		free_sections(&data->sections);
+	if (data->pipes)
+		free_close_pipes(data);
+	if (data->expand_vars)
+		free_split(&data->expand_vars);
+	if (data->path)
+		free_split(&data->path);
+	if (data->pids)
+		free(data->pids);
+	close(data->std_in);
+	close(data->std_out);
+	free(data);
 }
 
 //Frees the allocated memory of the nodes of a list of type t_section
