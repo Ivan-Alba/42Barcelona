@@ -32,12 +32,12 @@ void	minishell(t_data *data)
 	data->prompt = data->prompt_init;
 	if (check_syntax(data))
 		return ;
-	ft_token_split("<>|& ()\"\';\\", data);
+	ft_token_split("<>|& ();\\\'\"", data);
 	if (tokenizer(data))
 		return ;
 	sectionizer(data);
 	/*------TODO TEST PRINTS------*/
-	//print_tokens(data);
+	print_tokens(data);
 	print_sections(data->sections);
 	printf("\nOUTPUT:\n");
 	/*---------------------------*/

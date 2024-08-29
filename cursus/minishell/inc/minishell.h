@@ -60,6 +60,7 @@ typedef struct s_files
 	enum e_token_type	file_type;
 	int					fd;
 	char				*hrdc_file_name;
+	int					hrdc_expand;
 	struct s_files		*next;
 }	t_files;
 
@@ -137,8 +138,7 @@ int			check_pipe(t_token *current);
 int			check_first_last_token(t_token *token, int is_first);
 //token_lst_utils
 void		ft_token_lstclear(t_token **lst);
-void		add_new_token(t_data *data, char *str, enum e_token_type type,
-				int expand);
+void		add_new_token(t_data *data, char *str, enum e_token_type type);
 //sectionizer
 void		sectionizer(t_data *data);
 t_section	*new_section(t_section *outer, t_section *previous, t_data *data);

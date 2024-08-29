@@ -73,7 +73,7 @@ void	add_new_var(int *i, char *str, t_data *data)
 	len = 1;
 	(*i)++;
 	while (str[*i] != '$' && str[*i] != '\\' && str[*i] != ' '
-		&& str[*i] != '\0')
+		&& str[*i] != '\'' && str[*i] != '"' &&  str[*i] != '\0')
 	{
 		len++;
 		(*i)++;
@@ -102,7 +102,7 @@ void	trim_vars(char *str, int *i, t_data *data)
 {
 	char	*tmp;
 
-	if (str[*i] == '\\' && str[*i + 1] == '$' && (*i)++ >= 0)
+	if (str[*i] == '$')
 	{
 		if (str[*i + 1] == '$' && (*i)++ >= 0)
 			data->expand_vars = add_to_array(&data->expand_vars, "40078");
@@ -153,11 +153,31 @@ char	*get_str_expanded(char *str, t_data *data)
 {
 	int		i;
 	char	*str_expanded;
+	char	*tmp;
 
 	i = -1;
 	while (str[++i])
 	{
-		trim_vars(str, &i, data);
+		if (str[i] == '\'')
+		{
+			while (str[++i] != '\'')
+			{
+				tmp = string_from_char(str[i]);
+				if (!tmp)
+					print_error_exit(MALLOC_ERROR, data);
+				data->expand_vars = add_to_array(&data->expand_vars, tmp);
+				if (!data->expand_vars)
+					print_error_exit(MALLOC_ERROR, data);
+				free(tmp);
+			}
+		}
+		else if (str[i] == '"')
+		{
+			while (str[++i] != '"')
+				trim_vars(str, &i, data);
+		}
+		else
+			trim_vars(str, &i, data);
 		if (!data->expand_vars)
 			print_error_exit(MALLOC_ERROR, data);
 	}
@@ -191,14 +211,17 @@ void	expand_section(t_section *section, t_data *data)
 	i = 0;
 	while (section->cmd && section->cmd[i])
 	{
-		if (ft_strchr(section->cmd[i], '\\'))
-			section->cmd[i] = get_str_expanded(section->cmd[i], data);
+		section->cmd[i] = get_str_expanded(section->cmd[i], data);
 		i++;
 	}
 	curr_file = section->files;
 	while (curr_file)
 	{
-		if (ft_strchr(curr_file->file_name, '\\'))
+		if (curr_file->file_type == HEREDOC)
+		{
+			//TODO remove quotes	
+		}
+		else
 			curr_file->file_name = get_str_expanded(curr_file->file_name, data);
 		curr_file = curr_file->next;
 	}

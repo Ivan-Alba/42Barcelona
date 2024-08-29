@@ -24,16 +24,17 @@ void	create_token(t_data *data, int *i)
 		token_pipe_or(data, i);
 	else if (current[0] == '&')
 		token_amper_and(data, i);
-	else if (current[0] == '\'' || current[0] == '"')
-		token_quotes(data, i);
 	else if (current[0] == '(' || current[0] == ')')
 		token_brackets(data, i);
+	//TODO SPACES ON QUOTES
+	/*else if (current[0] == '\'' || current[0] == '"')
+		token_quotes(data, i);*/
 	else if (current[0] == ' ')
-		add_new_token(data, ft_strdup(current), SPC, 0);
+		add_new_token(data, ft_strdup(current), SPC);
 	else if (current[0] == '\\' || current[0] == ';')
-		add_new_token(data, ft_strdup(current), FORB, 0);
+		add_new_token(data, ft_strdup(current), FORB);
 	else
-		add_new_token(data, ft_strdup(current), WORD, 1);
+		add_new_token(data, ft_strdup(current), WORD);
 }
 
 //Merges WORD type tokens that do not contain SPC type tokens between them
