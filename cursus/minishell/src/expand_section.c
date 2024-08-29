@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 17:05:50 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/23 17:58:19 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/29 18:47:39 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,14 @@ void	add_new_var(int *i, char *str, t_data *data)
 	len = 1;
 	(*i)++;
 	while (str[*i] != '$' && str[*i] != '\\' && str[*i] != ' '
-		&& str[*i] != '\'' && str[*i] != '"' &&  str[*i] != '\0')
+		&& str[*i] != '\'' && str[*i] != '\"' &&  str[*i] != '\0')
 	{
 		len++;
 		(*i)++;
 	}
 	aux = ft_strcut(&(str[(*i) - len]), len);
 	data->expand_vars = add_to_array(&data->expand_vars, aux);
+	printf("VARIABLE A BUSCAR %s\n", aux);
 	free(aux);
 	(*i)--;
 }
@@ -162,13 +163,12 @@ char	*get_str_expanded(char *str, t_data *data)
 		{
 			while (str[++i] != '\'')
 			{
-				tmp = string_from_char(str[i]);
-				if (!tmp)
-					print_error_exit(MALLOC_ERROR, data);
+				tmp = NULL;
+				tmp = concat_char_to_str(tmp, str[i], data);
 				data->expand_vars = add_to_array(&data->expand_vars, tmp);
+				free(tmp);
 				if (!data->expand_vars)
 					print_error_exit(MALLOC_ERROR, data);
-				free(tmp);
 			}
 		}
 		else if (str[i] == '"')
@@ -217,12 +217,10 @@ void	expand_section(t_section *section, t_data *data)
 	curr_file = section->files;
 	while (curr_file)
 	{
-		if (curr_file->file_type == HEREDOC)
+		if (curr_file->file_type != HEREDOC)
 		{
-			//TODO remove quotes	
-		}
-		else
 			curr_file->file_name = get_str_expanded(curr_file->file_name, data);
+		}
 		curr_file = curr_file->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:28:42 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/23 17:42:04 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/29 17:32:07 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,30 @@ char	*string_from_char(char c)
 		return (NULL);
 	result[0] = c;
 	result[1] = '\0';
+	return (result);
+}
+
+char	*concat_char_to_str(char *str, char c, t_data *data)
+{
+	char	*tmp;
+	char	*result;
+
+	tmp = string_from_char(c);
+	if (!tmp)
+	{
+		if (str)
+			free(str);
+		print_error_exit(MALLOC_ERROR, data);
+	}
+	result = ft_strcat(str, tmp);
+	free(tmp);
+	if (str)
+	{
+		free(str);
+		str = NULL;
+	}
+	if (!result)
+		print_error_exit(MALLOC_ERROR, data);
 	return (result);
 }
 

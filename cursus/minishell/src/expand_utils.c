@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 17:05:50 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/23 17:58:19 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/29 17:25:55 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ char	*get_var_value(char *var_name, t_data *data)
  *	Return Value:
  *		int count	- Returns the count of environment variables.
  */
-int	count_env_var(char *str)
+/*int	count_env_var(char *str)
 {
 	int	i;
 	int	count;
@@ -108,7 +108,7 @@ int	count_env_var(char *str)
 			i++;
 	}
 	return (count);
-}
+}*/
 
 /**
  *	Function Name: expand_marks
@@ -130,7 +130,7 @@ int	count_env_var(char *str)
  *		char *str = "I'm the user $USER in $PWD directory".
  *		Returns: 	"I'm the user \$USER in \$PWD directory".
  */
-char	*expand_marks(char *str)
+/*char	*expand_marks(char *str)
 {
 	int		i;
 	int		j;
@@ -157,4 +157,4 @@ char	*expand_marks(char *str)
 		return (flag_str);
 	}
 	return (ft_strdup(str));
-}
+}*/

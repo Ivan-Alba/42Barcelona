@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:29:08 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/14 14:26:03 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/29 15:42:33 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ void	token_amper_and(t_data *data, int *i)
 	}
 }
 
-//TODO NOT REMOVE QUOTES
 //Adds a new token of type "WORD", founded between quotes to the t_token list
 void	token_quotes(t_data *data, int *i)
 {
@@ -90,19 +89,22 @@ void	token_quotes(t_data *data, int *i)
 
 	res = NULL;
 	quote_type = data->split_info->splitted_prompt[(*i)][0];
+	res = ft_strdup(data->split_info->splitted_prompt[*i]);
+	if (!res)
+		print_error_exit(MALLOC_ERROR, data);
 	while (data->split_info->splitted_prompt[++(*i)][0] != quote_type)
 	{
-		if (!res)
-			res = ft_strdup(data->split_info->splitted_prompt[(*i)]);
-		else
-		{
-			aux = res;
-			res = ft_strcat(res, data->split_info->splitted_prompt[(*i)]);
-			free(aux);
-		}
+		aux = res;
+		res = ft_strcat(res, data->split_info->splitted_prompt[(*i)]);
+		free(aux);
 		if (!res)
 			print_error_exit(MALLOC_ERROR, data);
 	}
+	aux = res;
+	res = ft_strcat(res, data->split_info->splitted_prompt[*i]);
+	free(aux);
+	if (!res)
+		print_error_exit(MALLOC_ERROR, data);
 	if (res)
 		add_new_token(data, res, WORD);
 }

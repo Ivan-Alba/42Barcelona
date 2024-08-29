@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:00:14 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/17 15:42:00 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/29 15:41:25 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,8 @@ void	create_token(t_data *data, int *i)
 		token_amper_and(data, i);
 	else if (current[0] == '(' || current[0] == ')')
 		token_brackets(data, i);
-	//TODO SPACES ON QUOTES
-	/*else if (current[0] == '\'' || current[0] == '"')
-		token_quotes(data, i);*/
+	else if (current[0] == '\'' || current[0] == '"')
+		token_quotes(data, i);
 	else if (current[0] == ' ')
 		add_new_token(data, ft_strdup(current), SPC);
 	else if (current[0] == '\\' || current[0] == ';')

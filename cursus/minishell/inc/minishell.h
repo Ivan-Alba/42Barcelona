@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:34:21 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/26 16:18:18 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/29 20:14:42 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,14 @@
 # define CLOSE_ERROR "Error closing file"
 # define DUP_ERROR "Error creating fd copy using dup2"
 # define FORK_ERROR "Error creating process with fork"
+
+# define ECHO "echo"
+# define CD "cd"
+# define PWD "pwd"
+# define EXPORT "export"
+# define UNSET "unset"
+# define ENV "env"
+# define EXIT "exit"
 
 enum	e_token_type
 {
@@ -159,6 +167,8 @@ void		remove_heredoc_files(t_section **section);
 t_section	*get_next_section(t_section *current, int last_section_id);
 //expand_section
 void		expand_section(t_section *section, t_data *data);
+void	trim_vars(char *str, int *i, t_data *data);
+char	*expand_vars(t_data *data);
 //manage_fds
 int			open_fds(t_section *section);
 void		close_section_fds(t_section *section);
@@ -168,7 +178,7 @@ char		*get_cmd_path(char *cmd, t_data *data);
 //expand_utils
 void		concat_var_value(char **current_str, char *var, t_data *data);
 char		*get_var_value(char *var_name, t_data *data);
-char		*expand_marks(char *str);
+//char		*expand_marks(char *str);
 //free_utils
 void		clean_prompt_data(t_data *data);
 void		free_split(char ***splitted);
@@ -180,14 +190,18 @@ void		print_error_exit(char *msg, t_data *data);
 void		print_error(char *msg, char *token);
 char		*string_from_char(char c);
 char		**add_to_array(char ***current, char *new_value);
+char		*concat_char_to_str(char *str, char c, t_data *data);
 //test_utils
 void		print_tokens(t_data *data);
 void		print_split(char **splitted);
 void		print_sections(t_section *section);
 void		print_pipe(int fd);
+# define PROGRAM_NAME "minishell:"
 //files_lst_utils
 void		ft_files_lstclear(t_files **lst);
 void		ft_files_add(t_files **lst, t_files *new);
 t_files		*ft_files_new(char *file_name, enum e_token_type type);
-
+//check_builtins
+int	check_if_builtin(char *command);
+int	execute_builtin(char **cmd, t_data *data);
 #endif

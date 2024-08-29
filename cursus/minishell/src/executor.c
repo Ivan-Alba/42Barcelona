@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 15:19:24 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/26 17:11:36 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/29 20:09:09 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,10 @@ void	execute_sections(t_section *curr_sec, t_data *data)
 			if (curr_sec->cmd)
 			{
 				set_stdin_stdout(curr_sec, data);
-				create_process(&curr_sec, data, 0);
+				if (check_if_builtin(curr_sec->cmd[0]))
+					execute_builtin(curr_sec->cmd, data);
+				else
+					create_process(&curr_sec, data, 0);
 				dup2(data->std_in, STDIN_FILENO);
 				dup2(data->std_out, STDOUT_FILENO);
 				data->wait_process++;
