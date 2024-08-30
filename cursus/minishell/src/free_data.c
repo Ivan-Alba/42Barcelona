@@ -101,7 +101,7 @@ void	free_sections(t_section **section)
 	if ((*section)->cmd_path)
 		free((*section)->cmd_path);
 	(*section)->cmd_path = NULL;
-	remove_heredoc_files(&(*section));
+	remove_heredoc_files(*section);
 	ft_files_lstclear(&(*section)->files);
 	free(*section);
 	*section = NULL;

@@ -36,6 +36,7 @@
 # define DUP_ERROR "Error creating fd copy using dup2"
 # define FORK_ERROR "Error creating process with fork"
 
+# define PROGRAM_NAME "minishell:"
 # define ECHO "echo"
 # define CD "cd"
 # define PWD "pwd"
@@ -163,12 +164,12 @@ t_section	*get_next_pipe_section(t_section *current);
 void		executor(t_data *data);
 //heredocs
 void		manage_heredocs(t_data *data);
-void		remove_heredoc_files(t_section **section);
+void		remove_heredoc_files(t_section *section);
 t_section	*get_next_section(t_section *current, int last_section_id);
 //expand_section
 void		expand_section(t_section *section, t_data *data);
-void	trim_vars(char *str, int *i, t_data *data);
-char	*expand_vars(t_data *data);
+void		trim_vars(char *str, int *i, t_data *data);
+char		*expand_vars(t_data *data);
 //manage_fds
 int			open_fds(t_section *section);
 void		close_section_fds(t_section *section);
@@ -178,7 +179,7 @@ char		*get_cmd_path(char *cmd, t_data *data);
 //expand_utils
 void		concat_var_value(char **current_str, char *var, t_data *data);
 char		*get_var_value(char *var_name, t_data *data);
-//char		*expand_marks(char *str);
+void		add_new_var(int *i, char *str, t_data *data);
 //free_utils
 void		clean_prompt_data(t_data *data);
 void		free_split(char ***splitted);
@@ -196,12 +197,11 @@ void		print_tokens(t_data *data);
 void		print_split(char **splitted);
 void		print_sections(t_section *section);
 void		print_pipe(int fd);
-# define PROGRAM_NAME "minishell:"
 //files_lst_utils
 void		ft_files_lstclear(t_files **lst);
 void		ft_files_add(t_files **lst, t_files *new);
 t_files		*ft_files_new(char *file_name, enum e_token_type type);
 //check_builtins
-int	check_if_builtin(char *command);
-int	execute_builtin(char **cmd, t_data *data);
+int			check_if_builtin(char *command);
+int			execute_builtin(char **cmd, t_data *data);
 #endif

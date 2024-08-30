@@ -12,8 +12,21 @@
 
 #include "../inc/minishell.h"
 
-
-//TODO REVISAR FREES SI MALLOC FALLA
+/*	Function Name: remove_quotes
+ *
+ *	Description:
+ *
+ *		This function receives a HEREDOC file by parameter and removes (if any)
+ *		single and double quotes from its name.
+ *		If any quotation marks are found it sets heredoc to non-expansion mode.
+ *
+ *	Parameters:
+ *
+ *		t_files *file	- The pointer to the heredoc file.
+ *		t_data *data	- The pointer to the t_data struct with all
+ *							the execution data
+ *
+ */
 void	remove_quotes(t_files *file, t_data *data)
 {
 	int		i;
@@ -32,12 +45,24 @@ void	remove_quotes(t_files *file, t_data *data)
 	file->file_name = result;
 }
 
-//Removes temporary files created by heredocs
-void	remove_heredoc_files(t_section **section)
+/*	Function Name: remove_heredoc_files
+ *
+ *	Description:
+ *
+ *		This function deletes temporary files of type heredoc created during
+ *		execution.
+ *
+ *	Parameters:
+ *
+ *		t_section *section	- The pointer to the section containing the
+ *								data of the heredocs created in it.
+ *
+ */
+void	remove_heredoc_files(t_section *section)
 {
 	t_files	*current_file;
 
-	current_file = (*section)->files;
+	current_file = section->files;
 	while (current_file)
 	{
 		if (current_file->file_type == HEREDOC
@@ -50,29 +75,60 @@ void	remove_heredoc_files(t_section **section)
 	}
 }
 
-char	*expand_heredoc_line(char *str, t_data *data)
+/*	Function Name: expand_heredoc_line
+ *
+ *	Description:
+ *
+ *		This function scans the line read by heredoc and calls the functions in
+ *		charge of expanding environment variables.
+ *		It frees the original line and returns the expanded one.
+ *
+ *	Parameters:
+ *
+ *		char *line		- The original line readed on heredoc to expand.
+ *		t_data *data	- The pointer to the t_data struct with all
+ *							the execution data
+ *	Return Value:
+ *
+ *		char *line_expanded	- The new line expanded with the environment values.
+ */
+char	*expand_heredoc_line(char *line, t_data *data)
 {
 	int		i;
-	char	*str_expanded;
+	char	*line_expanded;
 
 	i = -1;
-	while (str[++i])
+	while (line[++i])
 	{
-		trim_vars(str, &i, data);
+		trim_vars(line, &i, data);
 		if (!data->expand_vars)
 			print_error_exit(MALLOC_ERROR, data);
 	}
-	free(str);
-	str = NULL;
-	//print_split(data->expand_vars);
-	str_expanded = expand_vars(data);
-	//printf("%s\n", str_expanded);
+	free(line);
+	line = NULL;
+	line_expanded = expand_vars(data);
 	free_split(&data->expand_vars);
-	return (str_expanded);
+	return (line_expanded);
 }
 
-//Function that manages the reading of data when using a limiter
-void	read_heredoc(t_data *data, t_files *file)
+/*	Function Name: read_heredoc
+ *
+ *	Description:
+ *
+ *		This function creates the temporary file heredoc, reads the user input
+ *		line by line and writes its contents to the file until the limiter
+ *		is entered.
+ *		If the file has expansion set, it calls the function in charge of
+ *		expanding the environment variables before writing it.
+ *
+ *	Parameters:
+ *
+ *		t_files *file	- The pointer to the heredoc file with all
+ *							heredoc data.
+ *		t_data *data	- The pointer to the t_data struct with all
+ *							the execution data
+ */
+void	read_heredoc(t_files *file, t_data *data)
 {
 	char		*line;
 
@@ -98,7 +154,19 @@ void	read_heredoc(t_data *data, t_files *file)
 	close(file->fd);
 }
 
-//Go through the sections and manage the opening of the heredocs
+/*	Function Name: manage_heredocs
+ *
+ *	Description:
+ *
+ *		This function, which is executed before starting the execution of
+ *		the sections, manages the opening of heredoc files of all sections
+ *		and the writing of their contents.
+ *
+ *	Parameters:
+ *
+ *		t_data *data	- The pointer to the t_data struct with all
+ *							the execution data
+ */
 void	manage_heredocs(t_data *data)
 {
 	t_section	*current_sec;
@@ -119,7 +187,7 @@ void	manage_heredocs(t_data *data)
 					print_error_exit(MALLOC_ERROR, data);
 				current_file->hrdc_file_name = ft_strcat(".hrdc_", suffix);
 				free(suffix);
-				read_heredoc(data, current_file);
+				read_heredoc(current_file, data);
 			}
 			current_file = current_file->next;
 		}

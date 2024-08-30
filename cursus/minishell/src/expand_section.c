@@ -16,14 +16,17 @@
  *	Function Name: expand_vars
  *
  *	Description:
+ *
  *		This function creates the resulting string with all the values of the
  *		expanded environment variables.
- *		It will be the final value stored in the t_section.
+ *		It will be the final value stored in the t_section data.
  *
  *	Parameters:
+ *
  *		t_data *data	- The pointer to the t_data struct with all
  *							the execution data.
  *	Return value:
+ *
  *		char *expanded_str - The string resulting from the whole process of
  *								expanding environment variables.
  */
@@ -51,50 +54,17 @@ char	*expand_vars(t_data *data)
 }
 
 /**
- *	Function Name: add_new_var
- *
- *	Description:
- *		This function calculates the length of the environment variable and calls
- *		the ft_strcut function to make a copy of it and add it to the char** into
- *		the t_data struct of variables to be expanded.
- *
- *	Parameters:
- *		int *i			- The pointer to the index of the string where the
- *							environment variable starts.
- *		char *str		- The string that contains the unexpanded variables.
- *		t_data *data	- The pointer to the t_data struct with all
- *							the execution data.
- */
-void	add_new_var(int *i, char *str, t_data *data)
-{
-	int		len;
-	char	*aux;
-
-	len = 1;
-	(*i)++;
-	while (str[*i] != '$' && str[*i] != '\\' && str[*i] != ' '
-		&& str[*i] != '\'' && str[*i] != '\"' &&  str[*i] != '\0')
-	{
-		len++;
-		(*i)++;
-	}
-	aux = ft_strcut(&(str[(*i) - len]), len);
-	data->expand_vars = add_to_array(&data->expand_vars, aux);
-	printf("VARIABLE A BUSCAR %s\n", aux);
-	free(aux);
-	(*i)--;
-}
-
-/**
  *	Function Name: trim_vars
  *
  *	Description:
+ *
  *		This function manages the splitting of environment variables or characters
  *		that are not part of them, with the help of other auxiliary functions, and
  *		stores them in a char** into the t_data struct.
  *
  *	Parameters:
- *		char *str		- The string that contains the unexpanded variables.
+ *
+ *		char *str		- The original string to expand.
  *		int *i			- The pointer to the current index of the string.
  *		t_data *data	- The pointer to the t_data struct with all
  *							the execution data.
@@ -129,24 +99,60 @@ void	trim_vars(char *str, int *i, t_data *data)
 }
 
 /**
+ *	Function Name: add_chars
+ *
+ *	Description:
+ *
+ *		This function traverses the string, specifically the characters between
+ *		single quotes (where variable expansion does not occur). It adds character
+ *		by character to the variable char** within the t_data structure for later
+ *		adding them to the resulting string.
+ *
+ *	Parameters:
+ *
+ *		char *str		- The original string to expand.
+ *		int *i			- The pointer to the current index of the string.
+ *		t_data *data	- The pointer to the t_data struct with all
+ *							the execution data.
+ */
+void	add_chars(char *str, int *i, t_data *data)
+{
+	char	*tmp;
+
+	while (str[++(*i)] != '\'')
+	{
+		tmp = NULL;
+		tmp = concat_char_to_str(tmp, str[*i], data);
+		data->expand_vars = add_to_array(&data->expand_vars, tmp);
+		free(tmp);
+		if (!data->expand_vars)
+			print_error_exit(MALLOC_ERROR, data);
+	}
+}
+
+/**
  *	Function Name: get_str_expanded
  *
  *	Description:
- *		This function scans the string that contains the environment variables
- *		to be expanded. It calls the function in charge of splitting them and
- *		then the function in charge of expanding them.
+ *
+ *		This function scans the string for environment variables to expand.
+ *		It calls the function in charge of splitting them and then the function
+ *		in charge of expanding them.
  *		It frees the memory of the original string and returns the new string
  *		with the values of the variables.
  *
  *	Parameters:
- *		char *str		- The string that contains the unexpanded variables.
+ *
+ *		char *str		- The original string to expand.
  *		t_data *data	- The pointer to the t_data struct with all
  *							the execution data.
  *	Return Value:
+ *
  *		char *str_expanded	-The string with the expanded values.
  *
  *	Example:
- *		str = "I'm the user \$USER and i'm in the directory \$PWD"
+ *
+ *		str = "I'm the user $USER and i'm in the directory $PWD"
  *		str_expanded = "I'm the user igarcia2 and i'm in the directory
  *						/home/igarcia2" 
  */
@@ -154,28 +160,15 @@ char	*get_str_expanded(char *str, t_data *data)
 {
 	int		i;
 	char	*str_expanded;
-	char	*tmp;
 
 	i = -1;
 	while (str[++i])
 	{
 		if (str[i] == '\'')
-		{
-			while (str[++i] != '\'')
-			{
-				tmp = NULL;
-				tmp = concat_char_to_str(tmp, str[i], data);
-				data->expand_vars = add_to_array(&data->expand_vars, tmp);
-				free(tmp);
-				if (!data->expand_vars)
-					print_error_exit(MALLOC_ERROR, data);
-			}
-		}
+			add_chars(str, &i, data);
 		else if (str[i] == '"')
-		{
 			while (str[++i] != '"')
 				trim_vars(str, &i, data);
-		}
 		else
 			trim_vars(str, &i, data);
 		if (!data->expand_vars)
@@ -191,12 +184,13 @@ char	*get_str_expanded(char *str, t_data *data)
  *	Function Name: expand_section
  *
  *	Description:
- *		This function searches in the command (section->cmd) and filename
- *		(section->files->file_name) strings of each section for the flag (\)
- *		previously set in the @ref expand_marks function and calls the @ref
- *		get_str_expanded function to expand the environment variables they contain.
+ *
+ *		This function goes through all the commands and file names of the section
+ *		received by parameter and calls the function in charge of checking if
+ *		there are environment variables to expand and expand them if so.
  *
  *	Parameters:
+ *
  *		t_section *section	- The pointer to the section from which to expand its
  *								variables.
  *		t_data *data		- The pointer to the t_data struct with all

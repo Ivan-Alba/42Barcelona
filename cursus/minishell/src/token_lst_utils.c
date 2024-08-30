@@ -72,27 +72,10 @@ void	ft_token_add(t_token **lst, t_token *new)
 void	add_new_token(t_data *data, char *str, enum e_token_type type)
 {
 	t_token	*new_token;
-	//char	*marked_str;
 
 	if (!str)
 		print_error_exit(MALLOC_ERROR, data);
-	/*if (expand)
-	{
-		if (ft_token_last(data->tokens)
-			&& (ft_token_last(data->tokens)->type) == HEREDOC)
-			new_token = ft_token_new(str, type);
-		else
-		{
-			marked_str = expand_marks(str);
-			free(str);
-			str = NULL;
-			if (!marked_str)
-				print_error_exit(MALLOC_ERROR, data);
-			new_token = ft_token_new(marked_str, type);
-		}
-	}
-	else*/
-		new_token = ft_token_new(str, type);
+	new_token = ft_token_new(str, type);
 	if (!new_token)
 		print_error_exit(MALLOC_ERROR, data);
 	ft_token_add(&(data->tokens), new_token);
