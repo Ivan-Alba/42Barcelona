@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:34:21 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/29 20:14:42 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/31 12:49:21 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_files
 	int					fd;
 	char				*hrdc_file_name;
 	int					hrdc_expand;
+	int					ambiguous_redirect;
 	struct s_files		*next;
 }	t_files;
 

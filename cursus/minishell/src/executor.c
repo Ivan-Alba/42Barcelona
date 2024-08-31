@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 15:19:24 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/29 20:09:09 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/08/31 15:51:32 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,12 +118,13 @@ void	execute(t_section *section, t_data *data)
 {
 	free_close_pipes(data);
 	get_path(data);
-	if (section->cmd && (section->cmd)[0] && (section->cmd)[0][0] == '/')
+	if (section->cmd && (section->cmd)[0] && ((section->cmd)[0][0] == '/'
+		|| (section->cmd)[0][0] == '.'))
 		section->cmd_path = ft_strdup((section->cmd)[0]);
 	else
 		section->cmd_path = get_cmd_path((section->cmd)[0], data);
-	if ((section->cmd)[0] && (section->cmd)[0][0] == '/'
-		&& access(section->cmd_path, X_OK) == -1)
+	if ((section->cmd)[0] && ((section->cmd)[0][0] == '/'
+		|| (section->cmd)[0][0] == '.')	&& access(section->cmd_path, X_OK) == -1)
 	{
 		perror((section->cmd)[0]);
 		exit(127);
@@ -191,6 +192,7 @@ void	execute_sections(t_section *curr_sec, t_data *data)
 	while (curr_sec)
 	{
 		expand_section(curr_sec, data);
+		//TODO expand_wildcard (return ?)
 		if (open_fds(curr_sec) == 0)
 		{
 			if (curr_sec->cmd)
