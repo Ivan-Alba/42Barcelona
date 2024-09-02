@@ -12,172 +12,136 @@
 
 #include "../inc/minishell.h"
 
-/**
- *	Function Name: expand_vars
- *
- *	Description:
- *
- *		This function creates the resulting string with all the values of the
- *		expanded environment variables.
- *		It will be the final value stored in the t_section data.
- *
- *	Parameters:
- *
- *		t_data *data	- The pointer to the t_data struct with all
- *							the execution data.
- *	Return value:
- *
- *		char *expanded_str - The string resulting from the whole process of
- *								expanding environment variables.
- */
-char	*expand_vars(t_data *data)
+char	*expand_var(char *str, char **str_exp, int *i, t_data *data)
 {
-	int		i;
-	char	*expanded_str;
-	char	*tmp;
+	int		len;
+	char	*var_name;
+	char	*exit_status;
 
-	i = -1;
-	expanded_str = NULL;
-	while (data->expand_vars[++i])
+	if (str[*i + 1] == '$' && (*i)++ >= 0)
+		*str_exp = ft_free_strcat(*str_exp, ft_strdup("40078"));
+	else if (str[*i + 1] == '?' && (*i)++ >= 0)
 	{
-		tmp = expanded_str;
-		if (data->expand_vars[i][0] == '$' && data->expand_vars[i][1] != '\0')
-			concat_var_value(&expanded_str, &data->expand_vars[i][1], data);
-		else
-			expanded_str = ft_strcat(expanded_str, data->expand_vars[i]);
-		if (tmp)
-			free(tmp);
-		if (!expanded_str)
-			print_error_exit(MALLOC_ERROR, data);
+		exit_status = ft_itoa(data->last_exit_status);
+		malloc_protection(exit_status, data);
+		*str_exp = ft_free_strcat(*str_exp, exit_status);
 	}
-	return (expanded_str);
+	else if (ft_isalnum(str[*i + 1]))
+	{
+		len = 1;
+		while (ft_isalnum(str[++(*i)]))
+			len++;
+		var_name = ft_strcut(&(str[(*i) - len]), len);
+		malloc_protection(var_name, data);
+		(*i)--;
+		return (var_name);
+	}
+	else
+		*str_exp = ft_free_strcat(*str_exp, ft_strdup("$"));
+	return (NULL);
 }
 
-/**
- *	Function Name: trim_vars
- *
- *	Description:
- *
- *		This function manages the splitting of environment variables or characters
- *		that are not part of them, with the help of other auxiliary functions, and
- *		stores them in a char** into the t_data struct.
- *
- *	Parameters:
- *
- *		char *str		- The original string to expand.
- *		int *i			- The pointer to the current index of the string.
- *		t_data *data	- The pointer to the t_data struct with all
- *							the execution data.
- */
-void	trim_vars(char *str, int *i, t_data *data)
+void	single_quote_exp(char *str, char **str_exp, int *i, t_data *data)
 {
-	char	*tmp;
+	*str_exp = ft_free_strcat(*str_exp, ft_strdup("\'"));
+	malloc_protection(*str_exp, data);
+	while (str[++(*i)] != '\'')
+	{
+		*str_exp = ft_free_strcat(*str_exp, string_from_char(str[*i]));
+		malloc_protection(*str_exp, data);
+	}
+	*str_exp = ft_free_strcat(*str_exp, ft_strdup("\'"));
+	malloc_protection(*str_exp, data);
+}
+
+void	double_quote_exp(char *str, char **str_exp, int *i, t_data *data)
+{
+	char	*var_name;
+	char	*var_value;
+
+	*str_exp = ft_free_strcat(*str_exp, ft_strdup("\""));
+	malloc_protection(*str_exp, data);
+	while (str[++(*i)] != '"')
+	{
+		if (str[*i] == '$')
+		{
+			var_name = expand_var(str, str_exp, i, data);
+			if (var_name)
+			{
+				var_value = get_var_value(&var_name, data, 1);
+				if (var_value)
+					*str_exp = ft_free_strcat(*str_exp, var_value);
+			}
+		}
+		else
+		{
+			*str_exp = ft_free_strcat(*str_exp, string_from_char(str[*i]));
+			malloc_protection(*str_exp, data);
+		}
+	}
+	*str_exp = ft_free_strcat(*str_exp, ft_strdup("\""));
+	malloc_protection(*str_exp, data);
+}
+
+void	no_quote_exp(char *str, char **str_exp, int *i, t_data *data)
+{
+	char	*var_name;
+	char	*var_value;
 
 	if (str[*i] == '$')
 	{
-		if (str[*i + 1] == '$' && (*i)++ >= 0)
-			data->expand_vars = add_to_array(&data->expand_vars, "40078");
-		else if (str[*i + 1] == '?' && (*i)++ >= 0)
+		var_name = expand_var(str, str_exp, i, data);
+		if (var_name)
 		{
-			tmp = ft_itoa(data->last_exit_status);
-			if (!tmp)
-				print_error_exit(MALLOC_ERROR, data);
-			data->expand_vars = add_to_array(&data->expand_vars, tmp);
-			free(tmp);
+			var_value = get_var_value(&var_name, data, 0);
+			if (var_value)
+				*str_exp = ft_free_strcat(*str_exp, var_value);
 		}
-		else
-			add_new_var(i, str, data);
 	}
 	else
 	{
-		tmp = string_from_char(str[*i]);
-		if (!tmp)
-			print_error_exit(MALLOC_ERROR, data);
-		data->expand_vars = add_to_array(&data->expand_vars, tmp);
-		free(tmp);
+		*str_exp = ft_free_strcat(*str_exp, string_from_char(str[*i]));
+		malloc_protection(*str_exp, data);
 	}
 }
 
-/**
- *	Function Name: add_chars
- *
- *	Description:
- *
- *		This function traverses the string, specifically the characters between
- *		single quotes (where variable expansion does not occur). It adds character
- *		by character to the variable char** within the t_data structure for later
- *		adding them to the resulting string.
- *
- *	Parameters:
- *
- *		char *str		- The original string to expand.
- *		int *i			- The pointer to the current index of the string.
- *		t_data *data	- The pointer to the t_data struct with all
- *							the execution data.
- */
-void	add_chars(char *str, int *i, t_data *data)
-{
-	char	*tmp;
-
-	while (str[++(*i)] != '\'')
-	{
-		tmp = NULL;
-		tmp = concat_char_to_str(tmp, str[*i], data);
-		data->expand_vars = add_to_array(&data->expand_vars, tmp);
-		free(tmp);
-		if (!data->expand_vars)
-			print_error_exit(MALLOC_ERROR, data);
-	}
-}
-
-/**
- *	Function Name: get_str_expanded
- *
- *	Description:
- *
- *		This function scans the string for environment variables to expand.
- *		It calls the function in charge of splitting them and then the function
- *		in charge of expanding them.
- *		It frees the memory of the original string and returns the new string
- *		with the values of the variables.
- *
- *	Parameters:
- *
- *		char *str		- The original string to expand.
- *		t_data *data	- The pointer to the t_data struct with all
- *							the execution data.
- *	Return Value:
- *
- *		char *str_expanded	-The string with the expanded values.
- *
- *	Example:
- *
- *		str = "I'm the user $USER and i'm in the directory $PWD"
- *		str_expanded = "I'm the user igarcia2 and i'm in the directory
- *						/home/igarcia2" 
- */
-char	*get_str_expanded(char *str, t_data *data)
+char	*expand_env_vars(char *str, int is_heredoc, t_data *data)
 {
 	int		i;
 	char	*str_expanded;
 
 	i = -1;
+	str_expanded = NULL;
 	while (str[++i])
 	{
-		if (str[i] == '\'')
-			add_chars(str, &i, data);
+		if (is_heredoc)
+			no_quote_exp(str, &str_expanded, &i, data);
+		else if (str[i] == '\'')
+			single_quote_exp(str, &str_expanded, &i, data);
 		else if (str[i] == '"')
-			while (str[++i] != '"')
-				trim_vars(str, &i, data);
+			double_quote_exp(str, &str_expanded, &i, data);
 		else
-			trim_vars(str, &i, data);
-		if (!data->expand_vars)
-			print_error_exit(MALLOC_ERROR, data);
+			no_quote_exp(str, &str_expanded, &i, data);
 	}
 	free(str);
-	str_expanded = expand_vars(data);
-	free_split(&data->expand_vars);
 	return (str_expanded);
+}
+
+void	reorder_cmd(char ***cmd, int remove_idx, t_data *data)
+{
+	int		i;
+	char	*aux;
+
+	i = remove_idx + 1;
+	while ((*cmd)[i])
+	{
+		aux = ft_strdup((*cmd)[i]);
+		malloc_protection(aux, data);
+		(*cmd)[i - 1] = aux;
+		free((*cmd)[i]);
+		(*cmd)[i] = NULL;
+		i++;
+	}
 }
 
 /**
@@ -205,16 +169,18 @@ void	expand_section(t_section *section, t_data *data)
 	i = 0;
 	while (section->cmd && section->cmd[i])
 	{
-		section->cmd[i] = get_str_expanded(section->cmd[i], data);
-		i++;
+		section->cmd[i] = expand_env_vars(section->cmd[i], 0, data);
+		if (!section->cmd[i] && section->cmd[i + 1])
+			reorder_cmd(&section->cmd, i, data);
+		else
+			i++;
 	}
 	curr_file = section->files;
 	while (curr_file)
 	{
 		if (curr_file->file_type != HEREDOC)
-		{
-			curr_file->file_name = get_str_expanded(curr_file->file_name, data);
-		}
+			curr_file->file_name = expand_env_vars(
+					curr_file->file_name, 0, data);
 		curr_file = curr_file->next;
 	}
 }

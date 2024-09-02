@@ -66,6 +66,12 @@ char	*concat_char_to_str(char *str, char c, t_data *data)
 	return (result);
 }
 
+void	malloc_protection(void *ptr, t_data *data)
+{
+	if (!ptr)
+		print_error_exit(MALLOC_ERROR, data);
+}
+
 //Add to an existing char** a new value, freeing the memory and re-allocating it
 char	**add_to_array(char	***current, char *new_value)
 {

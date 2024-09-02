@@ -12,7 +12,7 @@
 
 #include "../inc/minishell.h"
 
-/*	Function Name: remove_quotes
+/*	Function Name: remove_hrdc_quotes
  *
  *	Description:
  *
@@ -27,22 +27,22 @@
  *							the execution data
  *
  */
-void	remove_quotes(t_files *file, t_data *data)
+void	remove_hrdc_quotes(t_files *file, t_data *data)
 {
 	int		i;
-	char	*result;
+	char	*new_name;
 
 	i = -1;
-	result = NULL;
+	new_name = NULL;
 	while (file->file_name[++i])
 	{
 		if (file->file_name[i] == '\'' || file->file_name[i] == '\"')
 			file->hrdc_expand = 0;
 		else
-			result = concat_char_to_str(result, file->file_name[i], data);
+			new_name = concat_char_to_str(new_name, file->file_name[i], data);
 	}
 	free(file->file_name);
-	file->file_name = result;
+	file->file_name = new_name;
 }
 
 /*	Function Name: remove_heredoc_files
@@ -73,42 +73,6 @@ void	remove_heredoc_files(t_section *section)
 		}
 		current_file = current_file->next;
 	}
-}
-
-/*	Function Name: expand_heredoc_line
- *
- *	Description:
- *
- *		This function scans the line read by heredoc and calls the functions in
- *		charge of expanding environment variables.
- *		It frees the original line and returns the expanded one.
- *
- *	Parameters:
- *
- *		char *line		- The original line readed on heredoc to expand.
- *		t_data *data	- The pointer to the t_data struct with all
- *							the execution data
- *	Return Value:
- *
- *		char *line_expanded	- The new line expanded with the environment values.
- */
-char	*expand_heredoc_line(char *line, t_data *data)
-{
-	int		i;
-	char	*line_expanded;
-
-	i = -1;
-	while (line[++i])
-	{
-		trim_vars(line, &i, data);
-		if (!data->expand_vars)
-			print_error_exit(MALLOC_ERROR, data);
-	}
-	free(line);
-	line = NULL;
-	line_expanded = expand_vars(data);
-	free_split(&data->expand_vars);
-	return (line_expanded);
 }
 
 /*	Function Name: read_heredoc
@@ -142,13 +106,12 @@ void	read_heredoc(t_files *file, t_data *data)
 			ft_strlen(file->file_name)) != 0)
 	{
 		if (file->hrdc_expand)
-			line = expand_heredoc_line(line, data);
+			line = expand_env_vars(line, 1, data);
 		write(file->fd, line, ft_strlen(line));
 		free(line);
 		line = NULL;
 		line = get_next_line(0);
 	}
-	write(1, "Heredoc closed\n", 15); //TODO test print
 	if (line)
 		free(line);
 	close(file->fd);
@@ -181,7 +144,7 @@ void	manage_heredocs(t_data *data)
 		{
 			if (current_file->file_type == HEREDOC)
 			{
-				remove_quotes(current_file, data);
+				remove_hrdc_quotes(current_file, data);
 				suffix = ft_itoa(data->heredoc_file_n++);
 				if (!suffix)
 					print_error_exit(MALLOC_ERROR, data);

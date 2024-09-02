@@ -169,8 +169,7 @@ void		remove_heredoc_files(t_section *section);
 t_section	*get_next_section(t_section *current, int last_section_id);
 //expand_section
 void		expand_section(t_section *section, t_data *data);
-void		trim_vars(char *str, int *i, t_data *data);
-char		*expand_vars(t_data *data);
+char		*expand_env_vars(char *str, int is_heredoc, t_data *data);
 //manage_fds
 int			open_fds(t_section *section);
 void		close_section_fds(t_section *section);
@@ -178,9 +177,7 @@ void		close_section_fds(t_section *section);
 void		get_path(t_data *data);
 char		*get_cmd_path(char *cmd, t_data *data);
 //expand_utils
-void		concat_var_value(char **current_str, char *var, t_data *data);
-char		*get_var_value(char *var_name, t_data *data);
-void		add_new_var(int *i, char *str, t_data *data);
+char		*get_var_value(char **var_name, t_data *data, int is_quotes);
 //free_utils
 void		clean_prompt_data(t_data *data);
 void		free_split(char ***splitted);
@@ -193,6 +190,7 @@ void		print_error(char *msg, char *token);
 char		*string_from_char(char c);
 char		**add_to_array(char ***current, char *new_value);
 char		*concat_char_to_str(char *str, char c, t_data *data);
+void		malloc_protection(void *ptr, t_data *data);
 //test_utils
 void		print_tokens(t_data *data);
 void		print_split(char **splitted);

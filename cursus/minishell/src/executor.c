@@ -170,8 +170,8 @@ void	wait_for_process_ending(t_section *last_section, t_data *data)
 	free_close_pipes(data);
 	last_section_executed = last_section->id;
 	//TODO TEST PRINT
-	printf("\nLast section executed %d\n", last_section_executed);
-	printf("Processes waiting: %d\n", data->wait_process);
+	//printf("\nLast section executed %d\n", last_section_executed);
+	//printf("Processes waiting: %d\n", data->wait_process);
 	while (data->wait_process--)
 	{
 		if (wait(&status) == data->pids[last_section_executed])
@@ -193,9 +193,10 @@ void	execute_sections(t_section *curr_sec, t_data *data)
 	{
 		expand_section(curr_sec, data);
 		//TODO expand_wildcard (return ?)
+		//TODO remove_quotes(curr_sec, data);
 		if (open_fds(curr_sec) == 0)
 		{
-			if (curr_sec->cmd)
+			if (curr_sec->cmd && curr_sec->cmd[0])
 			{
 				set_stdin_stdout(curr_sec, data);
 				if (check_if_builtin(curr_sec->cmd[0]))

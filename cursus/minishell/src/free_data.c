@@ -33,8 +33,6 @@ void	clean_prompt_data(t_data *data)
 	if (data->pids)
 		free(data->pids);
 	data->pids = NULL;
-	if (data->expand_vars)
-		free_split(&data->expand_vars);
 	data->section_id = 0;
 	data->heredoc_file_n = 0;
 	ft_token_lstclear(&data->tokens);
@@ -63,29 +61,30 @@ void	free_split(char ***splitted)
 //Releases all the data necessary to finalize the program execution
 void	free_data(t_data *data)
 {
-	if (data->split_info)
+	if (data)
 	{
-		if (data->split_info->splitted_prompt)
-			free_split(&(data->split_info->splitted_prompt));
-		free(data->split_info);
+		if (data->split_info)
+		{
+			if (data->split_info->splitted_prompt)
+				free_split(&(data->split_info->splitted_prompt));
+			free(data->split_info);
+		}
+		if (data->prompt_init)
+			free(data->prompt_init);
+		if (data->tokens)
+			ft_token_lstclear(&data->tokens);
+		if (data->sections)
+			free_sections(&data->sections);
+		if (data->pipes)
+			free_close_pipes(data);
+		if (data->path)
+			free_split(&data->path);
+		if (data->pids)
+			free(data->pids);
+		close(data->std_in);
+		close(data->std_out);
+		free(data);
 	}
-	if (data->prompt_init)
-		free(data->prompt_init);
-	if (data->tokens)
-		ft_token_lstclear(&data->tokens);
-	if (data->sections)
-		free_sections(&data->sections);
-	if (data->pipes)
-		free_close_pipes(data);
-	if (data->expand_vars)
-		free_split(&data->expand_vars);
-	if (data->path)
-		free_split(&data->path);
-	if (data->pids)
-		free(data->pids);
-	close(data->std_in);
-	close(data->std_out);
-	free(data);
 }
 
 //Frees the allocated memory of the nodes of a list of type t_section
