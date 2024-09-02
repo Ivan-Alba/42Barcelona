@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 16:41:11 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/31 12:49:41 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/02 13:38:23 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	ft_files_lstclear(t_files **lst)
 	(*lst)->file_name = NULL;
 	if ((*lst)->hrdc_file_name)
 		free((*lst)->hrdc_file_name);
+	if ((*lst)->name_before_exp)
+		free((*lst)->name_before_exp);
 	free(*lst);
 	*lst = NULL;
 }
@@ -58,6 +60,7 @@ t_files	*ft_files_new(char *file_name, enum e_token_type type)
 	new->hrdc_file_name = NULL;
 	new->hrdc_expand = 1;
 	new->ambiguous_redirect = 0;
+	new->name_before_exp = ft_strdup(new->file_name);
 	new->next = NULL;
 	return (new);
 }

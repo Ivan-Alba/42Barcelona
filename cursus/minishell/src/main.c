@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:30:27 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/26 16:18:09 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/02 17:16:15 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ void	minishell(t_data *data)
 		return ;
 	sectionizer(data);
 	/*------TODO TEST PRINTS------*/
-	print_tokens(data);
-	print_sections(data->sections);
-	printf("\nOUTPUT:\n");
+	//print_tokens(data);
+	//print_sections(data->sections);
+	//printf("\nOUTPUT:\n");
 	/*---------------------------*/
 	executor(data);
 }

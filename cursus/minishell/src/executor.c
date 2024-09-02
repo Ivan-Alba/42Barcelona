@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 15:19:24 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/31 15:51:32 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/02 13:16:31 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,7 @@ void	execute_sections(t_section *curr_sec, t_data *data)
 	while (curr_sec)
 	{
 		expand_section(curr_sec, data);
-		//TODO expand_wildcard (return ?)
+		//expand_wildcard (return ?)
 		//TODO remove_quotes(curr_sec, data);
 		if (open_fds(curr_sec) == 0)
 		{

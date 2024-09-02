@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:34:21 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/31 12:49:21 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/02 16:24:24 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <stdlib.h>
+# include <dirent.h>
 
 # define MALLOC_ERROR "Error allocating memory"
 # define INVALID_VAR_NAME "Error: Invalid variable name"
@@ -71,6 +72,7 @@ typedef struct s_files
 	char				*hrdc_file_name;
 	int					hrdc_expand;
 	int					ambiguous_redirect;
+	char				*name_before_exp;
 	struct s_files		*next;
 }	t_files;
 
