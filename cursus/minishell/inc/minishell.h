@@ -121,7 +121,6 @@ typedef struct s_data
 	t_section		*sections;
 	int				*pipes;
 	int				heredoc_file_n;
-	char			**expand_vars;
 	int				std_in;
 	int				std_out;
 	int				is_child;
@@ -180,6 +179,8 @@ void		get_path(t_data *data);
 char		*get_cmd_path(char *cmd, t_data *data);
 //expand_utils
 char		*get_var_value(char **var_name, t_data *data, int is_quotes);
+//wildcard
+void		manage_wildcard(t_section *section, t_data *data);
 //free_utils
 void		clean_prompt_data(t_data *data);
 void		free_split(char ***splitted);

@@ -162,7 +162,7 @@ int	open_fds(t_section *section)
 {
 	t_files	*curr_file;
 	int		status_code;
-	
+
 	status_code = 0;
 	curr_file = section->files;
 	while (curr_file)
@@ -174,7 +174,7 @@ int	open_fds(t_section *section)
 		}
 		if (curr_file->file_type == HEREDOC || curr_file->file_type == IN_F)
 			status_code = set_infile(section, curr_file);
-		else if (curr_file->file_type == OUT_F || curr_file->file_type == OUT_AP_F)
+		else
 			status_code = set_outfile(section, curr_file);
 		if (status_code)
 			return (status_code);

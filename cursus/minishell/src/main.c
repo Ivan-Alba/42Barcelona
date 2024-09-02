@@ -108,7 +108,6 @@ void	init_data(t_data **data, char **env)
 	(*data)->pipes = NULL;
 	(*data)->heredoc_file_n = 0;
 	(*data)->prompt_init = NULL;
-	(*data)->expand_vars = NULL;
 	(*data)->prompt = NULL;
 	(*data)->std_in = -1;
 	(*data)->std_out = -1;

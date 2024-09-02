@@ -131,8 +131,10 @@ void	execute(t_section *section, t_data *data)
 	}
 	if (execve(section->cmd_path, section->cmd, data->env) == -1)
 	{
-		if ((section->cmd)[0])
+		if ((section->cmd)[0] && (section->cmd)[0][0])
 			write(2, (section->cmd)[0], ft_strlen((section->cmd)[0]));
+		else if ((section->cmd)[0])
+			write(2, "''", 2);
 		write(2, ": command not found\n", 20);
 		exit(127);
 	}
@@ -192,8 +194,7 @@ void	execute_sections(t_section *curr_sec, t_data *data)
 	while (curr_sec)
 	{
 		expand_section(curr_sec, data);
-		//expand_wildcard (return ?)
-		//TODO remove_quotes(curr_sec, data);
+		manage_wildcard(curr_sec, data);
 		if (open_fds(curr_sec) == 0)
 		{
 			if (curr_sec->cmd && curr_sec->cmd[0])

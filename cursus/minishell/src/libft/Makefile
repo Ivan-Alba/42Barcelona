@@ -22,7 +22,7 @@ SRC = \
 	   ft_strrchr.c ft_isprint.c ft_strjoin.c ft_strtrim.c ft_putchar_fd.c \
 	   ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c ft_strcat.c \
 	   ft_lstadd_back.c ft_lstclear.c ft_lstiter.c ft_lstmap.c ft_lstdelone.c \
-	   ft_free_strcat.c
+	   ft_free_strcat.c str_array_len.c
 
 FT_PRINTF_SRC = ft_printf/ft_check_flags_bonus.c ft_printf/ft_int_flags_bonus.c \
 				ft_printf/ft_utoa.c ft_printf/ft_free_bonus.c \

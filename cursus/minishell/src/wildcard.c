@@ -12,7 +12,7 @@
 
 #include "../inc/minishell.h"
 
-int		check_filename_pattern(char *filename, char *pattern, int *i, int *j)
+int	check_filename_pattern(char *filename, char *pattern, int *i, int *j)
 {
 	int	star;
 	int	saved_i;
@@ -46,7 +46,7 @@ char	*get_match_files(char *filename, char *pattern)
 	int	j;
 
 	i = 0;
-	j = 0;	
+	j = 0;
 	if (check_filename_pattern(filename, pattern, &i, &j) == 0)
 		return (NULL);
 	while (pattern[j] == '*')
@@ -87,25 +87,27 @@ int	can_expand_wildcar(char *cmd)
 	i = -1;
 	while (cmd[++i])
 	{
-		if (cmd[i] == '\'' && i++ >= 0)
+		if (cmd[i] == '\'')
 		{
-			while (cmd[i] != '\'')
-				if (cmd[i++] == '*')
+			while (cmd[++i] != '\'')
+			{
+				if (cmd[i] == '*')
 					return (0);
-			i--;
+			}
 		}
-		else if (cmd[i] == '"' && i++ >= 0)
+		else if (cmd[i] == '"')
 		{
-			while (cmd[i] != '"')
-				if (cmd[i++] == '*')
+			while (cmd[++i] != '"')
+			{
+				if (cmd[i] == '*')
 					return (0);
-			i--;
+			}
 		}
 	}
 	return (1);
 }
 
-char	*remove_quotes(char **str, t_data *data)
+void	remove_quotes(char **str, t_data *data)
 {
 	int		j;
 	char	*new_str;
@@ -115,37 +117,57 @@ char	*remove_quotes(char **str, t_data *data)
 	while ((*str)[++j])
 	{
 		if ((*str)[j] == '\'' && j++ >= 0)
-		{
 			while ((*str)[j] != '\'')
-				new_str = ft_free_strcat(new_str, string_from_char((*str)[j++]));
-		}
+				new_str = ft_free_strcat(
+						new_str, string_from_char((*str)[j++]));
 		else if ((*str)[j] == '"' && j++ >= 0)
-		{
 			while ((*str)[j] != '"')
-				new_str = ft_free_strcat(new_str, string_from_char((*str)[j++]));
-		}
+				new_str = ft_free_strcat(
+						new_str, string_from_char((*str)[j++]));
 		else
 			new_str = ft_free_strcat(new_str, string_from_char((*str)[j]));
-		malloc_protection(new_str, data);
 	}
+	if (!new_str)
+		new_str = ft_strdup("");
+	malloc_protection(new_str, data);
 	free((*str));
-	return (new_str);
+	*str = new_str;
 }
 
 void	add_cmd_to_array(char ***cmd, int *i, char ***matches, t_data *data)
 {
-	int	len;
+	char	**new_cmd;
+	int		j;
+	int		h;
 
-	len = 0;
-	while ((*matches)[len])
-		len++;
-
+	new_cmd = NULL;
+	j = -1;
+	while ((*cmd)[++j] && j < *i)
+	{
+		new_cmd = add_to_array(&new_cmd, (*cmd)[j]);
+		malloc_protection(new_cmd, data);
+	}
+	h = -1;
+	while ((*matches)[++h])
+	{
+		new_cmd = add_to_array(&new_cmd, (*matches)[h]);
+		malloc_protection(new_cmd, data);
+	}
+	*i += h - 1;
+	while (++j < str_array_len(*cmd) && (*cmd)[j - h])
+	{
+		new_cmd = add_to_array(&new_cmd, (*cmd)[j]);
+		malloc_protection(new_cmd, data);
+	}
+	free_split(cmd);
+	*cmd = new_cmd;
 }
 
 void	expand_wildcard_cmd(char ***cmd, int *i, t_data *data)
 {
 	char	**matches;
 
+	matches = NULL;
 	if (can_expand_wildcar((*cmd)[*i]))
 	{
 		remove_quotes(&((*cmd)[*i]), data);
@@ -155,6 +177,8 @@ void	expand_wildcard_cmd(char ***cmd, int *i, t_data *data)
 	}
 	else
 		remove_quotes(&((*cmd)[*i]), data);
+	if (matches)
+		free_split(&matches);
 }
 
 void	expand_wildcard_file(t_files *file, t_data *data)
@@ -171,15 +195,11 @@ void	expand_wildcard_file(t_files *file, t_data *data)
 			len = 0;
 			while (matches[len])
 				len++;
-			if (len > 1)
-			{
-				file->name_before_exp = file->file_name;
-				free(file->file_name);
-				file->file_name = NULL;
-				return ;
-			}
 			free(file->file_name);
-			file->file_name = matches[0];
+			file->file_name = NULL;
+			if (len == 1)
+				file->file_name = ft_strdup(matches[0]);
+			free_split(&matches);
 		}
 	}
 }
@@ -210,6 +230,8 @@ void	manage_wildcard(t_section *section, t_data *data)
 	while (section->cmd && section->cmd[i])
 	{
 		expand_wildcard_cmd(&section->cmd, &i, data);
+		printf("-----CMD EXPANDED----\n");
+		print_split(section->cmd);
 		i++;
 	}
 	curr_file = section->files;
