@@ -81,6 +81,8 @@ void	free_data(t_data *data)
 			free_split(&data->path);
 		if (data->pids)
 			free(data->pids);
+		if (data->env)
+			free_split(&data->env);
 		close(data->std_in);
 		close(data->std_out);
 		free(data);

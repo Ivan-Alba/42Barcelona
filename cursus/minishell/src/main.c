@@ -96,9 +96,9 @@ void	read_prompt(t_data *data)
 void	init_data(t_data **data, char **env)
 {
 	*data = malloc(sizeof(t_data));
-	if (!(*data))
-		print_error_exit(MALLOC_ERROR, NULL);
-	(*data)->env = env;
+	malloc_protection(*data, NULL);
+	(*data)->env = str_array_dup(env);
+	malloc_protection((*data)->env, *data);
 	(*data)->path = NULL;
 	(*data)->pids = NULL;
 	(*data)->last_exit_status = 0;

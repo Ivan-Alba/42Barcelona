@@ -209,6 +209,7 @@ char		*string_from_char(char c);
 char		**add_to_array(char ***current, char *new_value);
 char		*concat_char_to_str(char *str, char c, t_data *data);
 void		malloc_protection(void *ptr, t_data *data);
+char		**str_array_dup(char **origin);
 //test_utils
 void		print_tokens(t_data *data);
 void		print_split(char **splitted);

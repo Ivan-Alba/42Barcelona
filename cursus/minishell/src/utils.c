@@ -84,3 +84,24 @@ char	**add_to_array(char	***current, char *new_value)
 		free_split(current);
 	return (new);
 }
+
+char	**str_array_dup(char **origin)
+{
+	char	**new_array;
+	int		i;
+
+	i = 0;
+	while (origin && origin[i])
+		i++;
+	new_array = malloc(sizeof(char *) * (i + 1));
+	if (!new_array)
+		return (NULL);
+	new_array[i] = NULL;
+	while (--i >= 0)
+	{
+		new_array[i] = ft_strdup(origin[i]);
+		if (!new_array[i])
+			return (NULL);
+	}
+	return (new_array);
+}
