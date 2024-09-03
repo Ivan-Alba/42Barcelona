@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   str_array_len.c                                    :+:      :+:    :+:   */
+/*   print_error.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,16 +10,28 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../inc/minishell.h"
 
-int	str_array_len(char **array)
+//Receives an error message by parameter and prints it on console
+void	print_error(char *msg, char	*token)
 {
-	int	i;
+	if (!token)
+		write(2, msg, ft_strlen(msg));
+	else
+	{
+		write(2, msg, ft_strlen(msg));
+		write(2, "'", 1);
+		write(2, token, ft_strlen(token));
+		write(2, "'", 1);
+	}
+	write(2, "\n", 2);
+}
 
-	if (!array || !array[0])
-		return (0);
-	i = 0;
-	while (array[i])
-		i++;
-	return (i);
+//Receives an error message by parameter and prints it on console and exits
+void	print_error_exit(char *msg, t_data *data)
+{
+	write(2, msg, ft_strlen(msg));
+	write(2, "\n", 1);
+	free_data(data);
+	exit(1);
 }

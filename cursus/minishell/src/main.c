@@ -43,7 +43,7 @@ void	minishell(t_data *data)
 	//print_sections(data->sections);
 	//printf("\nOUTPUT:\n");
 	/*---------------------------*/
-	executor(data);
+	execute_controller(data);
 }
 
 /**
@@ -90,7 +90,8 @@ void	read_prompt(t_data *data)
  *	Parameters:
  *
  *		t_data **data	- A pointer to the variable t_data* to initialize.
- *		char **env		- Environment variables that we will store in t_data struct.
+ *		char **env		- Environment variables that we will store in
+ *							t_data struct.
  */
 void	init_data(t_data **data, char **env)
 {
@@ -131,12 +132,12 @@ void	init_data(t_data **data, char **env)
  *
  *	Parameters:
  *
- *		int	argc 	-	The number of command-line arguments passed to the program,
- *						including the program name.
- *		char **argv	-	An array of strings representing the command-line arguments.
- *						The first element is the program name.
- *		char **env	-	An array of strings representing the environment variables.
- *						Each string is of the form "KEY=VALUE".
+ *		int	argc 	-	The number of command-line arguments passed to the
+ *							program, including the executable name.
+ *		char **argv	-	An array of strings representing the command-line
+ *							arguments. The first element is the executable name.
+ *		char **env	-	An array of strings representing the environment
+ *							variables. Each string is of the form "KEY=VALUE".
  *
  * Return Value:
  *

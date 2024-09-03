@@ -12,23 +12,6 @@
 
 #include "../inc/minishell.h"
 
-//Receives an error message by parameter and prints it on console
-void	print_error(char *msg, char	*token)
-{
-	if (!token)
-		ft_printf("%s\n", msg);
-	else
-		ft_printf("%s \'%s\'\n", msg, token);
-}
-
-//Receives an error message by parameter and prints it on console and exits
-void	print_error_exit(char *msg, t_data *data)
-{
-	ft_printf("%s\n", msg);
-	free_data(data);
-	exit(1);
-}
-
 //Returns a char* from a char
 char	*string_from_char(char c)
 {

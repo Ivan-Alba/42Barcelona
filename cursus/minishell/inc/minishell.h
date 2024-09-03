@@ -30,7 +30,7 @@
 # define INVALID_CHARS_ERROR "Error: There are characters not accepted (; \\)"
 # define QUOTE_FORMAT_ERROR	"Error: Incorrect quoting mark format"
 # define NO_ARGS_REQUIRED "Error: No args required"
-# define UNEXPECTED_TOKEN "Syntax error near unexpected token"
+# define UNEXPECTED_TOKEN "Syntax error near unexpected token "
 # define PIPES_ERROR "Error creating pipes"
 # define OPEN_ERROR "Error opening file"
 # define CLOSE_ERROR "Error closing file"
@@ -163,7 +163,9 @@ void		conn_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
 t_section	*get_next_section(t_section *current, int last_section_id);
 t_section	*get_next_pipe_section(t_section *current);
 //executor
-void		executor(t_data *data);
+void		execute_controller(t_data *data);
+//process_dup
+void	set_stdin_stdout(t_section *section, t_data *data);
 //heredocs
 void		manage_heredocs(t_data *data);
 void		remove_heredoc_files(t_section *section);
@@ -171,16 +173,25 @@ t_section	*get_next_section(t_section *current, int last_section_id);
 //expand_section
 void		expand_section(t_section *section, t_data *data);
 char		*expand_env_vars(char *str, int is_heredoc, t_data *data);
+char		*get_var_value(char **var_name, t_data *data, int is_quotes);
+char		*expand_var(char *str, char **str_exp, int *i, t_data *data);
+//expand_types
+void		no_quote_exp(char *str, char **str_exp, int *i, t_data *data);
+void		double_quote_exp(char *str, char **str_exp, int *i, t_data *data);
+void		single_quote_exp(char *str, char **str_exp, int *i, t_data *data);
 //manage_fds
 int			open_fds(t_section *section);
 void		close_section_fds(t_section *section);
 //path
 void		get_path(t_data *data);
 char		*get_cmd_path(char *cmd, t_data *data);
-//expand_utils
-char		*get_var_value(char **var_name, t_data *data, int is_quotes);
 //wildcard
 void		manage_wildcard(t_section *section, t_data *data);
+//wildcard_utils
+int			file_match(char *filename, char *pattern, int *i, int *j);
+int			can_expand_wildcar(char *cmd);
+void		remove_quotes(char **str, t_data *data);
+void		add_to_cmd(char ***cmd, int *i, char ***matches, t_data *data);
 //free_utils
 void		clean_prompt_data(t_data *data);
 void		free_split(char ***splitted);

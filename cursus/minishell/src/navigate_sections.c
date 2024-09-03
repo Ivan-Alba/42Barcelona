@@ -65,7 +65,8 @@ t_section	*get_next_section(t_section *current, int last_section_id)
  *
  *	Return Value:
  *		t_section*	- The next node to the one received as a parameter.
- *		NULL		- If it does not meet the connection type or the list has ended.
+ *		NULL		- If it does not meet the connection type or the list
+ *						has ended.
  */
 t_section	*get_next_pipe_section(t_section *current)
 {
