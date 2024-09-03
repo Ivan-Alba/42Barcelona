@@ -23,6 +23,7 @@
 # include <sys/wait.h>
 # include <stdlib.h>
 # include <dirent.h>
+# include <signal.h>
 
 # define MALLOC_ERROR "Error allocating memory"
 # define INVALID_VAR_NAME "Error: Invalid variable name"
@@ -45,6 +46,8 @@
 # define UNSET "unset"
 # define ENV "env"
 # define EXIT "exit"
+
+extern int	g_signal_received;
 
 enum	e_token_type
 {
@@ -110,23 +113,24 @@ typedef struct s_split
 
 typedef struct s_data
 {
-	char			**env;
-	char			**path;
-	int				*pids;
-	char			*prompt;
-	char			*prompt_init;
-	t_split			*split_info;
-	t_token			*tokens;
-	int				section_id;
-	t_section		*sections;
-	int				*pipes;
-	int				heredoc_file_n;
-	int				std_in;
-	int				std_out;
-	int				is_child;
-	int				accept_inner;
-	int				wait_process;
-	int				last_exit_status;
+	char				**env;
+	char				**path;
+	int					*pids;
+	char				*prompt;
+	char				*prompt_init;
+	t_split				*split_info;
+	t_token				*tokens;
+	int					section_id;
+	t_section			*sections;
+	int					*pipes;
+	int					heredoc_file_n;
+	int					std_in;
+	int					std_out;
+	int					is_child;
+	int					accept_inner;
+	int					wait_process;
+	int					last_exit_status;
+	struct sigaction	*sa;
 }	t_data;
 
 //check_syntax
@@ -165,7 +169,7 @@ t_section	*get_next_pipe_section(t_section *current);
 //executor
 void		execute_controller(t_data *data);
 //process_dup
-void	set_stdin_stdout(t_section *section, t_data *data);
+void		set_stdin_stdout(t_section *section, t_data *data);
 //heredocs
 void		manage_heredocs(t_data *data);
 void		remove_heredoc_files(t_section *section);
@@ -217,4 +221,6 @@ t_files		*ft_files_new(char *file_name, enum e_token_type type);
 //check_builtins
 int			check_if_builtin(char *command);
 int			execute_builtin(char **cmd, t_data *data);
+//signals
+void		setup_signal_handler(void);
 #endif

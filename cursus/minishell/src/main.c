@@ -153,6 +153,7 @@ int	main(int argc, char **argv, char **env)
 		print_error_exit(NO_ARGS_REQUIRED, NULL);
 	data = NULL;
 	init_data(&data, env);
+	setup_signal_handler();
 	read_prompt(data);
 	free_data(data);
 	exit(0);
