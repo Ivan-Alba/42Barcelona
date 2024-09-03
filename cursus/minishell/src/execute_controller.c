@@ -43,7 +43,8 @@ void	execute(t_section *section, t_data *data)
 	else
 		section->cmd_path = get_cmd_path((section->cmd)[0], data);
 	if ((section->cmd)[0] && ((section->cmd)[0][0] == '/'
-		|| (section->cmd)[0][0] == '.')	&& access(section->cmd_path, X_OK) == -1)
+		|| (section->cmd)[0][0] == '.')
+		&& access(section->cmd_path, X_OK) == -1)
 	{
 		perror((section->cmd)[0]);
 		exit(127);
@@ -88,6 +89,7 @@ void	wait_for_process_ending(t_section *last_section, t_data *data)
 	int	last_section_executed;
 	int	status;
 
+	data->accept_inner = 0;
 	free_close_pipes(data);
 	last_section_executed = last_section->id;
 	//TODO TEST PRINT
@@ -97,7 +99,7 @@ void	wait_for_process_ending(t_section *last_section, t_data *data)
 	{
 		if (wait(&status) == data->pids[last_section_executed])
 		{
-        	if (WIFEXITED(status)) 
+			if (WIFEXITED(status))
 				data->last_exit_status = WEXITSTATUS(status);
 			else
 				data->last_exit_status = 666; //TODO patillada, senales?
@@ -106,34 +108,55 @@ void	wait_for_process_ending(t_section *last_section, t_data *data)
 	data->wait_process = 0;
 }
 
+void	setup_curr_section(t_section **curr_sec, t_data *data)
+{
+	expand_section(*curr_sec, data);
+	manage_wildcard(*curr_sec, data);
+	if (open_fds(*curr_sec) == 0)
+	{
+		if ((*curr_sec)->cmd && (*curr_sec)->cmd[0])
+		{
+			set_stdin_stdout(*curr_sec, data);
+			if (check_if_builtin((*curr_sec)->cmd[0]))
+				execute_builtin((*curr_sec)->cmd, data);
+			else
+				create_process(curr_sec, data, 0);
+			dup2(data->std_in, STDIN_FILENO);
+			dup2(data->std_out, STDOUT_FILENO);
+			data->wait_process++;
+		}
+	}
+	else
+		data->last_exit_status = 1;
+}
+
+int	is_next_and_or(t_section *curr_sec, t_data *data)
+{
+	if (curr_sec->next)
+	{
+		if (curr_sec->next_conn == AND && data->last_exit_status == 0)
+		{
+			data->accept_inner = 1;
+			return (1);
+		}
+		else if (curr_sec->next_conn == OR && data->last_exit_status > 0)
+		{
+			data->accept_inner = 1;
+			return (1);
+		}
+	}
+	return (0);
+}
+
 void	execute_sections(t_section *curr_sec, t_data *data)
 {
 	generate_pipes(data);
-	//TODO EXECUTE ALL SECTIONS ONLY CONNECTED BY PIPE
 	while (curr_sec)
 	{
-		expand_section(curr_sec, data);
-		manage_wildcard(curr_sec, data);
-		if (open_fds(curr_sec) == 0)
-		{
-			if (curr_sec->cmd && curr_sec->cmd[0])
-			{
-				set_stdin_stdout(curr_sec, data);
-				if (check_if_builtin(curr_sec->cmd[0]))
-					execute_builtin(curr_sec->cmd, data);
-				else
-					create_process(&curr_sec, data, 0);
-				dup2(data->std_in, STDIN_FILENO);
-				dup2(data->std_out, STDOUT_FILENO);
-				data->wait_process++;
-			}
-		}
-		else
-			data->last_exit_status = 1;	
+		setup_curr_section(&curr_sec, data);
 		if (curr_sec->inner && ((curr_sec->in_conn != AND
-			&& curr_sec->out_conn != OR) || data->accept_inner))
+					&& curr_sec->out_conn != OR) || data->accept_inner))
 		{
-			//data->accept_inner = 0;
 			if (create_process(&curr_sec, data, 1))
 				continue ;
 			data->wait_process++;
@@ -141,37 +164,18 @@ void	execute_sections(t_section *curr_sec, t_data *data)
 		if (get_next_pipe_section(curr_sec))
 			curr_sec = get_next_pipe_section(curr_sec);
 		else
-			break;
+			break ;
 	}
-	//TODO WAIT PROCESSES FINISHING
-	data->accept_inner = 0;
 	wait_for_process_ending(curr_sec, data);
-	//TODO RECURSIVA && y || maybe??
-	if (curr_sec->next)
-	{
-		if (curr_sec->next_conn == AND && data->last_exit_status == 0)
-		{
-			data->accept_inner = 1;
-			execute_sections(curr_sec->next, data);
-		}
-		else if (curr_sec->next_conn == OR && data->last_exit_status > 0)
-		{
-			data->accept_inner = 1;
-			execute_sections(curr_sec->next, data);
-		}
-	}
+	if (is_next_and_or(curr_sec, data))
+		execute_sections(curr_sec->next, data);
 	if (data->is_child)
-	{
-		printf("CLOSE CHILD\n");
 		exit(data->last_exit_status);
-	}
 }
 
 //Manages the opening of fd's, creation of processes and execution of commands
 void	execute_controller(t_data *data)
 {
-	//t_section *last_section;
-
 	manage_heredocs(data);
 	data->pids = malloc(sizeof(int) * data->section_id);
 	if (!data->pids)

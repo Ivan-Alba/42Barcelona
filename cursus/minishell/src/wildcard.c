@@ -119,8 +119,6 @@ void	manage_wildcard(t_section *section, t_data *data)
 	while (section->cmd && section->cmd[i])
 	{
 		expand_wildcard_cmd(&section->cmd, &i, data);
-		printf("-----CMD EXPANDED----\n");
-		print_split(section->cmd);
 		i++;
 	}
 	curr_file = section->files;
