@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:34:21 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/09/02 16:24:24 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/03 16:49:53 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,9 +218,14 @@ void		print_pipe(int fd);
 void		ft_files_lstclear(t_files **lst);
 void		ft_files_add(t_files **lst, t_files *new);
 t_files		*ft_files_new(char *file_name, enum e_token_type type);
-//check_builtins
-int			check_if_builtin(char *command);
-int			execute_builtin(char **cmd, t_data *data);
 //signals
 void		setup_signal_handler(void);
+
+//check_builtins
+int			check_if_builtin(char *command);
+void		execute_builtin(char **cmd, t_data *data);
+//builtins
+int			ft_echo(char **cmd);
+int			ft_env(char **cmd, t_data *data);
+int			ft_pwd(char **cmd, t_data *data);
 #endif

@@ -6,7 +6,7 @@
 #    By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/21 21:07:38 by igarcia2          #+#    #+#              #
-#    Updated: 2024/09/02 17:15:25 by igarcia2         ###   ########.fr        #
+#    Updated: 2024/09/03 16:50:18 by igarcia2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ SRC = utils.c main.c ft_token_split.c check_syntax.c tokenizer.c token_types.c \
 	  sectionizer.c section_token.c test_utils.c files_lst_utils.c heredocs.c \
 	  execute_controller.c expand_types.c navigate_sections.c manage_fds.c path.c \
 	  check_builtins.c wildcard.c wildcard_utils.c print_error.c process_dup.c \
-	  signals.c
+	  signals.c echo.c env.c pwd.c
 
 SRC_DIR = src/
 
