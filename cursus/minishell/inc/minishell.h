@@ -37,6 +37,7 @@
 # define CLOSE_ERROR "Error closing file"
 # define DUP_ERROR "Error creating fd copy using dup2"
 # define FORK_ERROR "Error creating process with fork"
+# define MAX_HEREDOCS_ERROR "maximum here-document count exceeded"
 
 # define PROGRAM_NAME "minishell:"
 # define ECHO "echo"
@@ -229,4 +230,5 @@ void		execute_builtin(char **cmd, t_data *data);
 int			ft_echo(char **cmd);
 int			ft_env(char **cmd, t_data *data);
 int			ft_pwd(char **cmd, t_data *data);
+int			ft_unset(char **cmd, t_data *data);
 #endif

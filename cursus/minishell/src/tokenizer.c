@@ -85,11 +85,8 @@ void	delete_space_tokens(t_data *data)
 }
 
 //Manages token list format checking
-int	check_tokens_format(t_data *data, int checking)
+int	check_tokens_format(t_token *current, t_data *data, int checking, int hrdcs)
 {
-	t_token	*current;
-
-	current = data->tokens;
 	while (current && current->next)
 	{
 		if (current->type == AND || current->type == OR
@@ -107,6 +104,8 @@ int	check_tokens_format(t_data *data, int checking)
 			return (print_error(UNEXPECTED_TOKEN, current->next->str), 1);
 		if (checking)
 			return (1);
+		if (current->type == HEREDOC && ++hrdcs > 16)
+			print_error_exit(MAX_HEREDOCS_ERROR, data);
 		current = current->next;
 	}
 	if (check_first_last_token(current, 0))
@@ -127,7 +126,7 @@ int	tokenizer(t_data *data)
 	delete_space_tokens(data);
 	if (check_first_last_token(data->tokens, 1))
 		return (1);
-	if (check_tokens_format(data, 0))
+	if (check_tokens_format(data->tokens, data, 0, 0))
 		return (1);
 	return (0);
 }

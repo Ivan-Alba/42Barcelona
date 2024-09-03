@@ -32,6 +32,44 @@ void	generate_pipes(t_data *data)
 	}
 }
 
+void	check_shell_lvl(char *cmd, t_data *data)
+{
+	char	*ptr;
+	char	**unset_cmd;
+	char	*shell_lvl;
+	int		curr_shlvl;
+
+	ptr = ft_strrchr(cmd, '/');
+	if (ptr && ft_strncmp(ptr, "minishell", 10) == 0)
+	{
+		shell_lvl = ft_strdup("SHLVL");
+		malloc_protection(shell_lvl, data);
+		shell_lvl = get_var_value(&shell_lvl, data, 0);
+		if (!shell_lvl)
+			return ;
+		curr_shlvl = ft_atoi(shell_lvl);
+		free(shell_lvl);
+		//INCREMENT SHELL LEVEL
+		unset_cmd = NULL;
+		unset_cmd = add_to_array(&unset_cmd, "unset");
+		malloc_protection(unset_cmd, data);
+		unset_cmd = add_to_array(&unset_cmd, "SHLVL");
+		malloc_protection(unset_cmd, data);
+		//ft_unset(unset_cmd, data);
+		free_split(&unset_cmd);
+		unset_cmd = NULL;
+		unset_cmd = add_to_array(&unset_cmd, "export");
+		malloc_protection(unset_cmd, data);
+		shell_lvl = ft_free_strcat(ft_strdup("SHLVL="), ft_itoa(curr_shlvl + 1));
+		malloc_protection(shell_lvl, data);
+		unset_cmd = add_to_array(&unset_cmd, shell_lvl);
+		free(shell_lvl);
+		malloc_protection(unset_cmd, data);
+		//ft_export(unset_cmd, data);
+		free(unset_cmd);		
+	}
+}
+
 //Manages the incoming and outgoing fd's and executes the command
 void	execute(t_section *section, t_data *data)
 {
@@ -49,6 +87,7 @@ void	execute(t_section *section, t_data *data)
 		perror((section->cmd)[0]);
 		exit(127);
 	}
+	//check_shell_lvl(section->cmd[0], data);
 	if (execve(section->cmd_path, section->cmd, data->env) == -1)
 	{
 		if ((section->cmd)[0] && (section->cmd)[0][0])
