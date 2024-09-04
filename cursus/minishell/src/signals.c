@@ -19,7 +19,7 @@ void	handle_signal(int signal)
 	g_signal_received = signal;
 	if (g_signal_received == SIGINT)
 	{
-		printf("signal SIGINT recibida\n");
+		write(2, "\n", 1);
 		exit(0);
 	}
 }
@@ -29,9 +29,12 @@ void	setup_signal_handler(void)
 {
 	struct sigaction	sa;
 
+	sa.sa_flags = 0;
 	sa.sa_handler = handle_signal;
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
+	//sigaddset(&sa.sa_mask, SIGTERM);
+	//sigaddset(&sa.sa_mask, SIGINT);
+	//sigaddset(&sa.sa_mask, SIGQUIT);
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 		perror("sigaction");
 }

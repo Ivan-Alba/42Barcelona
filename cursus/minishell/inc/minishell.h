@@ -38,6 +38,9 @@
 # define DUP_ERROR "Error creating fd copy using dup2"
 # define FORK_ERROR "Error creating process with fork"
 # define MAX_HEREDOCS_ERROR "maximum here-document count exceeded"
+# define HEREDOC_EOF_1 "warning: here-document at line "
+# define HEREDOC_EOF_2 " delimited by end-of-file (wanted '"
+# define HEREDOC_EOF_3 "')"
 
 # define PROGRAM_NAME "minishell:"
 # define ECHO "echo"
@@ -124,85 +127,103 @@ typedef struct s_data
 	int					section_id;
 	t_section			*sections;
 	int					*pipes;
-	int					heredoc_file_n;
+	int					heredoc_eof_line;
 	int					std_in;
 	int					std_out;
 	int					is_child;
 	int					accept_inner;
 	int					wait_process;
 	int					last_exit_status;
-	struct sigaction	*sa;
 }	t_data;
 
 //check_syntax
 int			check_syntax(t_data *data);
+
 //ft_token_split
 void		ft_token_split(char *separators, t_data *data);
+
 //tokenizer
 int			tokenizer(t_data *data);
+
 //token_types
 void		token_great_less(t_data *data, int *i);
 void		token_pipe_or(t_data *data, int *i);
 void		token_amper_and(t_data *data, int *i);
 void		token_quotes(t_data *data, int *i);
 void		token_brackets(t_data *data, int *i);
+
 //check_tokens_syntax
 int			check_and_or(t_token *current);
 int			check_open_bracket(t_token *current);
 int			check_close_bracket(t_token *current);
 int			check_pipe(t_token *current);
 int			check_first_last_token(t_token *token, int is_first);
+
 //token_lst_utils
 void		ft_token_lstclear(t_token **lst);
 void		add_new_token(t_data *data, char *str, enum e_token_type type);
+
 //sectionizer
 void		sectionizer(t_data *data);
 t_section	*new_section(t_section *outer, t_section *previous, t_data *data);
 char		**create_command(t_token **first, t_data *data);
+
 //section_token		
 void		brack_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
 void		files_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
 void		word_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
 void		conn_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
+
 //navigate_sections
 t_section	*get_next_section(t_section *current, int last_section_id);
 t_section	*get_next_pipe_section(t_section *current);
+
 //executor
 void		execute_controller(t_data *data);
+
 //process_dup
 void		set_stdin_stdout(t_section *section, t_data *data);
+
 //heredocs
 void		manage_heredocs(t_data *data);
 void		remove_heredoc_files(t_section *section);
 t_section	*get_next_section(t_section *current, int last_section_id);
+
 //expand_section
 void		expand_section(t_section *section, t_data *data);
 char		*expand_env_vars(char *str, int is_heredoc, t_data *data);
 char		*get_var_value(char **var_name, t_data *data, int is_quotes);
 char		*expand_var(char *str, char **str_exp, int *i, t_data *data);
+
 //expand_types
 void		no_quote_exp(char *str, char **str_exp, int *i, t_data *data);
 void		double_quote_exp(char *str, char **str_exp, int *i, t_data *data);
 void		single_quote_exp(char *str, char **str_exp, int *i, t_data *data);
+
 //manage_fds
 int			open_fds(t_section *section);
 void		close_section_fds(t_section *section);
+
 //path
 void		get_path(t_data *data);
 char		*get_cmd_path(char *cmd, t_data *data);
+
 //wildcard
 void		manage_wildcard(t_section *section, t_data *data);
+
 //wildcard_utils
 int			file_match(char *filename, char *pattern, int *i, int *j);
 int			can_expand_wildcar(char *cmd);
 void		remove_quotes(char **str, t_data *data);
 void		add_to_cmd(char ***cmd, int *i, char ***matches, t_data *data);
+
 //free_utils
 void		clean_prompt_data(t_data *data);
 void		free_split(char ***splitted);
 void		free_data(t_data *data);
 void		free_sections(t_section **sections);
 void		free_close_pipes(t_data *data);
+
 //utils
 void		print_error_exit(char *msg, t_data *data);
 void		print_error(char *msg, char *token);
@@ -211,21 +232,26 @@ char		**add_to_array(char ***current, char *new_value);
 char		*concat_char_to_str(char *str, char c, t_data *data);
 void		malloc_protection(void *ptr, t_data *data);
 char		**str_array_dup(char **origin);
+
 //test_utils
 void		print_tokens(t_data *data);
 void		print_split(char **splitted);
 void		print_sections(t_section *section);
 void		print_pipe(int fd);
+
 //files_lst_utils
 void		ft_files_lstclear(t_files **lst);
 void		ft_files_add(t_files **lst, t_files *new);
 t_files		*ft_files_new(char *file_name, enum e_token_type type);
+
 //signals
 void		setup_signal_handler(void);
+void		handle_signal(int signal);
 
 //check_builtins
 int			check_if_builtin(char *command);
 void		execute_builtin(char **cmd, t_data *data);
+
 //builtins
 int			ft_echo(char **cmd);
 int			ft_env(char **cmd, t_data *data);

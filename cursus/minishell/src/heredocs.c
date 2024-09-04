@@ -75,6 +75,21 @@ void	remove_heredoc_files(t_section *section)
 	}
 }
 
+void	print_heredoc_eof(t_files *file, t_data *data)
+{
+	char	*eof_line;
+
+	eof_line = ft_itoa(data->heredoc_eof_line);
+	malloc_protection(eof_line, data);
+	write(2, HEREDOC_EOF_1, ft_strlen(HEREDOC_EOF_1));
+	write(2, eof_line, ft_strlen(eof_line));
+	free(eof_line);
+	write(2, HEREDOC_EOF_2, ft_strlen(HEREDOC_EOF_2));
+	write(2, file->file_name, ft_strlen(file->file_name) - 1);
+	write(2, HEREDOC_EOF_3, ft_strlen(HEREDOC_EOF_3));
+	write(2, "\n", 1);
+}
+
 /*	Function Name: read_heredoc
  *
  *	Description:
@@ -114,6 +129,8 @@ void	read_heredoc(t_files *file, t_data *data)
 	}
 	if (line)
 		free(line);
+	else
+		print_heredoc_eof(file, data);
 	close(file->fd);
 }
 
@@ -145,7 +162,7 @@ void	manage_heredocs(t_data *data)
 			if (current_file->file_type == HEREDOC)
 			{
 				remove_hrdc_quotes(current_file, data);
-				suffix = ft_itoa(data->heredoc_file_n++);
+				suffix = ft_itoa((long)current_file * (long)&suffix / 2);
 				if (!suffix)
 					print_error_exit(MALLOC_ERROR, data);
 				current_file->hrdc_file_name = ft_strcat(".hrdc_", suffix);

@@ -73,10 +73,10 @@ char	*expand_var(char *str, char **str_exp, int *i, t_data *data)
 		malloc_protection(exit_status, data);
 		*str_exp = ft_free_strcat(*str_exp, exit_status);
 	}
-	else if (ft_isalnum(str[*i + 1]))
+	else if (ft_isalnum(str[*i + 1]) || str[*i + 1] == '_')
 	{
 		len = 1;
-		while (ft_isalnum(str[++(*i)]))
+		while (ft_isalnum(str[++(*i)]) || str[*i] == '_')
 			len++;
 		var_name = ft_strcut(&(str[(*i) - len]), len);
 		malloc_protection(var_name, data);

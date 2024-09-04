@@ -103,10 +103,12 @@ int	create_process(t_section **section, t_data *data, int subshell)
 {
 	int	pid;
 
+	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid == 0)
 	{
 		data->is_child = 1;
+		signal(SIGINT, handle_signal);
 		if (subshell)
 		{
 			data->wait_process = 0;
@@ -145,6 +147,7 @@ void	wait_for_process_ending(t_section *last_section, t_data *data)
 		}
 	}
 	data->wait_process = 0;
+	signal(SIGINT, handle_signal);
 }
 
 void	setup_curr_section(t_section **curr_sec, t_data *data)

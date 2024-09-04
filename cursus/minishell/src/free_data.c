@@ -34,7 +34,6 @@ void	clean_prompt_data(t_data *data)
 		free(data->pids);
 	data->pids = NULL;
 	data->section_id = 0;
-	data->heredoc_file_n = 0;
 	ft_token_lstclear(&data->tokens);
 	free_sections(&data->sections);
 }

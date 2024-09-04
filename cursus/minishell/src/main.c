@@ -70,6 +70,7 @@ void	read_prompt(t_data *data)
 			add_history(data->prompt);
 			minishell(data);
 			clean_prompt_data(data);
+			data->heredoc_eof_line++;
 		}
 		else if (!data->prompt)
 			break ;
@@ -107,7 +108,7 @@ void	init_data(t_data **data, char **env)
 	(*data)->section_id = 0;
 	(*data)->sections = NULL;
 	(*data)->pipes = NULL;
-	(*data)->heredoc_file_n = 0;
+	(*data)->heredoc_eof_line = 1;
 	(*data)->prompt_init = NULL;
 	(*data)->prompt = NULL;
 	(*data)->std_in = -1;
