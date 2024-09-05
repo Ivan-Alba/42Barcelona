@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 18:55:08 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/29 20:20:44 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/05 18:12:30 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ void	read_heredoc(t_files *file, t_data *data)
 	file->fd = open(file->hrdc_file_name, O_CREAT | O_RDWR, 0666);
 	if (file->fd == -1)
 		print_error_exit(OPEN_ERROR, data);
+	write(2, "> ", 2);
 	line = get_next_line(0);
 	while (line && ft_strncmp(file->file_name, line,
 			ft_strlen(file->file_name)) != 0)
@@ -125,6 +126,7 @@ void	read_heredoc(t_files *file, t_data *data)
 		write(file->fd, line, ft_strlen(line));
 		free(line);
 		line = NULL;
+		write(2, "> ", 2);
 		line = get_next_line(0);
 	}
 	if (line)
@@ -165,7 +167,7 @@ void	manage_heredocs(t_data *data)
 				suffix = ft_itoa((long)current_file * (long)&suffix / 2);
 				if (!suffix)
 					print_error_exit(MALLOC_ERROR, data);
-				current_file->hrdc_file_name = ft_strcat(".hrdc_", suffix);
+				current_file->hrdc_file_name = ft_strcat("/tmp/.hrdc_", suffix);
 				free(suffix);
 				read_heredoc(current_file, data);
 			}

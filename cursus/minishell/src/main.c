@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:30:27 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/09/02 17:16:15 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/05 17:48:09 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,15 @@ void	read_prompt(t_data *data)
 			add_history(data->prompt);
 			minishell(data);
 			clean_prompt_data(data);
-			data->heredoc_eof_line++;
 		}
 		else if (!data->prompt)
+		{
+			write(2, "exit\n", 5);
 			break ;
+		}
 		else
 			free(data->prompt);
+		data->heredoc_eof_line++;
 	}
 }
 
@@ -152,9 +155,10 @@ int	main(int argc, char **argv, char **env)
 	(void)argv;
 	if (argc != 1)
 		print_error_exit(NO_ARGS_REQUIRED, NULL);
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, SIG_IGN);
 	data = NULL;
 	init_data(&data, env);
-	setup_signal_handler();
 	read_prompt(data);
 	free_data(data);
 	exit(0);

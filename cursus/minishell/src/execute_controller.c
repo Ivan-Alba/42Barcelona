@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 15:19:24 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/09/02 13:16:31 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/05 18:14:05 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,12 +103,10 @@ int	create_process(t_section **section, t_data *data, int subshell)
 {
 	int	pid;
 
-	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid == 0)
 	{
 		data->is_child = 1;
-		signal(SIGINT, handle_signal);
 		if (subshell)
 		{
 			data->wait_process = 0;
@@ -116,7 +114,10 @@ int	create_process(t_section **section, t_data *data, int subshell)
 			return (1);
 		}
 		else
+		{
+			signal(SIGINT, handle_signal);
 			execute(*section, data);
+		}
 	}
 	else if (pid == -1)
 		print_error_exit(FORK_ERROR, data);
@@ -143,11 +144,10 @@ void	wait_for_process_ending(t_section *last_section, t_data *data)
 			if (WIFEXITED(status))
 				data->last_exit_status = WEXITSTATUS(status);
 			else
-				data->last_exit_status = 666; //TODO patillada, senales?
+				data->last_exit_status = 130; //TODO patillada, senales?
 		}
 	}
 	data->wait_process = 0;
-	signal(SIGINT, handle_signal);
 }
 
 void	setup_curr_section(t_section **curr_sec, t_data *data)
@@ -218,6 +218,24 @@ void	execute_sections(t_section *curr_sec, t_data *data)
 //Manages the opening of fd's, creation of processes and execution of commands
 void	execute_controller(t_data *data)
 {
+	/*int	pid;
+	int	status;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		signal(SIGINT, handle_signal);
+		manage_heredocs(data);
+		free_data(data);
+		exit(0);
+	}
+	wait(&status);
+	if (WEXITSTATUS(status) == 130)
+	{
+		data->last_exit_status = 130;
+		return ;
+	}*/
+
 	manage_heredocs(data);
 	data->pids = malloc(sizeof(int) * data->section_id);
 	if (!data->pids)
