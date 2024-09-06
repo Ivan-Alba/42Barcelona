@@ -175,6 +175,8 @@ void		conn_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
 //navigate_sections
 t_section	*get_next_section(t_section *current, int last_section_id);
 t_section	*get_next_pipe_section(t_section *current);
+t_section	*get_outer_fdin_section(t_section *current);
+t_section	*get_outer_fdout_section(t_section *current);
 
 //execute_controller
 void		execute_controller(t_data *data);

@@ -38,17 +38,14 @@ void	dup_pipe(t_section *section, int is_output, t_data *data)
 
 void	set_stdin(t_section *section, t_data *data)
 {
-	t_section	*curr_sec;
-
 	if (section->fd_in != -1)
 		dup2(section->fd_in, STDIN_FILENO);
-	else if (section->outer && section->out_conn == PIPE)
-	{
-		curr_sec = section->outer;
-		while (curr_sec->outer)
-			curr_sec = curr_sec->outer;
-		dup_pipe(curr_sec, 0, data);
-	}
+	else if (get_outer_fdin_section(section)
+		&& get_outer_fdin_section(section)->fd_in != -1)
+		dup2(get_outer_fdin_section(section)->fd_in, STDIN_FILENO);
+	else if (get_outer_fdin_section(section)
+		&& get_outer_fdin_section(section)->previous->next_conn == PIPE)
+		dup_pipe(get_outer_fdin_section(section), 0, data);
 	else if (section->previous && section->previous->next_conn == PIPE)
 	{
 		dup2(data->pipes[(section->id - 1) * 2], STDIN_FILENO);
@@ -58,28 +55,16 @@ void	set_stdin(t_section *section, t_data *data)
 
 void	set_stdout(t_section *section, t_data *data)
 {
-	t_section	*curr_sec;
-
 	if (section->fd_out != -1)
 		dup2(section->fd_out, STDOUT_FILENO);
-	else if (section->outer && !section->next)
-	{
-		curr_sec = section->outer;
-		while (curr_sec->outer && !curr_sec->next && curr_sec->fd_out == -1)
-			curr_sec = curr_sec->outer;
-		if (curr_sec->fd_out != -1)
-			dup2(curr_sec->fd_out, STDOUT_FILENO);
-		else if (curr_sec->next)
-			dup_pipe(curr_sec, 1, data);
-	}
-	else if (get_next_section(section, data->section_id - 1)
-		&& get_next_section(section, data->section_id - 1)->previous->next_conn
-		== PIPE)
-	{
-		curr_sec = get_next_section(section, data->section_id - 1);
-		dup2(data->pipes[((curr_sec->id -1) * 2) + 1], STDOUT_FILENO);
-		close(data->pipes[((curr_sec->id -1) * 2) + 1]);
-	}
+	else if (section->next && section->next_conn == PIPE)
+		dup_pipe(section, 1, data);
+	else if (get_outer_fdout_section(section)
+		&& get_outer_fdout_section(section)->fd_out != -1)
+		dup2(get_outer_fdout_section(section)->fd_out, STDOUT_FILENO);
+	else if (get_outer_fdout_section(section)
+		&& get_outer_fdout_section(section)->next_conn == PIPE)
+		dup_pipe(get_outer_fdout_section(section), 1, data);
 }
 
 void	set_stdin_stdout(t_section *section, t_data *data)

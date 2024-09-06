@@ -32,7 +32,7 @@ void	generate_pipes(t_data *data)
 	}
 }
 
-void	setup_curr_section(t_section **curr_sec, t_data *data)
+int	setup_curr_section(t_section **curr_sec, t_data *data)
 {
 	expand_section(*curr_sec, data);
 	manage_wildcard(*curr_sec, data);
@@ -51,7 +51,11 @@ void	setup_curr_section(t_section **curr_sec, t_data *data)
 		}
 	}
 	else
+	{
 		data->last_exit_status = 1;
+		return (1);
+	}
+		return (0);
 }
 
 int	is_next_and_or(t_section *curr_sec, t_data *data)
@@ -77,13 +81,15 @@ void	execute_sections(t_section *curr_sec, t_data *data)
 	generate_pipes(data);
 	while (curr_sec)
 	{
-		setup_curr_section(&curr_sec, data);
-		if (curr_sec->inner && ((curr_sec->in_conn != AND
-					&& curr_sec->out_conn != OR) || data->accept_inner))
+		if (setup_curr_section(&curr_sec, data) == 0)
 		{
-			if (create_process(&curr_sec, data, 1))
-				continue ;
-			data->wait_process++;
+			if (curr_sec->inner && ((curr_sec->in_conn != AND
+						&& curr_sec->out_conn != OR) || data->accept_inner))
+			{
+				if (create_process(&curr_sec, data, 1))
+					continue ;
+				data->wait_process++;
+			}
 		}
 		if (get_next_pipe_section(curr_sec))
 			curr_sec = get_next_pipe_section(curr_sec);
