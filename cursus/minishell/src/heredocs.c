@@ -45,36 +45,20 @@ void	remove_hrdc_quotes(t_files *file, t_data *data)
 	file->file_name = new_name;
 }
 
-/*	Function Name: remove_heredoc_files
+/*	Function Name: print_heredoc_eof
  *
  *	Description:
  *
- *		This function deletes temporary files of type heredoc created during
- *		execution.
+ *		This function is called when the EOF signal is received while writing
+ *		the heredoc. It prints on console a message as bash does.
  *
  *	Parameters:
  *
- *		t_section *section	- The pointer to the section containing the
- *								data of the heredocs created in it.
- *
+ *		t_files *file	- The pointer to the heredoc file with all
+ *							heredoc data.
+ *		t_data *data	- The pointer to the t_data struct with all
+ *							the execution data
  */
-void	remove_heredoc_files(t_section *section)
-{
-	t_files	*current_file;
-
-	current_file = section->files;
-	while (current_file)
-	{
-		if (current_file->file_type == HEREDOC
-			&& current_file->hrdc_file_name)
-		{
-			if (unlink(current_file->hrdc_file_name) == -1)
-				perror("Error deleting file");
-		}
-		current_file = current_file->next;
-	}
-}
-
 void	print_heredoc_eof(t_files *file, t_data *data)
 {
 	char	*eof_line;
@@ -90,13 +74,12 @@ void	print_heredoc_eof(t_files *file, t_data *data)
 	write(2, "\n", 1);
 }
 
-/*	Function Name: read_heredoc
+/*	Function Name: write_heredoc
  *
  *	Description:
  *
- *		This function creates the temporary file heredoc, reads the user input
- *		line by line and writes its contents to the file until the limiter
- *		is entered.
+ *		This function reads the user input line by line and writes its contents
+ *		to the file until the limiter or EOF is entered.
  *		If the file has expansion set, it calls the function in charge of
  *		expanding the environment variables before writing it.
  *
@@ -107,12 +90,10 @@ void	print_heredoc_eof(t_files *file, t_data *data)
  *		t_data *data	- The pointer to the t_data struct with all
  *							the execution data
  */
-void	read_heredoc(t_files *file, t_data *data)
+void	write_heredoc(t_files *file, t_data *data)
 {
-	char		*line;
+	char	*line;
 
-	if (!(file->hrdc_file_name))
-		print_error_exit(MALLOC_ERROR, data);
 	file->fd = open(file->hrdc_file_name, O_CREAT | O_RDWR, 0666);
 	if (file->fd == -1)
 		print_error_exit(OPEN_ERROR, data);
@@ -136,6 +117,49 @@ void	read_heredoc(t_files *file, t_data *data)
 	close(file->fd);
 }
 
+/*	Function Name: create_heredoc
+ *
+ *	Description:
+ *
+ *		This function creates the temporary file heredoc and creates a process
+ * 		to manage its writing. A process is used to write the heredoc in order
+ *		to manage the SIGINT signal as in bash.
+ *
+ *	Parameters:
+ *
+ *		t_files *file	- The pointer to the heredoc file with all
+ *							heredoc data.
+ *		t_data *data	- The pointer to the t_data struct with all
+ *							the execution data
+ */
+int	create_heredoc(t_files *file, t_data *data)
+{
+	char	*suffix;
+	int		pid;
+	int		status;
+
+	suffix = ft_itoa((long)file * (long)&suffix / 2);
+	malloc_protection(suffix, data);
+	file->hrdc_file_name = ft_strcat("/tmp/.hrdc_", suffix);
+	free(suffix);
+	malloc_protection(file->hrdc_file_name, data);
+	signal(SIGINT, SIG_IGN);
+	pid = fork();
+	if (pid == 0)
+	{
+		signal(SIGINT, handle_signal);
+		write_heredoc(file, data);
+		free_data(data);
+		exit(0);
+	}
+	wait(&status);
+	data->last_exit_status = WEXITSTATUS(status);
+	signal(SIGINT, handle_signal_prompt);
+	if (data->last_exit_status == 130)
+		return (1);
+	return (0);
+}
+
 /*	Function Name: manage_heredocs
  *
  *	Description:
@@ -149,11 +173,10 @@ void	read_heredoc(t_files *file, t_data *data)
  *		t_data *data	- The pointer to the t_data struct with all
  *							the execution data
  */
-void	manage_heredocs(t_data *data)
+int	manage_heredocs(t_data *data)
 {
 	t_section	*current_sec;
 	t_files		*current_file;
-	char		*suffix;
 
 	current_sec = data->sections;
 	while (current_sec)
@@ -164,15 +187,12 @@ void	manage_heredocs(t_data *data)
 			if (current_file->file_type == HEREDOC)
 			{
 				remove_hrdc_quotes(current_file, data);
-				suffix = ft_itoa((long)current_file * (long)&suffix / 2);
-				if (!suffix)
-					print_error_exit(MALLOC_ERROR, data);
-				current_file->hrdc_file_name = ft_strcat("/tmp/.hrdc_", suffix);
-				free(suffix);
-				read_heredoc(current_file, data);
+				if (create_heredoc(current_file, data))
+					return (1);
 			}
 			current_file = current_file->next;
 		}
 		current_sec = get_next_section(current_sec, data->section_id - 1);
 	}
+	return (0);
 }

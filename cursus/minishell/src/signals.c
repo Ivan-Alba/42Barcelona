@@ -19,21 +19,18 @@ void	handle_signal(int signal)
 	g_signal_received = signal;
 	if (g_signal_received == SIGINT)
 	{
+		write(2, "\n", 1);
 		exit(130);
 	}
 }
 
-// Función para registrar el manejador de señales y pasar la estructura data
-void	setup_signal_handler(void)
+void	handle_signal_prompt(int signal)
 {
-	struct sigaction	sa;
+	int	g_signal_received;
 
-	sa.sa_flags = 0;
-	sa.sa_handler = handle_signal;
-	sigemptyset(&sa.sa_mask);
-	//sigaddset(&sa.sa_mask, SIGTERM);
-	//sigaddset(&sa.sa_mask, SIGINT);
-	//sigaddset(&sa.sa_mask, SIGQUIT);
-	if (sigaction(SIGINT, &sa, NULL) == -1)
-		perror("sigaction");
+	g_signal_received = signal;
+	if (g_signal_received == SIGINT)
+	{
+		write(1, "\nminishell: ", 12);
+	}
 }

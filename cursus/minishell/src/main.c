@@ -156,7 +156,7 @@ int	main(int argc, char **argv, char **env)
 	if (argc != 1)
 		print_error_exit(NO_ARGS_REQUIRED, NULL);
 	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, SIG_IGN);
+	signal(SIGINT, handle_signal_prompt);
 	data = NULL;
 	init_data(&data, env);
 	read_prompt(data);

@@ -127,6 +127,9 @@ int	tokenizer(t_data *data)
 	if (check_first_last_token(data->tokens, 1))
 		return (1);
 	if (check_tokens_format(data->tokens, data, 0, 0))
+	{
+		data->last_exit_status = 2;
 		return (1);
+	}
 	return (0);
 }

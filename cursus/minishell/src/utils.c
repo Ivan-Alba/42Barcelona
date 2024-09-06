@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   str_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,96 +12,14 @@
 
 #include "../inc/minishell.h"
 
-//Returns a char* from a char
-char	*string_from_char(char c)
-{
-	char	*result;
-
-	result = malloc(sizeof(char) * (1 + 1));
-	if (!result)
-		return (NULL);
-	result[0] = c;
-	result[1] = '\0';
-	return (result);
-}
-
-char	*concat_char_to_str(char *str, char c, t_data *data)
-{
-	char	*tmp;
-	char	*result;
-
-	tmp = string_from_char(c);
-	if (!tmp)
-	{
-		if (str)
-			free(str);
-		print_error_exit(MALLOC_ERROR, data);
-	}
-	result = ft_strcat(str, tmp);
-	free(tmp);
-	if (str)
-	{
-		free(str);
-		str = NULL;
-	}
-	if (!result)
-		print_error_exit(MALLOC_ERROR, data);
-	return (result);
-}
-
 void	malloc_protection(void *ptr, t_data *data)
 {
 	if (!ptr)
 		print_error_exit(MALLOC_ERROR, data);
 }
 
-//Add to an existing char** a new value, freeing the memory and re-allocating it
-char	**add_to_array(char	***current, char *new_value)
+void	free_if_exists(void	*ptr)
 {
-	char	**new;
-	int		i;
-
-	if (!(*current) || !(*current)[0])
-		new = malloc(sizeof(char *) * 2);
-	else
-	{
-		i = 0;
-		while (*current && (*current)[i])
-			i++;
-		new = malloc(sizeof(char *) * (i + 2));
-	}
-	if (!new)
-		return (NULL);
-	i = 0;
-	while (*current && (*current)[i])
-	{
-		new[i] = ft_strdup((*current)[i]);
-		i++;
-	}
-	new[i++] = ft_strdup(new_value);
-	new[i] = NULL;
-	if (*current)
-		free_split(current);
-	return (new);
-}
-
-char	**str_array_dup(char **origin)
-{
-	char	**new_array;
-	int		i;
-
-	i = 0;
-	while (origin && origin[i])
-		i++;
-	new_array = malloc(sizeof(char *) * (i + 1));
-	if (!new_array)
-		return (NULL);
-	new_array[i] = NULL;
-	while (--i >= 0)
-	{
-		new_array[i] = ft_strdup(origin[i]);
-		if (!new_array[i])
-			return (NULL);
-	}
-	return (new_array);
+	if (ptr)
+		free(ptr);
 }

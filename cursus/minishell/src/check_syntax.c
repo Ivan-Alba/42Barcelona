@@ -89,6 +89,9 @@ int	check_syntax(t_data *data)
 	if (check_brackets(data))
 		error = BRACKET_FORMAT_ERROR;
 	if (error)
+	{
+		data->last_exit_status = 2;
 		return (print_error(error, NULL), 1);
+	}
 	return (0);
 }

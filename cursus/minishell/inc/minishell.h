@@ -51,8 +51,6 @@
 # define ENV "env"
 # define EXIT "exit"
 
-extern int	g_signal_received;
-
 enum	e_token_type
 {
 	IN_F,
@@ -178,16 +176,18 @@ void		conn_sect(t_section **curr_sec, t_token **curr_tok, t_data *data);
 t_section	*get_next_section(t_section *current, int last_section_id);
 t_section	*get_next_pipe_section(t_section *current);
 
-//executor
+//execute_controller
 void		execute_controller(t_data *data);
+
+//process_run
+int			create_process(t_section **section, t_data *data, int is_subshell);
+void		wait_for_process_ending(t_section *last_section, t_data *data);
 
 //process_dup
 void		set_stdin_stdout(t_section *section, t_data *data);
 
 //heredocs
-void		manage_heredocs(t_data *data);
-void		remove_heredoc_files(t_section *section);
-t_section	*get_next_section(t_section *current, int last_section_id);
+int			manage_heredocs(t_data *data);
 
 //expand_section
 void		expand_section(t_section *section, t_data *data);
@@ -217,21 +217,28 @@ int			can_expand_wildcar(char *cmd);
 void		remove_quotes(char **str, t_data *data);
 void		add_to_cmd(char ***cmd, int *i, char ***matches, t_data *data);
 
-//free_utils
+//free_data
 void		clean_prompt_data(t_data *data);
-void		free_split(char ***splitted);
 void		free_data(t_data *data);
 void		free_sections(t_section **sections);
 void		free_close_pipes(t_data *data);
+void		remove_heredoc_files(t_section *section, int last_section_id);
 
-//utils
+//print_error.c
 void		print_error_exit(char *msg, t_data *data);
 void		print_error(char *msg, char *token);
+
+//str_utils
+
 char		*string_from_char(char c);
 char		**add_to_array(char ***current, char *new_value);
 char		*concat_char_to_str(char *str, char c, t_data *data);
-void		malloc_protection(void *ptr, t_data *data);
 char		**str_array_dup(char **origin);
+void		free_split(char ***splitted);
+
+//utils
+void		malloc_protection(void *ptr, t_data *data);
+void		free_if_exists(void *ptr);
 
 //test_utils
 void		print_tokens(t_data *data);
@@ -245,9 +252,9 @@ void		ft_files_add(t_files **lst, t_files *new);
 t_files		*ft_files_new(char *file_name, enum e_token_type type);
 
 //signals
-void		setup_signal_handler(void);
+void		setup_signal_handler(void (*handler)(int));
 void		handle_signal(int signal);
-
+void		handle_signal_prompt(int signal);
 //check_builtins
 int			check_if_builtin(char *command);
 void		execute_builtin(char **cmd, t_data *data);

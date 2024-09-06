@@ -32,124 +32,6 @@ void	generate_pipes(t_data *data)
 	}
 }
 
-void	check_shell_lvl(char *cmd, t_data *data)
-{
-	char	*ptr;
-	char	**unset_cmd;
-	char	*shell_lvl;
-	int		curr_shlvl;
-
-	ptr = ft_strrchr(cmd, '/');
-	if (ptr && ft_strncmp(ptr, "minishell", 10) == 0)
-	{
-		shell_lvl = ft_strdup("SHLVL");
-		malloc_protection(shell_lvl, data);
-		shell_lvl = get_var_value(&shell_lvl, data, 0);
-		if (!shell_lvl)
-			return ;
-		curr_shlvl = ft_atoi(shell_lvl);
-		free(shell_lvl);
-		//INCREMENT SHELL LEVEL
-		unset_cmd = NULL;
-		unset_cmd = add_to_array(&unset_cmd, "unset");
-		malloc_protection(unset_cmd, data);
-		unset_cmd = add_to_array(&unset_cmd, "SHLVL");
-		malloc_protection(unset_cmd, data);
-		//ft_unset(unset_cmd, data);
-		free_split(&unset_cmd);
-		unset_cmd = NULL;
-		unset_cmd = add_to_array(&unset_cmd, "export");
-		malloc_protection(unset_cmd, data);
-		shell_lvl = ft_free_strcat(ft_strdup("SHLVL="), ft_itoa(curr_shlvl + 1));
-		malloc_protection(shell_lvl, data);
-		unset_cmd = add_to_array(&unset_cmd, shell_lvl);
-		free(shell_lvl);
-		malloc_protection(unset_cmd, data);
-		//ft_export(unset_cmd, data);
-		free(unset_cmd);		
-	}
-}
-
-//Manages the incoming and outgoing fd's and executes the command
-void	execute(t_section *section, t_data *data)
-{
-	free_close_pipes(data);
-	get_path(data);
-	if (section->cmd && (section->cmd)[0] && ((section->cmd)[0][0] == '/'
-		|| (section->cmd)[0][0] == '.'))
-		section->cmd_path = ft_strdup((section->cmd)[0]);
-	else
-		section->cmd_path = get_cmd_path((section->cmd)[0], data);
-	if ((section->cmd)[0] && ((section->cmd)[0][0] == '/'
-		|| (section->cmd)[0][0] == '.')
-		&& access(section->cmd_path, X_OK) == -1)
-	{
-		perror((section->cmd)[0]);
-		exit(127);
-	}
-	//check_shell_lvl(section->cmd[0], data);
-	if (execve(section->cmd_path, section->cmd, data->env) == -1)
-	{
-		if ((section->cmd)[0] && (section->cmd)[0][0])
-			write(2, (section->cmd)[0], ft_strlen((section->cmd)[0]));
-		else if ((section->cmd)[0])
-			write(2, "''", 2);
-		write(2, ": command not found\n", 20);
-		exit(127);
-	}
-}
-
-int	create_process(t_section **section, t_data *data, int subshell)
-{
-	int	pid;
-
-	pid = fork();
-	if (pid == 0)
-	{
-		data->is_child = 1;
-		if (subshell)
-		{
-			data->wait_process = 0;
-			*section = (*section)->inner;
-			return (1);
-		}
-		else
-		{
-			signal(SIGINT, handle_signal);
-			execute(*section, data);
-		}
-	}
-	else if (pid == -1)
-		print_error_exit(FORK_ERROR, data);
-	else
-		data->pids[(*section)->id] = pid;
-	return (0);
-}
-
-void	wait_for_process_ending(t_section *last_section, t_data *data)
-{
-	int	last_section_executed;
-	int	status;
-
-	data->accept_inner = 0;
-	free_close_pipes(data);
-	last_section_executed = last_section->id;
-	//TODO TEST PRINT
-	//printf("\nLast section executed %d\n", last_section_executed);
-	//printf("Processes waiting: %d\n", data->wait_process);
-	while (data->wait_process--)
-	{
-		if (wait(&status) == data->pids[last_section_executed])
-		{
-			if (WIFEXITED(status))
-				data->last_exit_status = WEXITSTATUS(status);
-			else
-				data->last_exit_status = 130; //TODO patillada, senales?
-		}
-	}
-	data->wait_process = 0;
-}
-
 void	setup_curr_section(t_section **curr_sec, t_data *data)
 {
 	expand_section(*curr_sec, data);
@@ -213,30 +95,14 @@ void	execute_sections(t_section *curr_sec, t_data *data)
 		execute_sections(curr_sec->next, data);
 	if (data->is_child)
 		exit(data->last_exit_status);
+	signal(SIGINT, handle_signal_prompt);
 }
 
 //Manages the opening of fd's, creation of processes and execution of commands
 void	execute_controller(t_data *data)
 {
-	/*int	pid;
-	int	status;
-
-	pid = fork();
-	if (pid == 0)
-	{
-		signal(SIGINT, handle_signal);
-		manage_heredocs(data);
-		free_data(data);
-		exit(0);
-	}
-	wait(&status);
-	if (WEXITSTATUS(status) == 130)
-	{
-		data->last_exit_status = 130;
+	if (manage_heredocs(data))
 		return ;
-	}*/
-
-	manage_heredocs(data);
 	data->pids = malloc(sizeof(int) * data->section_id);
 	if (!data->pids)
 		print_error_exit(MALLOC_ERROR, data);
