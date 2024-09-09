@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
-#include "Contact.hpp"
-#include "PhoneBook.hpp"
+#include "../inc/Contact.hpp"
+#include "../inc/PhoneBook.hpp"
 
 void addNewContact(PhoneBook& phoneBook) {
     Contact newContact;
@@ -9,14 +9,29 @@ void addNewContact(PhoneBook& phoneBook) {
 
     std::cout << "Enter first name: ";
     std::getline(std::cin, firstName);
+	while (firstName.empty())
+	{
+		std::cout << "Enter first name: ";
+		std::getline(std::cin, firstName);
+	}
     newContact.setFirstName(firstName);
 
     std::cout << "Enter last name: ";
     std::getline(std::cin, lastName);
+	while (lastName.empty())
+	{
+		std::cout << "Enter last name: ";
+		std::getline(std::cin, lastName);
+	}
     newContact.setLastName(lastName);
 
     std::cout << "Enter nickname: ";
-    std::getline(std::cin, nickName);
+	std::getline(std::cin, nickName);
+	while (nickName.empty())
+	{
+		std::cout << "Enter nickname: ";
+		std::getline(std::cin, nickName);
+	}
     newContact.setNickName(nickName);
 
     phoneBook.addContact(newContact);
@@ -48,7 +63,7 @@ int main() {
             int index;
             std::cout << "Enter the index of the contact to view: ";
             std::cin >> index;
-            std::cin.ignore(); // To ignore the newline character left in the buffer
+            std::cin.ignore();
 
             phoneBook.displayContactAt(index);
         } 

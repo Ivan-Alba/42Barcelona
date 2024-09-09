@@ -6,34 +6,80 @@
 #    By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/21 21:07:38 by igarcia2          #+#    #+#              #
-#    Updated: 2024/02/24 15:00:00 by igarcia2         ###   ########.fr        #
+#    Updated: 2024/09/09 15:37:54 by igarcia2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = phonebook
 
-MAIN = main.cpp
-DEPS = $(MAIN:.cpp=.d)
+SRC = main.cpp PhoneBook.cpp Contact.cpp
 
-MAIN_OBJ = $(MAIN:.cpp=.o)
+SRC_DIR = src/
+
+SRC_FULL_DIR =  $(addprefix $(SRC_DIR), $(SRC))
+
+OBJ = $(SRC:.cpp=.o)
+
+OBJ_DIR = bin/
+
+OBJ_FULL_DIR = $(addprefix $(OBJ_DIR), $(OBJ))
+
+DEPS = $(SRC:.cpp=.d)
 
 CC = c++
-CFLAGS = -Wall -Wextra -Werror -std=c++98
-RM = rm -f
+CFLAGS = -Wall -Wextra -Werror -std=c++98 
+RM = rm -rf
 
-all: $(NAME)
+# Color codes
+RED     = \033[0;31m
+GREEN   = \033[0;32m
+YELLOW  = \033[0;33m
+BLUE    = \033[0;34m
+RESET   = \033[0m
 
-%.o: %.cpp Makefile
-		$(CC) $(CFLAGS) -c -MMD $<
+CHECKMARK = ✅
+ERROR     = ❌
+WARNING   = ⚠️
+INFO      = ℹ️
 
-$(NAME): $(MAIN_OBJ)
-		$(CC) -o $(NAME) $(MAIN_OBJ)
+# Function to display messages with icons
+define SHOW_MESSAGE
+	@echo "$(1)$(2)$(RESET)"
+endef
 
+
+# Length of the progress bar
+BAR_LENGTH = 50
+
+# Function to display a progress bar
+define SHOW_PROGRESS
+	@printf "$(YELLOW)[[[[%${BAR_LENGTH}s] %3d%%\r" "$(1)" $(2)
+endef
+
+
+all: $(NAME)	
+
+$(OBJ_DIR)%.o: $(SRC_DIR)%.cpp Makefile
+	@$(call SHOW_MESSAGE, $(INFO), " Compiling $<...")
+	@$(CC) $(CFLAGS) -c -MMD $< -o $@ 
+	@$(call SHOW_MESSAGE, $(CHECKMARK), " Compiled $<")
+
+$(NAME): $(OBJ_DIR) $(OBJ_FULL_DIR)
+	@echo "$(YELLOW)LINKING $(NAME)...$(RESET)"
+	$(CC) -o $(NAME) $(OBJ_FULL_DIR) 
+
+$(OBJ_DIR): 
+	@mkdir $(OBJ_DIR)
+ 
 clean:
-		$(RM) $(MAIN_OBJ) $(DEPS)
-
+	@echo "$(WARNING) Cleaning..."
+	@$(RM) $(OBJ_DIR)
+	@echo "Done $(CHECKMARK)"
+	
 fclean: clean
-		$(RM) $(NAME)
+	@echo "$(WARNING) Fcleaning..."
+	@$(RM) $(NAME)
+	@echo "Done $(CHECKMARK)"
 
 re: fclean all
 
