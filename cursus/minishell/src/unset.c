@@ -47,12 +47,14 @@ int	ft_cmp_varname(char *s, char **env, int *num_env)
 	int	j;
 
 	i = 0;
+	if (!s | !*s)
+		return (1);
 	while (env && env[i])
 	{
 		j = 0;
 		while (s[j] && env[i][j] && env[i][j] != '=' && s[j] == env[i][j])
 			j++;
-		if (s[j] == '\0' && env[i][j] == '=')
+		if (s[j] == '\0' && (env[i][j] == '=' || env[i][j] == '\0'))
 		{
 			*num_env = i;
 			return (0);

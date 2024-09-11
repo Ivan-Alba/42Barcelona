@@ -19,9 +19,9 @@ void	check_shell_lvl(char *cmd, t_data *data)
 	int		curr;
 
 	if (ft_strrchr(cmd, '/')
-		&& ft_strncmp(ft_strrchr(cmd, '/'), "minishell", 10) == 0)
+		&& ft_strncmp(ft_strrchr(cmd, '/'), "/minishell", 11) == 0)
 	{
-		shell_lvl = ft_strdup("SHLVL");
+		shell_lvl = ft_strdup("$SHLVL");
 		malloc_protection(shell_lvl, data);
 		shell_lvl = get_var_value(&shell_lvl, data, 0);
 		if (!shell_lvl)
@@ -36,7 +36,7 @@ void	check_shell_lvl(char *cmd, t_data *data)
 		export_cmd = add_to_array(&export_cmd, shell_lvl);
 		free(shell_lvl);
 		malloc_protection(export_cmd, data);
-		//ft_export(unset_cmd, data);
+		ft_export(export_cmd, data);
 		free(export_cmd);
 	}
 }
@@ -58,7 +58,7 @@ void	execute(t_section *section, t_data *data)
 		perror((section->cmd)[0]);
 		exit(127);
 	}
-	//check_shell_lvl(section->cmd[0], data);
+	check_shell_lvl(section->cmd[0], data);
 	if (execve(section->cmd_path, section->cmd, data->env) == -1)
 	{
 		if ((section->cmd)[0] && (section->cmd)[0][0])

@@ -266,4 +266,16 @@ int			ft_echo(char **cmd);
 int			ft_env(char **cmd, t_data *data);
 int			ft_pwd(char **cmd, t_data *data);
 int			ft_unset(char **cmd, t_data *data);
+int			ft_export(char **cmd, t_data *data);
+int			is_flag(char *str);
+int			valid_varname(char *str);
+void		export_var(t_data *data, char *new_var, int var_in_env,
+				int operator_type);
+int			check_if_exist(char *var, t_data *data);
+void		prepare_join(t_data *data, char *join_var, int var_in_env);
+void		remove_var(char **env, int *num_env);
+void		remove_plus(char *str);
+void		dup_sort_list(char **list_vars, t_data *data, int *num_vars);
+int			print_export_vars(t_data *data);
+
 #endif

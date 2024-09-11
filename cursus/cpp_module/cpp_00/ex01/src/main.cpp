@@ -1,79 +1,101 @@
 #include <iostream>
 #include <string>
+#include <cstdlib>
 #include "../inc/Contact.hpp"
 #include "../inc/PhoneBook.hpp"
 
-void addNewContact(PhoneBook& phoneBook) {
+void getInput(const std::string& prompt, std::string& input)
+{    
+	while (true) {
+        std::cout << prompt;
+        if (!std::getline(std::cin, input))
+		{
+			std::cout << "\nEOF detected. Exiting the program.\n" << std::endl;
+			std::exit(130);
+        }
+		else if (input.empty())
+		{
+			std::cout << "Input cannot be empty.\n";
+        }
+		else
+            break ;
+    }
+}
+
+void addNewContact(PhoneBook& phoneBook)
+{
     Contact newContact;
     std::string firstName, lastName, nickName;
 
-    std::cout << "Enter first name: ";
-    std::getline(std::cin, firstName);
-	while (firstName.empty())
-	{
-		std::cout << "Enter first name: ";
-		std::getline(std::cin, firstName);
-	}
+    getInput("Enter first name: ", firstName);
     newContact.setFirstName(firstName);
 
-    std::cout << "Enter last name: ";
-    std::getline(std::cin, lastName);
-	while (lastName.empty())
-	{
-		std::cout << "Enter last name: ";
-		std::getline(std::cin, lastName);
-	}
+    getInput("Enter last name: ", lastName);
     newContact.setLastName(lastName);
 
-    std::cout << "Enter nickname: ";
-	std::getline(std::cin, nickName);
-	while (nickName.empty())
-	{
-		std::cout << "Enter nickname: ";
-		std::getline(std::cin, nickName);
-	}
+    getInput("Enter nickname: ", nickName);
     newContact.setNickName(nickName);
 
     phoneBook.addContact(newContact);
-    std::cout << "Contact added successfully!\n";
+	std::cout << "Contact added successfully!\n";
 }
 
-int main() {
+void searchContact(PhoneBook& phoneBook)
+{
+    phoneBook.displayContacts();
+
+    int index;
+    while (true)
+	{
+        std::cout << "Enter the index of the contact to view: ";
+        if (!(std::cin >> index))
+		{
+            if (std::cin.eof())
+			{
+                std::cout << "\nEOF detected. Exiting the program.\n" << std::endl;
+				std::exit(130);
+			}
+			else if (std::cin.fail())
+			{
+                std::cout << "Error: Please enter a valid integer index.\n";
+                std::cin.clear();
+                std::cin.ignore(10000, '\n');
+            }
+        }
+		else
+            break;
+    }
+    phoneBook.displayContactAt(index);
+}
+
+int main()
+{
     std::string command;
     PhoneBook phoneBook;
 
-    while (true) {
+    while (true)
+	{
         std::cout << "Enter a command (ADD, SEARCH, EXIT): ";
 
-        if (!std::getline(std::cin, command)) {
+        if (!std::getline(std::cin, command))
+		{
             std::cout << "\nEOF detected. Exiting the program." << std::endl;
             break;
         }
 
-        for (size_t i = 0; i < command.length(); ++i) {
+        for (size_t i = 0; i < command.length(); ++i)
             command[i] = std::toupper(command[i]);
-        }
 
-        if (command == "ADD") {
+        if (command == "ADD")
             addNewContact(phoneBook);
-        } 
-        else if (command == "SEARCH") {
-            phoneBook.displayContacts();
-
-            int index;
-            std::cout << "Enter the index of the contact to view: ";
-            std::cin >> index;
-            std::cin.ignore();
-
-            phoneBook.displayContactAt(index);
-        } 
+        else if (command == "SEARCH")
+            searchContact(phoneBook);
         else if (command == "EXIT") {
             std::cout << "Exiting the program.\n";
             break;
         } 
-        else {
-            std::cout << "Error: Invalid command. Please enter ADD, SEARCH, or EXIT.\n";
-        }
+        else
+            std::cout << "Error: Invalid command.\n";
     }
-    return 0;
+    return (0);
 }

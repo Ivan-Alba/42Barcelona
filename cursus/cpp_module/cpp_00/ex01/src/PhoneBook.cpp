@@ -42,6 +42,8 @@ void	PhoneBook::displayContactAt(int index) const
 	if (index < 1 || index > MAX_CONTACTS || contacts[index - 1].getFirstName().empty())
 	{
 		std::cout << "Invalid index or no contact at this index." << std::endl;
+		std::cin.clear();
+		std::cin.ignore(10000, '\n');
 		return;
 	}
 	const Contact& contact = contacts[index - 1];

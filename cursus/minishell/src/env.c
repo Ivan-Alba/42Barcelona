@@ -6,7 +6,7 @@
 /*   By: ctacconi <ctacconi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 16:29:52 by ctacconi          #+#    #+#             */
-/*   Updated: 2024/09/03 16:45:39 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/05 18:01:55 by ctacconi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@ int	ft_env(char **cmd, t_data *data)
 	num_env = get_num_env(data->env);
 	i = 0;
 	while (i < num_env)
-		printf("%s\n", data->env[i++]);
+	{
+		if (ft_strchr(data->env[i], '='))
+			printf("%s\n", data->env[i]);
+		i++;
+	}
 	return (EXIT_SUCCESS);
 }
