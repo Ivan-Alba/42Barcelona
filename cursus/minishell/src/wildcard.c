@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 12:31:40 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/09/02 16:38:50 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/12 16:47:13 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	expand_wildcard_file(t_files *file, t_data *data)
 	char	**matches;
 	int		len;
 
-	if (can_expand_wildcar(file->file_name))
+	if (file->file_name && can_expand_wildcar(file->file_name))
 	{
 		remove_quotes(&file->file_name, data);
 		matches = search_files(file->file_name, data);

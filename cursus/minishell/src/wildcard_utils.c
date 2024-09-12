@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 12:31:40 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/09/02 16:38:50 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/12 16:45:21 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	can_expand_wildcar(char *cmd)
 	int	i;
 
 	i = -1;
-	while (cmd[++i])
+	while (cmd && cmd[++i])
 	{
 		if (cmd[i] == '\'')
 		{
