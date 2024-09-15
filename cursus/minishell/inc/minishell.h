@@ -51,6 +51,8 @@
 # define ENV "env"
 # define EXIT "exit"
 
+extern int	g_signal_received;
+
 enum	e_token_type
 {
 	IN_F,

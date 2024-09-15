@@ -14,23 +14,21 @@
 
 void	handle_signal(int signal)
 {
-	int	g_signal_received;
-
-	g_signal_received = signal;
-	if (g_signal_received == SIGINT)
+	if (signal == SIGINT)
 	{
-		write(2, "\n", 1);
+		printf("\n");
 		exit(130);
 	}
 }
 
 void	handle_signal_prompt(int signal)
 {
-	int	g_signal_received;
-
 	g_signal_received = signal;
 	if (g_signal_received == SIGINT)
 	{
-		write(1, "\nminishell: ", 12);
+		printf("\n");
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
 	}
 }

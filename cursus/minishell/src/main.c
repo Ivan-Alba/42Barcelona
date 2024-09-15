@@ -12,6 +12,8 @@
 
 #include "../inc/minishell.h"
 
+int	g_signal_received = 0;
+
 /**
  *	Function Name: minishell
  *
@@ -38,11 +40,6 @@ void	minishell(t_data *data)
 	if (tokenizer(data))
 		return ;
 	sectionizer(data);
-	/*------TODO TEST PRINTS------*/
-	//print_tokens(data);
-	//print_sections(data->sections);
-	//printf("\nOUTPUT:\n");
-	/*---------------------------*/
 	execute_controller(data);
 }
 
@@ -65,6 +62,11 @@ void	read_prompt(t_data *data)
 	while (1)
 	{
 		data->prompt = readline("minishell: ");
+		if (g_signal_received != 0)
+		{
+			data->last_exit_status = 130;
+			g_signal_received = 0;
+		}
 		if (data->prompt && data->prompt[0])
 		{
 			add_history(data->prompt);
