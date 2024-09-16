@@ -261,7 +261,7 @@ void		handle_signal(int signal);
 void		handle_signal_prompt(int signal);
 //check_builtins
 int			check_if_builtin(char *command);
-void		execute_builtin(char **cmd, t_data *data);
+void		builtin_setup(t_section **sect, char **cmd, t_data *data);
 
 //builtins
 int			ft_echo(char **cmd);

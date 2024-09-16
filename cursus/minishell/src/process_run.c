@@ -103,19 +103,27 @@ void	wait_for_process_ending(t_section *last_section, t_data *data)
 {
 	int	last_section_executed;
 	int	status;
+	int	pid;
 
 	data->accept_inner = 0;
 	free_close_pipes(data);
 	last_section_executed = last_section->id;
 	while (data->wait_process--)
 	{
-		if (wait(&status) == data->pids[last_section_executed])
+		pid = wait(&status);
+		if (pid == data->pids[last_section_executed])
 		{
 			if (WIFEXITED(status))
 				data->last_exit_status = WEXITSTATUS(status);
-			else
+			else if (WTERMSIG(status) == 2)
 				data->last_exit_status = 130;
+			else if (WTERMSIG(status) == 3)
+				data->last_exit_status = 131;
 		}
+		if (WTERMSIG(status) == 3)
+			printf("Quit (core dumped)\n");
+		else if (WTERMSIG(status) == 2)
+			printf("\n");
 	}
 	data->wait_process = 0;
 }

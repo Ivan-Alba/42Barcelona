@@ -14,12 +14,13 @@
 
 void	handle_signal(int signal)
 {
-	if (signal == SIGINT)
+	g_signal_received = signal;
+	if (g_signal_received == SIGINT)
 	{
 		printf("\n");
 		exit(130);
 	}
-	else if (signal == SIGQUIT)
+	else if (g_signal_received == SIGQUIT)
 	{
 		printf("Quit (core dumped)\n");
 		exit(131);

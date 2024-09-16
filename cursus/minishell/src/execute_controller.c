@@ -42,7 +42,7 @@ int	setup_curr_section(t_section **curr_sec, t_data *data)
 		{
 			set_stdin_stdout(*curr_sec, data);
 			if (check_if_builtin((*curr_sec)->cmd[0]))
-				execute_builtin((*curr_sec)->cmd, data);
+				builtin_setup(curr_sec, (*curr_sec)->cmd, data);
 			else
 				create_process(curr_sec, data, 0);
 			dup2(data->std_in, STDIN_FILENO);

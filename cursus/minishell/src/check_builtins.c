@@ -50,3 +50,29 @@ void	execute_builtin(char **cmd, t_data *data)
 	//else if (ft_strncmp(cmd[0], EXIT, 5) == 0)
 	//	data->last_exit_status = ft_exit(cmd, data);
 }
+
+void	execute_builtin_process(t_section **section, char **cmd, t_data *data)
+{
+	int	pid;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		data->is_child = 1;
+		execute_builtin(cmd, data);
+		exit(data->last_exit_status);
+	}
+	else if (pid == -1)
+		print_error_exit(FORK_ERROR, data);
+	else
+		data->pids[(*section)->id] = pid;
+}
+
+void	builtin_setup(t_section **curr_sec, char **cmd, t_data *data)
+{
+	if ((!(*curr_sec)->next || (*curr_sec)->next_conn != PIPE)
+		&& (!(*curr_sec)->previous || (*curr_sec)->previous->next_conn != PIPE))
+		execute_builtin(cmd, data);
+	else
+		execute_builtin_process(curr_sec, cmd, data);
+}
