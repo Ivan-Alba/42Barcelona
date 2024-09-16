@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 15:19:24 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/09/05 18:14:05 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/16 16:06:00 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ int	create_process(t_section **section, t_data *data, int is_subshell)
 		else
 		{
 			signal(SIGINT, handle_signal);
+			signal(SIGQUIT, handle_signal);
 			execute(*section, data);
 		}
 	}

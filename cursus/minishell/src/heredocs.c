@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 18:55:08 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/09/05 18:12:30 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/16 16:04:27 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ int	create_heredoc(t_files *file, t_data *data)
 	if (pid == 0)
 	{
 		signal(SIGINT, handle_signal);
+		signal(SIGQUIT, handle_signal);
 		write_heredoc(file, data);
 		free_data(data);
 		exit(0);

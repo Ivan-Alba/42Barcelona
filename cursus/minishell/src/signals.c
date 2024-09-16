@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 12:31:40 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/09/05 18:04:32 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/16 16:18:40 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@ void	handle_signal(int signal)
 	{
 		printf("\n");
 		exit(130);
+	}
+	else if (signal == SIGQUIT)
+	{
+		printf("Quit (core dumped)\n");
+		exit(131);
 	}
 }
 
