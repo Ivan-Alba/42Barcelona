@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 12:31:40 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/09/12 16:47:13 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/16 13:22:27 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,9 @@ char	**search_files(char	*regex, t_data *data)
 	entry = readdir(dir);
 	while (entry)
 	{
-		if (get_match_files(entry->d_name, regex))
+		if (get_match_files(entry->d_name, regex)
+			&& ft_strncmp(entry->d_name, ".", 2) != 0
+			&& ft_strncmp(entry->d_name, "..", 3) != 0)
 		{
 			res = add_to_array(&res, get_match_files(entry->d_name, regex));
 			malloc_protection(res, data);

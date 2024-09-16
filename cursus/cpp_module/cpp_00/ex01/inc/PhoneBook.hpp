@@ -9,22 +9,16 @@
 
 class PhoneBook {
 private:
-    Contact contacts[MAX_CONTACTS];
-    int nextIndex;
-
-    std::string truncate(const std::string& str) const {
-        if (str.length() > 10) {
-            return str.substr(0, 9) + ".";
-        }
-        return str;
-    }
+    Contact	contacts[MAX_CONTACTS];
+    int		nextIndex;
 
 public:
 	PhoneBook() : nextIndex(0) {}
 
-	void	addContact(const Contact& newContact);
-	void	displayContacts() const;
-	void	displayContactAt(int index) const;
+	void		addContact(const Contact& newContact);
+	void		displayContacts() const;
+	void		displayContactAt(int index) const;
+	std::string	truncate(const std::string& str) const;
 };
 
 #endif

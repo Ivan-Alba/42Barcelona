@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 14:26:52 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/09/16 12:01:54 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/16 13:18:59 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,13 @@ void	PhoneBook::displayContactAt(int index) const
 	std::cout << "First Name: " << contact.getFirstName() << std::endl;
 	std::cout << "Last Name: " << contact.getLastName() << std::endl;
 	std::cout << "Nick Name: " << contact.getNickName() << std::endl;
+}
+
+std::string	PhoneBook::truncate(const std::string& str) const
+{
+	if (str.length() > 10)
+	{
+		return str.substr(0, 9) + ".";
+	}
+	return str;
 }
