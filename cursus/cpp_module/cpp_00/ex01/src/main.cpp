@@ -10,7 +10,7 @@ void getInput(const std::string& prompt, std::string& input)
         std::cout << prompt;
         if (!std::getline(std::cin, input))
 		{
-			std::cout << "\nEOF detected. Exiting the program.\n" << std::endl;
+			std::cout << "\nEOF detected. Exiting the program." << std::endl;
 			std::exit(130);
         }
 		else if (input.empty())
@@ -52,20 +52,29 @@ void searchContact(PhoneBook& phoneBook)
 		{
             if (std::cin.eof())
 			{
-                std::cout << "\nEOF detected. Exiting the program.\n" << std::endl;
+                std::cout << "\nEOF detected. Exiting the program." << std::endl;
 				std::exit(130);
 			}
 			else if (std::cin.fail())
 			{
-                std::cout << "Error: Please enter a valid integer index.\n";
-                std::cin.clear();
-                std::cin.ignore(10000, '\n');
-            }
+                std::cout << "Error: Please enter a valid integer index." << std::endl;
+				std::cin.clear();
+				std::cin.ignore(10000, '\n');
+			}
         }
-		else
+		else if (index >= 1 && index <= 8)
+		{
+			phoneBook.displayContactAt(index);
             break;
+		}
+		else
+		{
+			std::cout << "Invalid index or no contact at this index." << std::endl;
+			break;
+		}
     }
-    phoneBook.displayContactAt(index);
+	std::cin.clear();
+	std::cin.ignore(10000, '\n');
 }
 
 int main()
@@ -93,9 +102,7 @@ int main()
         else if (command == "EXIT") {
             std::cout << "Exiting the program.\n";
             break;
-        } 
-        else
-            std::cout << "Error: Invalid command.\n";
+        }
     }
     return (0);
 }

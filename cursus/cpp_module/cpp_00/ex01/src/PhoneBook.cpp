@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 14:26:52 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/09/09 15:02:19 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/16 12:01:54 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ void	PhoneBook::displayContactAt(int index) const
 	if (index < 1 || index > MAX_CONTACTS || contacts[index - 1].getFirstName().empty())
 	{
 		std::cout << "Invalid index or no contact at this index." << std::endl;
-		std::cin.clear();
-		std::cin.ignore(10000, '\n');
 		return;
 	}
 	const Contact& contact = contacts[index - 1];
