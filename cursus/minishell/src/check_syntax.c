@@ -12,7 +12,22 @@
 
 #include "../inc/minishell.h"
 
-//Check that the quotation marks are correctly closed
+/**
+ *		Function Name:	check_quotes
+ *
+ *		Description:
+ *
+ *			This function checks if the prompt entered by the user has the
+ *			quotes correctly closed.
+ *
+ *		Parameters:
+ *
+ *			t_data	*data	-	The pointer to the t_data struct with all
+ *								execution data.
+ *		Return Value:
+ *
+ *			int - Returns 0 if the format is correct and 1 if it is not.
+ */
 int	check_quotes(t_data	*data)
 {
 	int	i;
@@ -35,22 +50,22 @@ int	check_quotes(t_data	*data)
 	return (0);
 }
 
-//Check that there are no prohibited characters
-int	check_non_accepted_chars(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (data->prompt[i] != '\0')
-	{
-		if (data->prompt[i] == ';' || data->prompt[i] == '\\')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-//Check that the parentheses are correctly closed
+/**
+ *		Function Name:	check_brackets
+ *
+ *		Description:
+ *
+ *			This function checks if the prompt entered by the user has the
+ *			brackets correctly closed.
+ *
+ *		Parameters:
+ *
+ *			t_data	*data	-	The pointer to the t_data struct with all
+ *								execution data.
+ *		Return Value:
+ *
+ *			int - Returns 0 if the format is correct and 1 if it is not.
+ */
 int	check_brackets(t_data *data)
 {
 	int	bracket_open;
@@ -78,7 +93,22 @@ int	check_brackets(t_data *data)
 	return (0);
 }
 
-//Calls the functions responsible to check the syntax of the prompt
+/**
+ *		Function Name:	check_syntax
+ *
+ *		Description:
+ *
+ *			This function is in charge of calling the different functions that
+ *			checks the syntax of the prompt entered by the user.
+ *
+ *		Parameters:
+ *
+ *			t_data	*data	-	The pointer to the t_data struct with all
+ *								execution data.
+ *		Return Value:
+ *
+ *			int - Returns 0 if the format is correct and 1 if it is not.
+ */
 int	check_syntax(t_data *data)
 {
 	char	*error;
@@ -91,7 +121,8 @@ int	check_syntax(t_data *data)
 	if (error)
 	{
 		data->last_exit_status = 2;
-		return (print_error(error, NULL), 1);
+		print_error(error, NULL);
+		return (1);
 	}
 	return (0);
 }

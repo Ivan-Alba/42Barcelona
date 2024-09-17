@@ -18,7 +18,8 @@ SRC = main.c ft_token_split.c check_syntax.c tokenizer.c token_types.c utils.c \
 	  execute_controller.c expand_types.c navigate_sections.c manage_fds.c \
 	  path.c check_builtins.c wildcard.c wildcard_utils.c print_error.c \
 	  process_dup.c process_run.c signals.c echo.c env.c pwd.c unset.c \
-	  str_utils.c export.c export_utils.c export_join_utils.c export_print.c
+	  str_utils.c export.c export_utils.c export_join_utils.c export_print.c \
+	  exit.c print_error_exit.c 
 
 SRC_DIR = src/
 

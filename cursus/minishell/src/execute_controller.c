@@ -12,7 +12,19 @@
 
 #include "../inc/minishell.h"
 
-//Create the necessary pipes for communication between processes
+/**
+ *		Function Name:	generate_pipes
+ *
+ *		Description:
+ *
+ *			This function creates the necessary pipes for communication between
+ *			processes and stores them in the t_data struct.
+ *
+ *		Parameters:
+ *
+ *			t_data	*data - The pointer to the t_data struct with all
+ *							execution data.
+ */
 void	generate_pipes(t_data *data)
 {
 	int	i;
@@ -32,6 +44,27 @@ void	generate_pipes(t_data *data)
 	}
 }
 
+/**
+ *		Function Name:	setup_curr_section
+ *
+ *		Description:
+ *
+ *			This function prepares the current section for execution. It calls
+ *			the functions in charge of managing the expansion of environment
+ *			variables, expansion of wildcards, opening of fd's, input and
+ *			output fd's and the execution.
+ *
+ *		Parameters:
+ *
+ *			t_section	**curr_sec	- A double pointer to the current section
+ *										to execute.
+ *			t_data		*data		- The pointer to the t_data struct with all
+ *										execution data.
+ *
+ *		Return Value:
+ *
+ *			int - Returns 0 if fd's opening was correct or 1 if not.
+ */
 int	setup_curr_section(t_section **curr_sec, t_data *data)
 {
 	expand_section(*curr_sec, data);
@@ -41,8 +74,8 @@ int	setup_curr_section(t_section **curr_sec, t_data *data)
 		if ((*curr_sec)->cmd && (*curr_sec)->cmd[0])
 		{
 			set_stdin_stdout(*curr_sec, data);
-			if (check_if_builtin((*curr_sec)->cmd[0]))
-				builtin_setup(curr_sec, (*curr_sec)->cmd, data);
+			if (is_builtin((*curr_sec)->cmd[0]))
+				builtin_setup((*curr_sec), (*curr_sec)->cmd, data);
 			else
 				create_process(curr_sec, data, 0);
 			dup2(data->std_in, STDIN_FILENO);
@@ -58,6 +91,25 @@ int	setup_curr_section(t_section **curr_sec, t_data *data)
 	return (0);
 }
 
+/**
+ *		Function Name:	is_next_and_or
+ *
+ *		Description:
+ *
+ *			This function checks if section->next exists, if the connection
+ *			to the next section is AND or OR and if the condition to execute
+ *			this next section is met.
+ *
+ *		Parameters:
+ *
+ *			t_section	*curr_sec	- A pointer to the current section.
+ *			t_data		*data		- The pointer to the t_data struct with all
+ *										execution data.
+ *
+ *		Return Value:
+ *
+ *			int - Returns 0 if the conditions are not met and 1 if yes.
+ */
 int	is_next_and_or(t_section *curr_sec, t_data *data)
 {
 	if (curr_sec->next)
@@ -76,6 +128,23 @@ int	is_next_and_or(t_section *curr_sec, t_data *data)
 	return (0);
 }
 
+/**
+ *		Function Name:	execute_sections
+ *
+ *		Description:
+ *
+ *			This function goes through the sections and sends them to execute.
+ *			It stops when it finds a section with AND or OR connection to the
+ *			next one and waits for the result of the last section before
+ *			checking if the conditions are met to continue or not.
+ *
+ *		Parameters:
+ *
+ *			t_section	*curr_sec	- A pointer to the current section.
+ *			t_data		*data		- The pointer to the t_data struct with all
+ *										execution data.
+ *
+ */
 void	execute_sections(t_section *curr_sec, t_data *data)
 {
 	generate_pipes(data);
@@ -104,7 +173,22 @@ void	execute_sections(t_section *curr_sec, t_data *data)
 	signal(SIGINT, handle_signal_prompt);
 }
 
-//Manages the opening of fd's, creation of processes and execution of commands
+/**
+ *		Function Name:	execute_controller
+ *
+ *		Description:
+ *
+ *			This function calls the function in charge of managing the creation
+ *			of the heredocs (before the execution of the sections) and allocate
+ *			the necessary memory to store the pids of the processes that will
+ *			be executed.
+ *
+ *		Parameters:
+ *
+ *			t_data	*data - The pointer to the t_data struct with all
+ *							execution data.
+ *
+ */
 void	execute_controller(t_data *data)
 {
 	if (manage_heredocs(data))

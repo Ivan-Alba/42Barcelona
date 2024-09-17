@@ -12,7 +12,22 @@
 
 #include "../inc/minishell.h"
 
-//Checks the tokens allowed after a token of type AND or OR
+/**
+ *		Function Name:	check_and_or
+ *
+ *		Description:
+ *
+ *			This function checks the types of tokens allowed after an
+ *			AND or OR token.
+ *
+ *		Parameters:
+ *
+ *			t_token  *current - The pointer to the current token.
+ *
+ *		Return Value:
+ *
+ *			int - Returns 0 if the next token is allowed and 1 if it is not.
+ */
 int	check_and_or(t_token *current)
 {
 	if (current->type == AMPER || current->type == FORB)
@@ -30,7 +45,22 @@ int	check_and_or(t_token *current)
 	return (0);
 }
 
-//Checks the tokens allowed after a token of type OPEN_BRACKET
+/**
+ *		Function Name:	check_open_bracket
+ *
+ *		Description:
+ *
+ *			This function checks the types of tokens allowed after an
+ *			OPEN_BRACKET token.
+ *
+ *		Parameters:
+ *
+ *			t_token  *current - The pointer to the current token.
+ *
+ *		Return Value:
+ *
+ *			int - Returns 0 if the next token is allowed and 1 if it is not.
+ */
 int	check_open_bracket(t_token *current)
 {
 	if (current->next->type != OPEN_BRACKET && current->next->type != WORD
@@ -43,7 +73,22 @@ int	check_open_bracket(t_token *current)
 	return (0);
 }
 
-//Checks the tokens allowed after a token of type CLOSE_BRACKET
+/**
+ *		Function Name:	check_close_bracket
+ *
+ *		Description:
+ *
+ *			This function checks the types of tokens allowed after an
+ *			CLOSE_BRACKET token.
+ *
+ *		Parameters:
+ *
+ *			t_token  *current - The pointer to the current token.
+ *
+ *		Return Value:
+ *
+ *			int - Returns 0 if the next token is allowed and 1 if it is not.
+ */
 int	check_close_bracket(t_token *current)
 {
 	if (current->next->type == OPEN_BRACKET || current->next->type == WORD)
@@ -54,7 +99,22 @@ int	check_close_bracket(t_token *current)
 	return (0);
 }
 
-//Checks the tokens allowed after a token of type PIPE
+/**
+ *		Function Name:	check_pipe
+ *
+ *		Description:
+ *
+ *			This function checks the types of tokens allowed after an
+ *			PIPE token.
+ *
+ *		Parameters:
+ *
+ *			t_token  *current - The pointer to the current token.
+ *
+ *		Return Value:
+ *
+ *			int - Returns 0 if the next token is allowed and 1 if it is not.
+ */
 int	check_pipe(t_token *current)
 {
 	if (current->next->type != WORD && current->next->type != OPEN_BRACKET
@@ -68,6 +128,23 @@ int	check_pipe(t_token *current)
 }
 
 //Checks the tokens allowed at the beginning and end of a prompt
+/**
+ *		Function Name:	check_first_last_token
+ *
+ *		Description:
+ *
+ *			This function checks the tokens allowed at the beginning and
+ *			end of a prompt.
+ *
+ *		Parameters:
+ *
+ *			t_token	*token		- The pointer to the token to check.
+ *			int		is_first	- Indicates the position to check.
+ *
+ *		Return Value:
+ *
+ *			int - Returns 0 if the next token is allowed and 1 if it is not.
+ */
 int	check_first_last_token(t_token *token, int is_first)
 {
 	if (token)

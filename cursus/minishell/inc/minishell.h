@@ -260,8 +260,8 @@ void		setup_signal_handler(void (*handler)(int));
 void		handle_signal(int signal);
 void		handle_signal_prompt(int signal);
 //check_builtins
-int			check_if_builtin(char *command);
-void		builtin_setup(t_section **sect, char **cmd, t_data *data);
+int			is_builtin(char *command);
+void		builtin_setup(t_section *section, char **cmd, t_data *data);
 
 //builtins
 int			ft_echo(char **cmd);
@@ -279,5 +279,8 @@ void		remove_var(char **env, int *num_env);
 void		remove_plus(char *str);
 void		dup_sort_list(char **list_vars, t_data *data, int *num_vars);
 int			print_export_vars(t_data *data);
+int			ft_exit(char **cmd, t_data *data);
+int			print_error_many_args_exit(int *exit_code);
+int			print_error_num_arg(int *exit_code, char *cmd);
 
 #endif
