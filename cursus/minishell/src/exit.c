@@ -1,4 +1,5 @@
 /* ************************************************************************** */
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
@@ -6,25 +7,27 @@
 /*   By: ctacconi <ctacconi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 16:26:20 by ctacconi          #+#    #+#             */
-/*   Updated: 2024/09/03 16:44:21 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/03 16:44:21 by ctacconi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-*		int isatty(int fd);
-* returns 1: fd is an open fd referring to a terminal.
-* returns 0: set errno.
-*/
-
-/*
-*	el builtin exit en bash solo utiliza los 8 bits - significativos del numero
-*	que se pasa como codigo de salida
-*	LLONG MIN: -9223372036854775808
-*	LLONG MAX: 9223372036854775807
-*/
-
 #include "../inc/minishell.h"
 
+/*
+ *		Function Name: check_llong
+ *
+ *		Description:
+ *
+ *			This function receives a string and after all.
+ *
+ *		Parameters:
+ *
+ *			const char *str -	The string to compare.
+ *
+ *		Return Value:
+ *
+ *			int - Returns 1 if the string is a valid number and 0 if it is not.
+ */
 int	check_llong(const char *str)
 {
 	int	i;
@@ -45,32 +48,67 @@ int	check_llong(const char *str)
 	return (1);
 }
 
-int	check_max_min_llong(char *str)
+/*
+ *		Function Name: check_max_min_llong
+ *
+ *		Description:
+ *
+ *			This function receives a string and checks that it is, converted to
+ *			a number, within the long long int limits (LLONG MIN - LLONG MAX).
+ *
+ *		Parameters:
+ *
+ *			const char *str -	The string to check.
+ *
+ *		Return Value:
+ *
+ *			int - Returns 1 if the string is within the range and 0 if not.
+ */
+int	check_max_min_llong(const char *str)
 {
 	int		len;
-	char	*str_to_check;
+	//char	*str_to_check;
+	int		i;
 
-	str_to_check = str;
-	if (str_to_check[0] == '-' || str_to_check[0] == '+')
-		str_to_check++;
-	len = ft_strlen(str_to_check);
+	i = 0;
+	//str_to_check = str;
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	len = ft_strlen(&(str[i]));
 	if (len > 19)
 		return (0);
 	if (len < 19)
 		return (1);
-	if (str[0] == '-')
+	if (str[i] == '-')
 	{
-		if (ft_strncmp("9223372036854775808", str_to_check, len) < 0)
+		if (ft_strncmp("9223372036854775808", &(str[i]), len) < 0)
 			return (0);
 	}
 	else
 	{
-		if (ft_strncmp("9223372036854775807", str_to_check, len) < 0)
+		if (ft_strncmp("9223372036854775807", &(str[i]), len) < 0)
 			return (0);
 	}
 	return (1);
 }
 
+/*
+ *		Function Name: ft_atoll
+ *
+ *		Description:
+ *
+ *			This function receives a string that has already passed 
+ *			all the necessary checks, and converts it from char 
+ *			to long long int.
+ *
+ *		Parameters:
+ *
+ *			const char *str -	The string to be converted.
+ *
+ *		Return Value:
+ *
+ *			long long - Returns the long long int.
+ */
 long long	ft_atoll(const char *str)
 {
 	int			j;
@@ -97,6 +135,26 @@ long long	ft_atoll(const char *str)
 	return (res * sign);
 }
 
+/*
+ *		Function Name: ft_exit
+ *
+ *		Description:
+ *
+ *			This function causes normal process termination and the
+ *      	least significant byte of status is
+ *     		returned to the parent.
+ *
+ *		Parameters:
+ *
+ *			char	**cmd -	The command and its arguments or flags.
+ *			t_data	*data - The pointer to the t_data struct with all
+ *							execution data.
+ *
+ *		Return Value:
+ *
+ *			int - Returns EXIT_SUCCESS if the executed function finished
+ *				  or EXIT_FAILURE if something went wrong during the process.
+ */
 int	ft_exit(char **cmd, t_data *data)
 {
 	int	argc;

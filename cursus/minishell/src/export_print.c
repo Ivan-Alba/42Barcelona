@@ -1,24 +1,30 @@
 /* ************************************************************************** */
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   export_print.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carolinatacconis <carolinatacconis@stud    +#+  +:+       +#+        */
+/*   By: ctacconi <ctacconi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 13:57:39 by ctacconi          #+#    #+#             */
-/*   Updated: 2024/09/10 23:07:40 by carolinat        ###   ########.fr       */
+/*   Updated: 2024/09/18 18:49:21 by ctacconi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-*       "export" without options:
-*
-*       export [no options] VARIABLE_NAME
-*
-*/
 #include "../inc/minishell.h"
 
-//add "" to the VALUE of the KEY: KEY="VALUE"
+/*
+ *		Function Name: print_quoted_vars
+ *
+ *		Description:
+ *
+ *			This function adds the double quotes to the VALUE of the KEY:
+ *			KEY=‘VALUE’.
+ *
+ *		Parameters:
+ *
+ *			char *var -	The string to edit and print.
+ */
 static void	print_quoted_vars(char *var)
 {
 	int		i;
@@ -46,7 +52,18 @@ static void	print_quoted_vars(char *var)
 	write(1, "\"\n", 2);
 }
 
-//prints in the export format the KEY=VALUE list
+/*
+ *		Function Name: print_vars_noargs
+ *
+ *		Description:
+ *
+ *			This function prints in the export format the KEY=VALUE
+ *			list of env.
+ *
+ *		Parameters:
+ *
+ *			char *list_vars - The array of strings to print.
+ */
 static void	print_vars_noargs(char **list_vars)
 {
 	int		i;
@@ -63,6 +80,18 @@ static void	print_vars_noargs(char **list_vars)
 	}
 }
 
+/*
+ *		Function Name: execute_builtin
+ *
+ *		Description:
+ *
+ *			By allocating dynamic memory, a copy of the alphabetically
+ *			ordered list of environment variables is created and printed.
+ *
+ *		Parameters:
+ *
+ *			t_data	*data - The pointer to the t_data struct with env.
+ */
 int	print_export_vars(t_data *data)
 {
 	char	**list_vars;

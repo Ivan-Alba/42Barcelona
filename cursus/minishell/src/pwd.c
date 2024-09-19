@@ -10,19 +10,26 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-*	"pwd" without options:
-*
-*	char *getcwd(char *buf, size_t size);
-*	getcwd: function to get the path of the current working directory
-*	returns a pointer to the path or NULL and sets an errno
-*
-*	getcwd(NULL, 0): will allocate the necessary memory, to have the exact 
-*	length of the path without using PATH_MAX
-*/
-
 #include "../inc/minishell.h"
 
+/*
+ *		Function Name: ft_pwd
+ *
+ *		Description:
+ *
+ *			This function prints the full filename 
+ *			of the current working directory.
+ *
+ *		Parameters:
+ *
+ *			char	**cmd -	The command and its arguments or flags.
+ *			t_data	*data - The pointer to the t_data struct with all
+ *							execution data.
+ *
+ *		Return Value:
+ *
+ *			int - Returns EXIT_SUCCESS if the executed function finished.
+ */
 int	ft_pwd(char **cmd, t_data *data)
 {
 	char	*cwd;

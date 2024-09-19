@@ -6,23 +6,27 @@
 /*   By: ctacconi <ctacconi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 16:26:20 by ctacconi          #+#    #+#             */
-/*   Updated: 2024/09/03 16:44:21 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/03 16:44:21 by ctacconi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-*	"echo" with the option -n:
-*
-*	When the user writes "echo" in the shell, the function replicates the
-*	behaviour of the echo command without the need to run an external process,
-*	i.e., the code handle this command directly without calling /bin/echo.
-*
-*	When the -n option is used, the trailing newline is suppressed.
-*/
-
 #include "../inc/minishell.h"
 
-//Is checked if the -n flag is passed as an argument
+/*
+ *		Function Name: is_nflag
+ *
+ *		Description:
+ *
+ *			This function checks if with the built-in echo is passed 
+ *			the ‘-n’ option. If so, the line break will be suppressed.
+ *
+ *		Parameters:
+ *
+ *			char		*str    - The argument passed from echo.
+ *		Return Value:
+ *
+ *			int - Returns 1 if the command is "-n" and 0 if it is not.
+ */
 int	is_nflag(char *str)
 {
 	int	i;
@@ -39,6 +43,23 @@ int	is_nflag(char *str)
 	return (1);
 }
 
+/*
+ *		Function Name: ft_echo
+ *
+ *		Description:
+ *
+ *			Write arguments to the standard output.
+ *   
+ *   		Display the ARGs, separated by a single space character and followed by a
+ *   		newline, on the STDOUT.
+ *
+ *		Parameters:
+ *
+ *			char	**cmd -	The command and its arguments or flags.
+ *		Return Value:
+ *
+ *			int - Returns EXIT_SUCCESS if the executed function finished.
+ */
 int	ft_echo(char **cmd)
 {
 	int	i;

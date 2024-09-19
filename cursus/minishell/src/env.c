@@ -10,17 +10,23 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-*	"env" without options or arguments:
-*
-*	Shows a list of all environment variables
-*
-*	char *getenv(const char *name);
-*	getenv: to obtain the value of each existing env variable and then print it	
-*/
 #include "../inc/minishell.h"
 
-//to obtain the total number of environment variables
+/*
+ *		Function Name: get_num_env
+ *
+ *		Description:
+ *
+ *			The function iterates a char ** to calculate the length.
+ *
+ *		Parameters:
+ *
+ *			char **env - The array of pointers with the environment.
+ *
+ *		Return Value:
+ *
+ *			int - Returns the total number of environment variables.
+ */
 int	get_num_env(char **env)
 {
 	int	i;
@@ -31,6 +37,23 @@ int	get_num_env(char **env)
 	return (i);
 }
 
+/*
+ *		Function Name: ft_env
+ *
+ *		Description:
+ *
+ *			Shows a list of all environment variables.
+ *
+ *		Parameters:
+ *
+ *			char	**cmd -	The command and its arguments or flags.
+ *			t_data	*data - The pointer to the t_data struct with all
+ *							execution data.
+ *
+ *		Return Value:
+ *
+ *			int - Returns EXIT_SUCCESS if the executed function finished.
+ */
 int	ft_env(char **cmd, t_data *data)
 {
 	int	i;
