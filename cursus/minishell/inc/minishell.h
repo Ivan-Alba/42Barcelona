@@ -259,28 +259,44 @@ t_files		*ft_files_new(char *file_name, enum e_token_type type);
 void		setup_signal_handler(void (*handler)(int));
 void		handle_signal(int signal);
 void		handle_signal_prompt(int signal);
+
 //check_builtins
 int			is_builtin(char *command);
 void		builtin_setup(t_section *section, char **cmd, t_data *data);
-
 //builtins
 int			ft_echo(char **cmd);
 int			ft_env(char **cmd, t_data *data);
 int			ft_pwd(char **cmd, t_data *data);
 int			ft_unset(char **cmd, t_data *data);
 int			ft_export(char **cmd, t_data *data);
-int			is_flag(char *str);
-int			valid_varname(char *str);
+int			ft_cd(char **cmd, t_data *data);
+int			ft_exit(char **cmd, t_data *data);
+//cd_utils
+void		change_dir_my_env(char *old_pwd, char *pwd, t_data *data);
+void		set_oldpwd(t_data *data);
+int			swap_dir(char **cmd, t_data *data);
+int			expand_cd(char *cmd, t_data *data);
+char		*my_getenv(char *env, t_data *data);
+//export_utils
+void		dup_sort_list(char **list_vars, t_data *data, int *num_vars);
 void		export_var(t_data *data, char *new_var, int var_in_env,
 				int operator_type);
-int			check_if_exist(char *var, t_data *data);
-void		prepare_join(t_data *data, char *join_var, int var_in_env);
-void		remove_var(char **env, int *num_env);
-void		remove_plus(char *str);
-void		dup_sort_list(char **list_vars, t_data *data, int *num_vars);
+int			valid_varname(char *str);
 int			print_export_vars(t_data *data);
-int			ft_exit(char **cmd, t_data *data);
+int			check_if_exist(char *var, t_data *data);
+//export_join_utils
+void		prepare_join(t_data *data, char *join_var, int var_in_env);
+void		remove_plus(char *str);
+//unset_utils
+int			is_flag(char *str);
+void		remove_var(char **env, int *num_env);
+//print_error_builtins
+int			print_error_not_set(void);
 int			print_error_many_args_exit(int *exit_code);
 int			print_error_num_arg(int *exit_code, char *cmd);
+int			print_error_no_file(char *cmd);
+int			print_error_many_args_exit(int *exit_code);
+int			print_error_many_args(void);
+int			print_error_oldpwd(void);
 
 #endif

@@ -6,18 +6,30 @@
 /*   By: carolinatacconis <carolinatacconis@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 13:57:39 by ctacconi          #+#    #+#             */
-/*   Updated: 2024/09/10 23:07:40 by carolinat        ###   ########.fr       */
+/*   Updated: 2024/09/10 23:07:40 by ctacconi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-*	"export" without options:
-*
-*	export [no options] VARIABLE_NAME
-*	
-*/
 #include "../inc/minishell.h"
 
+/*
+ *		Function Name: check_if_exist
+ *
+ *		Description:
+ *
+ *			This function receives the variable to be exported and checks
+ *			if it already exists in the data->env list. 
+ *
+ *		Parameters:
+ *
+ *			char 	 *var -	The string to check.
+ *			t_data	*data - The pointer to the t_data struct with all
+ *							execution data.
+ *		Return Value:
+ *
+ *			int - Returns -1 if no matches are found. otherwise it returns
+ *				  the position in the array in which it is found.		
+ */
 int	check_if_exist(char *var, t_data *data)
 {
 	int		i;
@@ -47,6 +59,20 @@ int	check_if_exist(char *var, t_data *data)
 	return (-1);
 }
 
+/*
+ *		Function Name: check_cmd
+ *
+ *		Description:
+ *
+ *			Checks if the command received as argument is an empty string or
+ *			if it is a flag, to print the corresponding error messages.
+ *
+ *		Parameters:
+ *
+ *			char	**cmd -	The command and its arguments or flags.
+ *			int   	*i    - The pointer to to the index that iterates the
+ *							received arguments.	
+ */
 void	check_cmd(char **cmd, int *i, int *exit_status)
 {
 	if (*cmd[1] == '\0')
@@ -66,6 +92,23 @@ void	check_cmd(char **cmd, int *i, int *exit_status)
 	}
 }
 
+/*
+ *		Function Name: export_actions
+ *
+ *		Description:
+ *
+ *			It checks whether the built-in has any operators in its arguments,
+ *			and if so, prepares to concatenate or substitute the value. 
+ *			If not, an error message is printed.
+ *
+ *		Parameters:
+ *
+ *			char	**cmd -	The command and its arguments.
+ *			int   	 i    - The index that iterates the array of arguments.	
+ *			int *exit_status - The pointer to exit_status value.
+ *			t_data	*data - The pointer to the t_data struct with all
+ *							execution data.
+ */
 void	export_actions(char **cmd, int i, int *exit_status, t_data *data)
 {
 	int	operator_type;
@@ -93,6 +136,25 @@ void	export_actions(char **cmd, int i, int *exit_status, t_data *data)
 	}
 }
 
+/*
+ *		Function Name: ft_export
+ *
+ *		Description:
+ *
+ *			It checks whether the built-in has any operators in its arguments,
+ *			and if so, prepares to concatenate or substitute the value. 
+ *			If not, an error message is printed.
+ *
+ *		Parameters:
+ *
+ *			char	**cmd -	The command and its arguments.
+ *			t_data	*data - The pointer to the t_data struct with all
+ *							execution data.
+ *		Return Value:
+ *
+ *			int - Returns the value of the exit_status, which will depend on
+ *				  each case. In case of success, the value is 0.
+ */
 int	ft_export(char **cmd, t_data *data)
 {
 	int	i;

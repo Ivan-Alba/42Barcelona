@@ -32,8 +32,8 @@ int	is_builtin(char *command)
 {
 	if (ft_strncmp(command, ECHO, 5) == 0)
 		return (1);
-	//else if (ft_strncmp(command, CD) == 0)
-		//return (1);
+	else if (ft_strncmp(command, CD, 3) == 0)
+		return (1);
 	else if (ft_strncmp(command, PWD, 4) == 0)
 		return (1);
 	else if (ft_strncmp(command, EXPORT, 7) == 0)
@@ -66,8 +66,8 @@ void	execute_builtin(char **cmd, t_data *data)
 {
 	if (ft_strncmp(cmd[0], ECHO, 5) == 0)
 		data->last_exit_status = ft_echo(cmd);
-	//else if (ft_strncmp(cmd[0], CD, 3) == 0)
-	//	data->last_exit_status = ft_cd(cmd, data);
+	else if (ft_strncmp(cmd[0], CD, 3) == 0)
+		data->last_exit_status = ft_cd(cmd, data);
 	else if (ft_strncmp(cmd[0], PWD, 4) == 0)
 		data->last_exit_status = ft_pwd(cmd, data);
 	else if (ft_strncmp(cmd[0], EXPORT, 7) == 0)

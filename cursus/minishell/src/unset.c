@@ -10,20 +10,24 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-*	"unset" without options:
-*	
-*	unset [no options] VARIABLE_NAME
-*	- Removes the environment variables with the given keys
-*		after checking if they are valid keys.
-*	- Does nothing if the key is not in the environment.
-*	
-*	Returns 0 if all args were successfully unset, or 1 if
-*	one or more args could not be unset.
-*/
-
 #include "../inc/minishell.h"
 
+/*
+ *		Function Name: is_flag
+ *
+ *		Description:
+ *
+ *			This function checks if with the built-in unset is passed 
+ *			an option.
+ *
+ *		Parameters:
+ *
+ *			char		*str    - The argument passed from unset.
+ *
+ *		Return Value:
+ *
+ *			int - Returns 1 if the argument is a flag and 0 if it is not.
+ */
 int	is_flag(char *str)
 {
 	int	i;
@@ -40,7 +44,25 @@ int	is_flag(char *str)
 	return (1);
 }
 
-//num_env: the array position of the KEY=VALUE to remove
+/*
+ *		Function Name: ft_cmp_varname
+ *
+ *		Description:
+ *
+ *			Check that the variable passed as an argument actually matches
+ *			one of the variables in data->env.
+ *
+ *		Parameters:
+ *
+ *			char	*s    - The argument passed from unset.
+ *			char	**env - The array of pointers with the environment.
+ *			int     *num_env -  The position in the array of env, where is
+ *								 located the existing KEY variable.
+ *
+ *		Return Value:
+ *
+ *			int - Returns 0 if there is a match.
+ */
 int	ft_cmp_varname(char *s, char **env, int *num_env)
 {
 	int	i;
@@ -64,6 +86,20 @@ int	ft_cmp_varname(char *s, char **env, int *num_env)
 	return (1);
 }
 
+/*
+ *		Function Name: remove_var
+ *
+ *		Description:
+ *
+ *			Frees the pointer of the KEY to be removed and moves all subsequent
+ *			strings, one position -1.
+ *
+ *		Parameters:
+ *
+ *			char  **env    - The array of pointers to the environment variables.
+ *			int   *num_env - The position in the array of env, where is
+ *								 located the existing KEY variable.
+ */
 void	remove_var(char **env, int *num_env)
 {
 	int	j;
@@ -79,6 +115,25 @@ void	remove_var(char **env, int *num_env)
 	env[j - 1] = NULL;
 }
 
+/*
+ *		Function Name: ft_unset
+ *
+ *		Description:
+ *
+ *			Removes the environment variables with the given keys
+ *			after checking if they are valid keys.
+ *			Does nothing if the key is not in the environment.
+ *
+ *		Parameters:
+ *
+ *			char	**cmd -	The command and its arguments or flags.
+ *			t_data	*data - The pointer to the t_data struct with the
+ *							env data.
+ *
+ *		Return Value:
+ *
+ *			int - Returns EXIT_SUCCESS if all args were successfully unset.
+ */
 int	ft_unset(char **cmd, t_data *data)
 {
 	int	i;

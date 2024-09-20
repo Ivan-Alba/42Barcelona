@@ -67,11 +67,9 @@ int	check_llong(const char *str)
 int	check_max_min_llong(const char *str)
 {
 	int		len;
-	//char	*str_to_check;
 	int		i;
 
 	i = 0;
-	//str_to_check = str;
 	if (str[i] == '-' || str[i] == '+')
 		i++;
 	len = ft_strlen(&(str[i]));

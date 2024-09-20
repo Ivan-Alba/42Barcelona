@@ -86,7 +86,7 @@ void	join_values(t_data *data, char *join_var, int var_in_env)
 }
 
 /*
- *		Function Name: prepaare_join
+ *		Function Name: prepare_join
  *
  *		Description:
  *

@@ -81,7 +81,7 @@ static void	print_vars_noargs(char **list_vars)
 }
 
 /*
- *		Function Name: execute_builtin
+ *		Function Name: print_export_vars
  *
  *		Description:
  *
