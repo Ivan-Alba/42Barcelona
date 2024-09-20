@@ -203,6 +203,7 @@ char		*expand_var(char *str, char **str_exp, int *i, t_data *data);
 void		no_quote_exp(char *str, char **str_exp, int *i, t_data *data);
 void		double_quote_exp(char *str, char **str_exp, int *i, t_data *data);
 void		single_quote_exp(char *str, char **str_exp, int *i, t_data *data);
+void		word_splitting(char ***cmd, int *idx, t_data *data);
 
 //manage_fds
 int			open_fds(t_section *section);

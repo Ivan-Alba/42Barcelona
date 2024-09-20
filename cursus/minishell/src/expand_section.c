@@ -92,6 +92,7 @@ char	*expand_env_vars(char *str, int is_heredoc, t_data *data)
 {
 	int		i;
 	char	*str_expanded;
+	char	*aux;
 
 	i = -1;
 	str_expanded = NULL;
@@ -107,6 +108,13 @@ char	*expand_env_vars(char *str, int is_heredoc, t_data *data)
 			no_quote_exp(str, &str_expanded, &i, data);
 	}
 	free(str);
+	if (str_expanded)
+	{
+		aux = str_expanded;
+		str_expanded = ft_strtrim(str_expanded, " ");
+		free(aux);
+		//Malloc protection
+	}
 	return (str_expanded);
 }
 
@@ -156,7 +164,11 @@ void	expand_section(t_section *section, t_data *data)
 		if (!section->cmd[i] && section->cmd[i + 1])
 			reorder_cmd(&section->cmd, i, data);
 		else
+		{
+			if (section->cmd[i])
+				word_splitting(&section->cmd, &i, data);
 			i++;
+		}
 	}
 	curr_file = section->files;
 	while (curr_file)

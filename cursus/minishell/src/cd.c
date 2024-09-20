@@ -158,7 +158,6 @@ int	change_directory(char *path, t_data *data)
  */
 int	ft_cd(char **cmd, t_data *data)
 {
-
 	if (cmd[1] && cmd[2])
 		return (print_error_many_args());
 	else if (!cmd[1] || !ft_strncmp(cmd[1], "--", 3)
