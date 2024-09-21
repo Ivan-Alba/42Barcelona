@@ -41,3 +41,12 @@ int	print_error_oldpwd(void)
 	ft_putendl_fd(" cd: OLDPWD not set", STDERR_FILENO);
 	return (EXIT_FAILURE);
 }
+
+int	print_error_permission(char *dir_name)
+{
+	ft_putstr_fd(PROGRAM_NAME, STDERR_FILENO);
+	ft_putstr_fd(" cd: ", STDERR_FILENO);
+	ft_putstr_fd(dir_name, STDERR_FILENO);
+	ft_putendl_fd(": permission denied", STDERR_FILENO);
+	return (EXIT_FAILURE);
+}

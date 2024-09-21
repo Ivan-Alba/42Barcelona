@@ -107,15 +107,14 @@ char	*expand_env_vars(char *str, int is_heredoc, t_data *data)
 		else
 			no_quote_exp(str, &str_expanded, &i, data);
 	}
-	free(str);
 	if (str_expanded)
 	{
 		aux = str_expanded;
 		str_expanded = ft_strtrim(str_expanded, " ");
 		free(aux);
-		//Malloc protection
+		malloc_protection(str_expanded, data);
 	}
-	return (str_expanded);
+	return (free(str), str_expanded);
 }
 
 void	reorder_cmd(char ***cmd, int remove_idx, t_data *data)

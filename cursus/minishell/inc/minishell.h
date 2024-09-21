@@ -41,6 +41,7 @@
 # define HEREDOC_EOF_1 "warning: here-document at line "
 # define HEREDOC_EOF_2 " delimited by end-of-file (wanted '"
 # define HEREDOC_EOF_3 "')"
+# define AMBIGUOUS_ERROR "ambiguous redirect"
 
 # define PROGRAM_NAME "minishell:"
 # define ECHO "echo"
@@ -232,6 +233,8 @@ void		remove_heredoc_files(t_section *section, int last_section_id);
 //print_error.c
 void		print_error_exit(char *msg, t_data *data);
 void		print_error(char *msg, char *token);
+void		print_perror(char *msg);
+void		print_ambiguous_error(char *str);
 
 //str_utils
 
@@ -299,5 +302,6 @@ int			print_error_no_file(char *cmd);
 int			print_error_many_args_exit(int *exit_code);
 int			print_error_many_args(void);
 int			print_error_oldpwd(void);
+int			print_error_permission(char *dir_name);
 
 #endif

@@ -69,7 +69,7 @@ int	set_infile(t_section *section, t_files *file)
 	if (access(filename, F_OK) == -1
 		|| access(filename, R_OK) == -1)
 	{
-		perror(filename);
+		print_perror(filename);
 		close_section_fds(section);
 		return (1);
 	}
@@ -169,7 +169,7 @@ int	open_fds(t_section *section)
 	{
 		if (curr_file->file_type != HEREDOC && !curr_file->file_name)
 		{
-			printf("%s: ambiguous redirect\n", curr_file->name_before_exp);
+			print_ambiguous_error(curr_file->name_before_exp);
 			return (1);
 		}
 		if (curr_file->file_type == HEREDOC || curr_file->file_type == IN_F)

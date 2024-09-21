@@ -85,16 +85,15 @@ int	is_relative_path(char *cmd, t_data *data)
 	free(tmp_path);
 	if (access(new_path, F_OK) == -1)
 	{
-		perror("cd");
 		free(current_dir);
 		free(new_path);
-		return (1);
+		return (print_error_no_file(cmd));
 	}
 	if (chdir(new_path) == -1)
 	{
 		free(current_dir);
 		free(new_path);
-		return (print_error_no_file(new_path));
+		return (print_error_permission(cmd));
 	}
 	return (free(current_dir), free(new_path), 0);
 }
@@ -125,8 +124,8 @@ int	change_directory(char *path, t_data *data)
 	set_oldpwd(data);
 	if (chdir(path) == -1)
 	{
-		if (is_relative_path(path, data))
-			return (print_error_no_file(path));
+		if (is_relative_path(path, data) != 0)
+			return (EXIT_FAILURE);
 	}
 	new_pwd = getcwd(NULL, 0);
 	if (new_pwd)
