@@ -10,32 +10,24 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = minishell 
-
-SRC = main.c ft_token_split.c check_syntax.c tokenizer.c token_types.c utils.c \
-	  check_tokens_syntax.c token_lst_utils.c expand_section.c free_data.c \
-	  sectionizer.c section_token.c test_utils.c files_lst_utils.c heredocs.c \
-	  execute_controller.c expand_types.c navigate_sections.c manage_fds.c \
-	  path.c check_builtins.c wildcard.c wildcard_utils.c print_error.c \
-	  process_dup.c process_run.c signals.c echo.c env.c pwd.c unset.c \
-	  str_utils.c export.c export_utils.c export_join_utils.c export_print.c \
-	  exit.c print_error_exit.c cd.c print_error_cd.c cd_utils.c 
+NAME = minishell
 
 SRC_DIR = src/
 
-SRC_FULL_DIR =  $(addprefix $(SRC_DIR), $(SRC))
+# Subdirectories to include
+SUBDIRS = main tokenizer sectionizer files execution expansion builtins \
+						signals wildcard utils
 
-LIBFT = libft.a
+# Find all .c files only in the specified subdirectories
+SRC_FULL_DIR = $(foreach dir, $(SUBDIRS), $(wildcard $(SRC_DIR)$(dir)/*.c))
 
+LIBFT = src/libft/libft.a
 LIBFT_DIR = src/libft/
 
-OBJ = $(SRC:.c=.o)
-
 OBJ_DIR = bin/
+OBJ = $(SRC_FULL_DIR:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
 
-OBJ_FULL_DIR = $(addprefix $(OBJ_DIR), $(OBJ))
-
-DEPS = $(SRC:.c=.d)
+DEPS = $(OBJ:.o=.d)
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror $(READLINE_INCLUDE)
@@ -55,74 +47,81 @@ INFO      = ℹ️
 
 # Function to display messages with icons
 define SHOW_MESSAGE
-	@echo "$(1)$(2)$(RESET)"
+		@echo "$(1)$(2)$(RESET)"
 endef
-
 
 # Length of the progress bar
 BAR_LENGTH = 50
 
 # Function to display a progress bar
 define SHOW_PROGRESS
-	@printf "$(YELLOW)[[[[%${BAR_LENGTH}s] %3d%%\r" "$(1)" $(2)
+		@printf "$(YELLOW)[[[[%${BAR_LENGTH}s] %3d%%\r" "$(1)" $(2)
 endef
-
 
 CURRENT_OS = $(shell uname -s)
 ifeq ($(CURRENT_OS), Linux)
 READLINE_DIR = $(HOME)/local
 READLINE_INCLUDE = -I$(READLINE_DIR)/include
 READLINE_LIB = -L$(READLINE_DIR)/lib -lreadline -lncurses
-
 else
 READLINE_INCLUDE =
 READLINE_LIB =
 endif
 
-all: $(NAME)	
+all: $(NAME)
 
-bonus:	$(NAME)
+bonus: $(NAME)
 
-check_readline:
+READLINE_MARKER = $(READLINE_DIR)/.readline_installed
+
+check_readline: $(READLINE_MARKER)
+
+$(READLINE_MARKER):
 	@test -f $(READLINE_DIR)/include/readline/readline.h || { \
 		curl -O https://ftp.gnu.org/gnu/readline/readline-8.1.tar.gz; \
 		tar -xzvf readline-8.1.tar.gz; \
 		cd readline-8.1 && ./configure --prefix=$(READLINE_DIR) && make && make install && cd ..; \
-		pwd && rm -rf readline-8.1.tar.gz && rm -rf readline-8.1;}	
+		pwd && rm -rf readline-8.1.tar.gz && rm -rf readline-8.1; }; \
+	touch $(READLINE_MARKER)
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c Makefile
-	@$(call SHOW_MESSAGE, $(INFO), " Compiling $<...")
-	@$(CC) $(CFLAGS) -c -MMD $< -o $@ 
-	@$(call SHOW_MESSAGE, $(CHECKMARK), " Compiled $<")
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c Makefile | create_obj_dirs
+		@$(call SHOW_MESSAGE, $(INFO), " Compiling $<...")
+		@$(CC) $(CFLAGS) -c -MMD $< -o $@
+		@$(call SHOW_MESSAGE, $(CHECKMARK), " Compiled $<")
 
-$(NAME): check_readline $(LIBFT) $(OBJ_DIR) $(OBJ_FULL_DIR)
-	@echo "$(YELLOW)LINKING $(NAME)...$(RESET)"
-	$(CC) -o $(NAME) $(OBJ_FULL_DIR) $(LIBFT_DIR)/$(LIBFT) $(READLINE_LIB) -fsanitize=address 
+$(NAME): $(READLINE_MARKER) $(LIBFT) $(OBJ_DIR) $(OBJ)
+		@echo "$(YELLOW)LINKING $(NAME)...$(RESET)"
+		$(CC) -o $(NAME) $(OBJ) $(LIBFT) $(READLINE_LIB) -fsanitize=address
+		@echo "$(YELLOW)DONE$(CHECKMARK)$(RESET)"
 
-$(OBJ_DIR): 
-	@mkdir $(OBJ_DIR)
+$(OBJ_DIR):
+		@mkdir $(OBJ_DIR)
+
+# Create necessary directories for object files and dependencies
+create_obj_dirs:
+		@mkdir -p $(OBJ_DIR) $(foreach dir, $(SUBDIRS), $(OBJ_DIR)$(dir))
 
 $(LIBFT):
-	@echo "$(YELLOW)COMPILING LIBFT...$(RESET)"
-	@make -C $(LIBFT_DIR) --no-print-directory
-	@echo "$(YELLOW)DONE$(CHECKMARK)$(RESET)"
-	@echo "\n"
-   
-clean:	libft_clean
-	@echo "$(WARNING) Cleaning..."
-	@$(RM) $(OBJ_DIR)
-	@echo "Done $(CHECKMARK)"
-	
+		@echo "$(YELLOW)COMPILING LIBFT...$(RESET)"
+		@make -C $(LIBFT_DIR) --no-print-directory
+		@echo "$(YELLOW)DONE$(CHECKMARK)$(RESET)"
+		@echo "\n"
+
+clean: libft_clean
+		@echo "$(WARNING) Cleaning..."
+		@$(RM) $(OBJ_DIR)
+		@echo "Done $(CHECKMARK)"
+
 libft_clean:
-	@make clean -C $(LIBFT_DIR) --no-print-directory
+		@make clean -C $(LIBFT_DIR) --no-print-directory
 
 fclean: clean libft_fclean
-	@echo "$(WARNING) Fcleaning..."
-	@$(RM) $(NAME)
-	@echo "Done $(CHECKMARK)"
+		@echo "$(WARNING) Fcleaning..."
+		@$(RM) $(NAME)
+		@echo "Done $(CHECKMARK)"
 
 libft_fclean:
-	@make fclean -C $(LIBFT_DIR) --no-print-directory
+		@make fclean -C $(LIBFT_DIR) --no-print-directory
 
 re: fclean all
 
