@@ -10,6 +10,8 @@
 #                                                                              #
 # **************************************************************************** #
 
+.SILENT:
+
 NAME = libft.a
 
 SRC = \
@@ -58,6 +60,7 @@ define SHOW_MESSAGE
 	@echo "$(1)$(2)$(RESET)"
 endef
 
+all: $(NAME)
 
 # Reglas de compilación para archivos en la carpeta raíz
 %.o: %.c Makefile
@@ -77,11 +80,12 @@ get_next_line/%.o: get_next_line/%.c Makefile
 	@$(CC) $(CFLAGS) -MMD -c -o $@ $<
 	@$(call SHOW_MESSAGE, $(CHECKMARK), " Compiled $<")
 
-all:	$(NAME)
 
 $(NAME): $(OBJECTS)
 	@$(call SHOW_MESSAGE, $(INFO), " Creating $(NAME)...")
 	@$(AR) $(NAME) $(OBJECTS)
+	@$(call SHOW_MESSAGE, $(GREEN), " LIBFT DONE!")
+	@echo "\n"
 
 clean:	
 	@$(RM) $(OBJECTS) $(DEPS)

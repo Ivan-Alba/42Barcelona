@@ -7,7 +7,7 @@
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/21 21:07:38 by igarcia2          #+#    #+#              #
 #    Updated: 2024/09/03 16:50:18 by igarcia2         ###   ########.fr        #
-#                                                                              #
+#
 # **************************************************************************** #
 
 NAME = minishell
@@ -38,6 +38,9 @@ RED     = \033[0;31m
 GREEN   = \033[0;32m
 YELLOW  = \033[0;33m
 BLUE    = \033[0;34m
+MAGENTA = \033[0;35m
+CYAN    = \033[0;36m
+WHITE   = \033[0;37m
 RESET   = \033[0m
 
 CHECKMARK = ✅
@@ -47,7 +50,7 @@ INFO      = ℹ️
 
 # Function to display messages with icons
 define SHOW_MESSAGE
-		@echo "$(1)$(2)$(RESET)"
+	@echo "$(1)$(2)$(RESET)"
 endef
 
 # Length of the progress bar
@@ -68,9 +71,33 @@ READLINE_INCLUDE =
 READLINE_LIB =
 endif
 
-all: $(NAME)
+# Function to display header
+define SHOW_HEADER
+	@clear; \
+	echo "==================================================================="; \
+	echo "███╗   ███╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██╗     ██╗     "; \
+	echo "████╗ ████║██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██║     ██║     "; \
+	echo "██╔████╔██║██║██╔██╗ ██║██║███████╗███████║█████╗  ██║     ██║     "; \
+	echo "██║╚██╔╝██║██║██║╚██╗██║██║╚════██║██╔══██║██╔══╝  ██║     ██║     "; \
+	echo "██║ ╚═╝ ██║██║██║ ╚████║██║███████║██║  ██║███████╗███████╗███████╗"; \
+	echo "╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝"; \
+	echo "==================================================================="; \
+	echo "                                  Created by:$(1)igarcia2$(RESET) &&$(1)ctacconi$(RESET)"; \
+	echo ""; \
 
-bonus: $(NAME)
+endef
+
+# Modify the all target to include the header
+all: 
+	$(call SHOW_HEADER, $(BLUE))
+	@make -C $(LIBFT_DIR) --no-print-directory
+	@$(MAKE) $(NAME) --no-print-directory
+	@echo "\n$(GREEN) $(CHECKMARK) -------- ALL DONE -------- $(CHECKMARK)$(RESET)\n"
+
+bonus:
+	$(call SHOW_HEADER, $(BLUE))
+	@$(MAKE) $(NAME) --no-print-directory
+	@echo "\n$(GREEN) $(CHECKMARK) -------- ALL DONE -------- $(CHECKMARK)$(RESET)\n"
 
 READLINE_MARKER = $(READLINE_DIR)/.readline_installed
 
@@ -89,36 +116,42 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c Makefile | create_obj_dirs
 		@$(CC) $(CFLAGS) -c -MMD $< -o $@
 		@$(call SHOW_MESSAGE, $(CHECKMARK), " Compiled $<")
 
-$(NAME): $(READLINE_MARKER) $(LIBFT) $(OBJ_DIR) $(OBJ)
-		@echo "$(YELLOW)LINKING $(NAME)...$(RESET)"
-		$(CC) -o $(NAME) $(OBJ) $(LIBFT) $(READLINE_LIB) -fsanitize=address
-		@echo "$(YELLOW)DONE$(CHECKMARK)$(RESET)"
+$(NAME): $(READLINE_MARKER) $(OBJ_DIR) $(OBJ)
+		@echo ""
+		@$(call SHOW_MESSAGE, $(YELLOW)$(INFO), " LINKING MINISHELL...")
+		@$(CC) -o $(NAME) $(OBJ) $(LIBFT) $(READLINE_LIB) -fsanitize=address
+		@$(call SHOW_MESSAGE, $(GREEN)$(CHECKMARK), " MINISHELL DONE!")
 
-$(OBJ_DIR):
+$(OBJ_DIR): Makefile $(LIBFT)
+		@rm -rf $(OBJ_DIR)
+		@echo "$(YELLOW)COMPILING MINISHELL FILES...$(RESET)"
 		@mkdir $(OBJ_DIR)
 
 # Create necessary directories for object files and dependencies
 create_obj_dirs:
 		@mkdir -p $(OBJ_DIR) $(foreach dir, $(SUBDIRS), $(OBJ_DIR)$(dir))
 
-$(LIBFT):
-		@echo "$(YELLOW)COMPILING LIBFT...$(RESET)"
+$(LIBFT): 
+		@$(call SHOW_MESSAGE, $(YELLOW)$(INFO), " COMPILING LIBFT...")
 		@make -C $(LIBFT_DIR) --no-print-directory
-		@echo "$(YELLOW)DONE$(CHECKMARK)$(RESET)"
+		@$(call SHOW_MESSAGE, $(GREEN)$(CHECKMARK), " LIBFT DONE!")
 		@echo "\n"
 
 clean: libft_clean
-		@echo "$(WARNING) Cleaning..."
+		$(call SHOW_HEADER, $(BLUE))
+		@$(call SHOW_MESSAGE, $(YELLOW)$(INFO), " CLEANING...")
 		@$(RM) $(OBJ_DIR)
-		@echo "Done $(CHECKMARK)"
+		@$(call SHOW_MESSAGE, $(GREEN)$(CHECKMARK), "	DONE!")
+		@echo "\n"
 
 libft_clean:
 		@make clean -C $(LIBFT_DIR) --no-print-directory
 
 fclean: clean libft_fclean
-		@echo "$(WARNING) Fcleaning..."
+		@$(call SHOW_MESSAGE, $(YELLOW)$(INFO), " FCLEANING...")
 		@$(RM) $(NAME)
-		@echo "Done $(CHECKMARK)"
+		@$(call SHOW_MESSAGE, $(GREEN)$(CHECKMARK), "	DONE!")
+		@echo "\n"
 
 libft_fclean:
 		@make fclean -C $(LIBFT_DIR) --no-print-directory
