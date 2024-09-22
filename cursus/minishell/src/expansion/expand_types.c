@@ -18,7 +18,7 @@ void	single_quote_exp(char *str, char **str_exp, int *i, t_data *data)
 	malloc_protection(*str_exp, data);
 	while (str[++(*i)] != '\'')
 	{
-		*str_exp = ft_free_strcat(*str_exp, string_from_char(str[*i]));
+		*str_exp = ft_free_strcat(*str_exp, str_from_char(str[*i]));
 		malloc_protection(*str_exp, data);
 	}
 	*str_exp = ft_free_strcat(*str_exp, ft_strdup("\'"));
@@ -46,7 +46,7 @@ void	double_quote_exp(char *str, char **str_exp, int *i, t_data *data)
 		}
 		else
 		{
-			*str_exp = ft_free_strcat(*str_exp, string_from_char(str[*i]));
+			*str_exp = ft_free_strcat(*str_exp, str_from_char(str[*i]));
 			malloc_protection(*str_exp, data);
 		}
 	}
@@ -71,7 +71,7 @@ void	no_quote_exp(char *str, char **str_exp, int *i, t_data *data)
 	}
 	else
 	{
-		*str_exp = ft_free_strcat(*str_exp, string_from_char(str[*i]));
+		*str_exp = ft_free_strcat(*str_exp, str_from_char(str[*i]));
 		malloc_protection(*str_exp, data);
 	}
 }

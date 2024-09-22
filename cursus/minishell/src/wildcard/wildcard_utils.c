@@ -47,7 +47,9 @@ int	can_expand_wildcar(char *cmd)
 	i = -1;
 	while (cmd && cmd[++i])
 	{
-		if (cmd[i] == '\'')
+		if (cmd[i] == '\\' && (cmd[i + 1] == '\'' || cmd[i + 1] == '"'))
+			i++;
+		else if (cmd[i] == '\'')
 		{
 			while (cmd[++i] != '\'')
 			{
@@ -76,22 +78,44 @@ void	remove_quotes(char **str, t_data *data)
 	j = -1;
 	while ((*str)[++j])
 	{
-		if ((*str)[j] == '\'' && j++ >= 0)
+		if ((*str)[j] == '\\'
+				&& ((*str)[j + 1] == '"' || (*str)[j + 1] == '\''))
+			new_str = ft_free_strcat(new_str, str_from_char((*str)[++j]));
+		else if ((*str)[j] == '\'' && j++ >= 0)
 			while ((*str)[j] != '\'')
-				new_str = ft_free_strcat(
-						new_str, string_from_char((*str)[j++]));
+				new_str = ft_free_strcat(new_str, str_from_char((*str)[j++]));
 		else if ((*str)[j] == '"' && j++ >= 0)
 			while ((*str)[j] != '"')
-				new_str = ft_free_strcat(
-						new_str, string_from_char((*str)[j++]));
+				new_str = ft_free_strcat(new_str, str_from_char((*str)[j++]));
 		else
-			new_str = ft_free_strcat(new_str, string_from_char((*str)[j]));
+			new_str = ft_free_strcat(new_str, str_from_char((*str)[j]));
 	}
 	if (!new_str)
 		new_str = ft_strdup("");
 	malloc_protection(new_str, data);
 	free((*str));
 	*str = new_str;
+}
+
+char	*mark_quotes(char *exp_value, t_data *data)
+{
+	int		i;
+	char	*value;
+
+	i = -1;
+	value = NULL;
+	while (exp_value[++i])
+	{
+		if (exp_value[i] == '"' || exp_value[i] == '\'')
+		{
+			value = ft_free_strcat(value, str_from_char('\\'));
+			malloc_protection(value, data);
+		}
+		value = ft_free_strcat(value, str_from_char(exp_value[i]));
+		malloc_protection(value, data);
+	}
+	free(exp_value);
+	return (value);
 }
 
 void	add_to_cmd(char ***cmd, int *i, char ***matches, t_data *data)

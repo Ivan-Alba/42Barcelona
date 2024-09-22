@@ -52,7 +52,7 @@ char	*get_var_value(char **var_name, t_data *data, int is_quotes)
 	}
 	free(var_equal);
 	if (found)
-		return (ft_strdup(ft_strchr(data->env[i], '=') + 1));
+		return (mark_quotes(ft_strdup(ft_strchr(data->env[i], '=') + 1), data));
 	else if (is_quotes)
 		return (ft_strdup(""));
 	else

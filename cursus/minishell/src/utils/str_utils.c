@@ -32,7 +32,7 @@ void	free_split(char ***splitted)
 }
 
 //Returns a char* from a char
-char	*string_from_char(char c)
+char	*str_from_char(char c)
 {
 	char	*result;
 
@@ -49,7 +49,7 @@ char	*concat_char_to_str(char *str, char c, t_data *data)
 	char	*tmp;
 	char	*result;
 
-	tmp = string_from_char(c);
+	tmp = str_from_char(c);
 	if (!tmp)
 	{
 		if (str)

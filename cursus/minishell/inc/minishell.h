@@ -205,6 +205,7 @@ void		no_quote_exp(char *str, char **str_exp, int *i, t_data *data);
 void		double_quote_exp(char *str, char **str_exp, int *i, t_data *data);
 void		single_quote_exp(char *str, char **str_exp, int *i, t_data *data);
 void		word_splitting(char ***cmd, int *idx, t_data *data);
+char		*mark_quotes(char *exp_value, t_data *data);
 
 //manage_fds
 int			open_fds(t_section *section);
@@ -238,7 +239,7 @@ void		print_ambiguous_error(char *str);
 
 //str_utils
 
-char		*string_from_char(char c);
+char		*str_from_char(char c);
 char		**add_to_array(char ***current, char *new_value);
 char		*concat_char_to_str(char *str, char c, t_data *data);
 char		**str_array_dup(char **origin);
