@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 12:31:40 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/09/23 13:38:01 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:40:10 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,31 +42,43 @@ int	file_match(char *filename, char *pattern, int *i, int *j)
 
 int	can_expand_wildcar(char *cmd)
 {
-	int	i;
+	int		i;
+	char	quote_type;
 
 	i = -1;
 	while (cmd && cmd[++i])
 	{
-		if (cmd[i] == '\\' && (cmd[i + 1] == '\'' || cmd[i + 1] == '"'))
+		if (cmd[i] == '\\')
 			i++;
-		else if (cmd[i] == '\'')
+		else if (cmd[i] == '\'' || cmd[i] == '\"')
 		{
-			while (cmd[++i] != '\'')
+			quote_type = cmd[i];
+			while (cmd[++i] != quote_type)
 			{
-				if (cmd[i] == '*')
-					return (0);
-			}
-		}
-		else if (cmd[i] == '"')
-		{
-			while (cmd[++i] != '"')
-			{
-				if (cmd[i] == '*')
+				if (cmd[i] == '\\')
+					i++;
+				else if (cmd[i] == '*')
 					return (0);
 			}
 		}
 	}
 	return (1);
+}
+
+void	remove_until_next(char **str, char **new_str, int *j, t_data *data)
+{
+	char	quote_type;
+
+	quote_type = (*str)[*j];
+	while ((*str)[++(*j)] != quote_type)
+	{
+		if ((*str)[*j] == '\\')
+			(*new_str) = ft_free_strcat((*new_str),
+					str_from_char((*str)[++(*j)]));
+		else
+			(*new_str) = ft_free_strcat((*new_str), str_from_char((*str)[*j]));
+		malloc_protection((*new_str), data);
+	}
 }
 
 void	remove_quotes(char **str, t_data *data)
@@ -78,17 +90,18 @@ void	remove_quotes(char **str, t_data *data)
 	j = -1;
 	while ((*str)[++j])
 	{
-		if ((*str)[j] == '\\'
-				&& ((*str)[j + 1] == '"' || (*str)[j + 1] == '\''))
+		if ((*str)[j] == '\\')
+		{
 			new_str = ft_free_strcat(new_str, str_from_char((*str)[++j]));
-		else if ((*str)[j] == '\'' && j++ >= 0)
-			while ((*str)[j] != '\'')
-				new_str = ft_free_strcat(new_str, str_from_char((*str)[j++]));
-		else if ((*str)[j] == '"' && j++ >= 0)
-			while ((*str)[j] != '"')
-				new_str = ft_free_strcat(new_str, str_from_char((*str)[j++]));
+			malloc_protection(new_str, data);
+		}
+		else if ((*str)[j] == '\'' || (*str)[j] == '"')
+			remove_until_next(str, &new_str, &j, data);
 		else
+		{
 			new_str = ft_free_strcat(new_str, str_from_char((*str)[j]));
+			malloc_protection(new_str, data);
+		}
 	}
 	if (!new_str)
 		new_str = ft_strdup("");

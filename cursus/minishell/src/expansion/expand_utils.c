@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 13:29:24 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/09/23 13:37:51 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:04:20 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ int	is_space(char *cmd)
 	quote = '\0';
 	while (cmd[i])
 	{
-		if (quote == '\0' && (cmd[i] == '"' || cmd[i] == '\''))
+		if (cmd[i] == '\\')
+			i++;
+		else if (quote == '\0' && (cmd[i] == '"' || cmd[i] == '\''))
 			quote = cmd[i];
 		else if (quote != '\0' && cmd[i] == quote)
 			quote = '\0';
@@ -64,7 +66,7 @@ void	files_expansion(t_files *curr_file, t_data *data)
 	{
 		curr_file->file_name = expand_env_vars(
 				curr_file->file_name, 0, data);
-		if (curr_file->file_name && ft_strchr(curr_file->file_name, ' '))
+		if (curr_file->file_name && is_space(curr_file->file_name) >= 0)
 		{
 			free(curr_file->file_name);
 			curr_file->file_name = NULL;
@@ -81,7 +83,7 @@ char	*mark_quotes(char *exp_value, t_data *data)
 	value = NULL;
 	while (exp_value[++i])
 	{
-		if (exp_value[i] == '"' || exp_value[i] == '\'')
+		if (exp_value[i] == '"' || exp_value[i] == '\'' || exp_value[i] == '\\')
 		{
 			value = ft_free_strcat(value, str_from_char('\\'));
 			malloc_protection(value, data);

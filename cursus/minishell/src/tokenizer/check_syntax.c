@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 16:10:36 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/17 15:37:39 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:03:58 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,35 @@ int	check_brackets(t_data *data)
 }
 
 /**
+ *		Function Name:	check_forbbiden_char
+ *
+ *		Description:
+ *
+ *			This function check if there is some forbbiden char
+ *
+ *		Parameters:
+ *
+ *			t_data	*data	-	The pointer to the t_data struct with all
+ *								execution data.
+ *		Return Value:
+ *
+ *			int - Returns 0 if the format is correct and 1 if it is not.
+ */
+int	check_forbbiden_char(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (data->prompt[i] != '\0')
+	{
+		if (data->prompt[i] == '\\')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+/**
  *		Function Name:	check_syntax
  *
  *		Description:
@@ -118,6 +147,8 @@ int	check_syntax(t_data *data)
 		error = QUOTE_FORMAT_ERROR;
 	if (check_brackets(data))
 		error = BRACKET_FORMAT_ERROR;
+	if (check_forbbiden_char(data))
+		error = INVALID_CHARS_ERROR;
 	if (error)
 	{
 		data->last_exit_status = 2;

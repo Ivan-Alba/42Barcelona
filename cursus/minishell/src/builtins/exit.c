@@ -77,7 +77,7 @@ int	check_max_min_llong(const char *str)
 		return (0);
 	if (len < 19)
 		return (1);
-	if (str[i] == '-')
+	if (str[0] == '-')
 	{
 		if (ft_strncmp("9223372036854775808", &(str[i]), len) < 0)
 			return (0);

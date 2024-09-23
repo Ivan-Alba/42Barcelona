@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:34:21 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/09/23 13:37:24 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:22:49 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # define MALLOC_ERROR "Error allocating memory"
 # define INVALID_VAR_NAME "Error: Invalid variable name"
 # define BRACKET_FORMAT_ERROR "Error: Brackets not closed correctly"
-# define INVALID_CHARS_ERROR "Error: There are characters not accepted (; \\)"
+# define INVALID_CHARS_ERROR "Error: There are characters not accepted ('\\')"
 # define QUOTE_FORMAT_ERROR	"Error: Incorrect quoting mark format"
 # define NO_ARGS_REQUIRED "Error: No args required"
 # define UNEXPECTED_TOKEN "Syntax error near unexpected token "

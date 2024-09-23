@@ -46,6 +46,8 @@ static void	print_quoted_vars(char *var)
 	i++;
 	while (var[i])
 	{
+		if (var[i] == '"')
+			write(1, "\\", 1);
 		write(1, &var[i], 1);
 		i++;
 	}
