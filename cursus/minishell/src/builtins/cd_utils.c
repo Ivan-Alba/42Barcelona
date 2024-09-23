@@ -6,7 +6,7 @@
 /*   By: carolinatacconis <carolinatacconis@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 17:01:54 by ctacconi          #+#    #+#             */
-/*   Updated: 2024/09/20 12:05:45 by carolinatac      ###   ########.fr       */
+/*   Updated: 2024/09/23 17:29:13 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,13 @@ void	set_oldpwd(t_data *data)
 			malloc_protection(data->env, data);
 		}
 		change_dir_my_env(oldpwd, NULL, data);
-		free (oldpwd);
+		free(oldpwd);
 	}
 	else
-		print_error_oldpwd();
+	{
+		write(2, "cd: error retrieving current directory: getcwd: ", 48);
+		perror("cannot access parent directories");
+	}
 }
 
 /*
@@ -113,7 +116,7 @@ int	swap_dir(char **cmd, t_data *data)
 	if (my_getenv("OLDPWD", data) == NULL)
 		return (free(new_old), print_error_oldpwd());
 	if (chdir(my_getenv("OLDPWD", data)) == -1)
-		return (free(new_old), print_error_no_file("OLDPWD"));
+		return (free(new_old), print_error_no_file(my_getenv("OLDPWD", data)));
 	change_dir_my_env(new_old, NULL, data);
 	new_pwd = getcwd(NULL, 0);
 	change_dir_my_env(NULL, new_pwd, data);
