@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:30:27 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/09/23 13:01:13 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/23 19:50:51 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	minishell(t_data *data)
 
 	aux = data->prompt;
 	data->prompt_init = ft_strtrim(data->prompt, " ");
+	if (data->prompt_init[0] == '\0')
+		return ;
 	free(aux);
 	data->prompt = data->prompt_init;
 	if (check_syntax(data))
