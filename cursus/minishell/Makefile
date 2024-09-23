@@ -6,7 +6,7 @@
 #    By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/21 21:07:38 by igarcia2          #+#    #+#              #
-#    Updated: 2024/09/23 12:24:44 by igarcia2         ###   ########.fr        #
+#    Updated: 2024/09/23 17:53:02 by igarcia2         ###   ########.fr        #
 #
 # **************************************************************************** #
 
@@ -119,7 +119,7 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c Makefile | create_obj_dirs
 $(NAME): $(READLINE_MARKER) $(OBJ_DIR) $(OBJ)
 		@echo ""
 		@$(call SHOW_MESSAGE, $(YELLOW)$(INFO), " LINKING MINISHELL...")
-		@$(CC) -o $(NAME) $(OBJ) $(LIBFT) $(READLINE_LIB) -fsanitize=address
+		@$(CC) -o $(NAME) $(OBJ) $(LIBFT) $(READLINE_LIB)  #-fsanitize=address
 		@$(call SHOW_MESSAGE, $(GREEN)$(CHECKMARK), " MINISHELL DONE!")
 
 $(OBJ_DIR): Makefile $(LIBFT)
