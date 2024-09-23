@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 16:53:52 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/01/13 14:44:24 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:54:26 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,3 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	res[i] = '\0';
 	return (res);
 }
-
-/*
-#include <stdio.h>
-int	main(void)
-{
-	char	str[] = "Hello world";
-
-	printf("%s", ft_strmapi(str, *f));
-}*/

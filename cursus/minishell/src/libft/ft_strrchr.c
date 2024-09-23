@@ -6,11 +6,9 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 18:10:30 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/01/15 19:02:45 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:55:06 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "libft.h"
 
 char	*ft_strrchr(const char *s, int c)
 {
@@ -38,12 +36,3 @@ char	*ft_strrchr(const char *s, int c)
 	tmp = 0;
 	return (tmp);
 }
-
-/*
-#include <stdio.h>
-int	main(void)
-{
-	char	str[] = "Hello world";
-
-	printf("%s", ft_strrchr(str, 'x'));
-}*/

@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 16:36:51 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/01/15 15:13:54 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:54:10 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,3 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 	dst[i] = '\0';
 	return (ft_strlen(src));
 }
-
-/*
-#include <stdio.h>
-
-int	main(void)
-{
-	char	src[] = "Hello world!, 3";
-	char	dest[7];
-	char	src2[] = "Hello world!, 3";
-	char	dest2[7];
-
-
-	printf("%d\n", (int) ft_strlcpy(dest, src, 7));
-	printf("%d", (int) strlcpy(dest2, src2, 7));
-}*/

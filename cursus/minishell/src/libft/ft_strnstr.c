@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 16:23:45 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/01/15 17:26:36 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:54:44 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,3 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 	}
 	return (NULL);
 }
-
-/*
-#include <stdio.h>
-
-int	main(void)
-{
-	const char	*largestring = "Foo Bar Baz";
-	const char	*smallstring = "o Bar Ba";
-
-	printf("%s\n", ft_strnstr(largestring, smallstring, 10));
-	printf("%s\n", strnstr(largestring, smallstring, 10));
-}*/

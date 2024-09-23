@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strtrim2.c                                      :+:      :+:    :+:   */
+/*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:43:53 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/01/13 17:10:12 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:55:13 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,3 @@ char	*ft_strtrim(char const *s1, char const *set)
 	ft_strlcpy(trimmed, &s1[start], end - start + 2);
 	return (trimmed);
 }
-
-/*
-#include <stdio.h>
-int	main(void)
-{
-	char	s1[] = "Hello worldHeHeHe";
-	char	s2[] = "eHl";
-
-	printf("%s", ft_strtrim(s1, s2));
-}*/

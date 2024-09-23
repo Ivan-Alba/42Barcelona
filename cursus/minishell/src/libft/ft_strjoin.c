@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 18:25:06 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/01/13 13:15:22 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:53:50 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,3 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	joined[i] = '\0';
 	return (joined);
 }
-/*
-#include <stdio.h>
-int	main(void)
-{
-	char	str[] = "Hello ";
-	char	str2[] = "world!";
-	printf("%s", ft_strjoin(str, str2));
-}*/

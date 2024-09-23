@@ -6,11 +6,11 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 15:45:03 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/01/15 19:20:35 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:58:29 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h" 
+#include <stdlib.h>
 
 void	*ft_memmove(void *dest, const void *src, size_t n)
 {
@@ -35,16 +35,3 @@ void	*ft_memmove(void *dest, const void *src, size_t n)
 	}
 	return (dest);
 }
-
-/*
-#include <stdio.h>
-int	main(void)
-{
-	char	src[] = "Hello world";
-	char	dest[] = "How are you";
-	char	src2[] = "Hello world";
-	char	dest2[] = "How are you";
-
-	printf("%s\n", memmove(dest, src, 5));
-	printf("%s\n", ft_memmove(dest2, src2, 5));
-}*/

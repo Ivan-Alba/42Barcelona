@@ -6,11 +6,11 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 18:11:04 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/01/13 14:37:37 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:57:56 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stdlib.h>
 
 size_t	ft_strlen(const char *str)
 {

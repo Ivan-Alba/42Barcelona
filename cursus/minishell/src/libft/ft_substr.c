@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 18:13:06 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/01/15 19:45:08 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:55:19 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,3 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	substr[i] = '\0';
 	return (substr);
 }
-
-/*
-#include <stdio.h>
-int	main(void)
-{
-	char	str[] = "Hello world";
-	unsigned int	start = 4;
-	size_t len = 7 * sizeof(char);
-	printf("%s", ft_substr(str, start, len));
-	return (0);
-}*/

@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 18:10:46 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/01/12 20:35:55 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:46:49 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,3 @@ int	ft_isalpha(int c)
 		return (0);
 	}
 }
-
-/*
-#include <stdio.h>
-
-int	main(void)
-{
-	printf("%d: %s\n", ft_isalpha('H'), "H");
-	printf("%d: %s\n", ft_isalpha('4'), "4");
-	printf("%d: %s\n", ft_isalpha('*'), "*");
-}*/

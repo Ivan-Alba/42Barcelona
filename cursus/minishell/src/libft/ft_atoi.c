@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 16:52:35 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/01/12 18:56:06 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:45:42 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,3 @@ int	ft_atoi(const char *str)
 	}
 	return (res * sign);
 }
-
-/*
-#include <stdio.h>
-#include <stdlib.h>
-
-int	main(void)
-{
-	printf("%d\n", ft_atoi("-2147483650"));
-	printf("%d\n", atoi("-2147483650"));
-}*/

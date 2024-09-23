@@ -6,11 +6,11 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 17:05:32 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/01/17 19:03:38 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:52:58 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stdlib.h>
 
 static int	count_words(char const *s, char c)
 {
@@ -113,22 +113,3 @@ char	**ft_split(char const *s, char c)
 	result[i] = NULL;
 	return (result);
 }
-
-/*
-#include <stdio.h>
-
-int	main(void)
-{
-	char	str[] = " ,Hello, world, 87, how are you,,    2u , 3498";
-	char	c = ' ';
-	char	**res;
-	int		i;
-
-	i = 0;
-	res = ft_split(str, c);
-	while(res[i] != NULL)
-	{
-		printf("%d: %s\n", i, res[i]);
-		i++;
-	}
-}*/

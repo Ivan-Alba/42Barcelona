@@ -6,11 +6,11 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 21:05:25 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/01/15 18:55:41 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:56:19 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h" 
+#include <stdlib.h>
 
 static int	count_char(int n)
 {
@@ -97,11 +97,3 @@ char	*ft_itoa(int n)
 		return (put_string(n, res, dig));
 	}
 }
-
-/*
-#include <stdio.h>
-
-int	main(void)
-{
-	printf("%s", ft_itoa(0));
-}*/

@@ -6,11 +6,11 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 17:53:36 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/01/12 21:35:21 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:51:43 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <unistd.h>
 
 static int	pow_ten(int exp)
 {
@@ -59,9 +59,3 @@ void	ft_putnbr_fd(int n, int fd)
 	else
 		write_nb(n, fd);
 }
-
-/*
-int	main(void)
-{
-	ft_putnbr_fd(-273820, 1);
-}*/

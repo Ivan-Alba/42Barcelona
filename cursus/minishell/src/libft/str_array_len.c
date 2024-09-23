@@ -6,11 +6,9 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 12:31:40 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/09/02 16:38:50 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:55:43 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "libft.h"
 
 int	str_array_len(char **array)
 {

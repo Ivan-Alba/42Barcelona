@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 18:05:39 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/01/15 19:29:07 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:53:37 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,3 @@ char	*ft_strdup(const char *s)
 	cpy[i] = '\0';
 	return (cpy);
 }
-
-/*
-#include <stdio.h>
-int	main(void)
-{
-	char	str[] = "Hello world";
-	printf("%s\n", ft_strdup(str));
-	printf("%s\n", strdup(str));
-}*/
