@@ -6,7 +6,7 @@
 /*   By: ctacconi <ctacconi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 16:26:20 by ctacconi          #+#    #+#             */
-/*   Updated: 2024/09/03 16:44:21 by ctacconi         ###   ########.fr       */
+/*   Updated: 2024/09/23 12:28:46 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ int	is_nflag(char *str)
  *
  *			Write arguments to the standard output.
  *   
- *   		Display the ARGs, separated by a single space character and followed by a
- *   		newline, on the STDOUT.
+ *   		Display the ARGs, separated by a single space character and followed
+ *   		by a newline, on the STDOUT.
  *
  *		Parameters:
  *

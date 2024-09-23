@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 12:31:40 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/09/16 13:22:27 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/23 12:28:05 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,10 @@ char	**search_files(char	*regex, t_data *data)
 	dir = opendir(".");
 	res = NULL;
 	if (!dir)
-		perror("Error opening directory");
+	{
+		print_perror("Error opening directory");
+		print_error_exit(NULL, data);
+	}
 	entry = readdir(dir);
 	while (entry)
 	{

@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 17:05:50 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/08/29 18:47:39 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/23 13:36:28 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,9 +172,7 @@ void	expand_section(t_section *section, t_data *data)
 	curr_file = section->files;
 	while (curr_file)
 	{
-		if (curr_file->file_type != HEREDOC)
-			curr_file->file_name = expand_env_vars(
-					curr_file->file_name, 0, data);
+		files_expansion(curr_file, data);
 		curr_file = curr_file->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:30:27 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/09/16 15:43:27 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/23 13:01:13 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,5 +163,5 @@ int	main(int argc, char **argv, char **env)
 	init_data(&data, env);
 	read_prompt(data);
 	free_data(data);
-	exit(0);
+	exit(data->last_exit_status);
 }

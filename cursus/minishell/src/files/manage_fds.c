@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 15:19:24 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/09/02 13:38:37 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/23 13:05:08 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ int	set_outfile(t_section *section, t_files *file)
 			fd = open(file->file_name, O_WRONLY | O_CREAT | O_APPEND, 0666);
 		if (fd == -1)
 		{
-			perror(OPEN_ERROR);
+			print_perror(file->file_name);
 			close_section_fds(section);
 			return (1);
 		}

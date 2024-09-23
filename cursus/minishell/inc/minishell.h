@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:34:21 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/09/05 16:41:19 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/23 13:37:24 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,10 @@ char		*expand_var(char *str, char **str_exp, int *i, t_data *data);
 void		no_quote_exp(char *str, char **str_exp, int *i, t_data *data);
 void		double_quote_exp(char *str, char **str_exp, int *i, t_data *data);
 void		single_quote_exp(char *str, char **str_exp, int *i, t_data *data);
+
+//expand_utils
 void		word_splitting(char ***cmd, int *idx, t_data *data);
+void		files_expansion(t_files *curr_file, t_data *data);
 char		*mark_quotes(char *exp_value, t_data *data);
 
 //manage_fds

@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 12:31:40 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/09/12 16:45:21 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/23 13:38:01 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,27 +95,6 @@ void	remove_quotes(char **str, t_data *data)
 	malloc_protection(new_str, data);
 	free((*str));
 	*str = new_str;
-}
-
-char	*mark_quotes(char *exp_value, t_data *data)
-{
-	int		i;
-	char	*value;
-
-	i = -1;
-	value = NULL;
-	while (exp_value[++i])
-	{
-		if (exp_value[i] == '"' || exp_value[i] == '\'')
-		{
-			value = ft_free_strcat(value, str_from_char('\\'));
-			malloc_protection(value, data);
-		}
-		value = ft_free_strcat(value, str_from_char(exp_value[i]));
-		malloc_protection(value, data);
-	}
-	free(exp_value);
-	return (value);
 }
 
 void	add_to_cmd(char ***cmd, int *i, char ***matches, t_data *data)

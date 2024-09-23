@@ -6,7 +6,7 @@
 /*   By: ctacconi <ctacconi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 19:58:17 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/09/03 16:48:42 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/23 13:13:30 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,14 @@ void	execute_builtin(char **cmd, t_data *data)
 	else if (ft_strncmp(cmd[0], ENV, 4) == 0)
 		data->last_exit_status = ft_env(cmd, data);
 	else if (ft_strncmp(cmd[0], EXIT, 5) == 0)
+	{
 		data->last_exit_status = ft_exit(cmd, data);
+		if (data->last_exit_status == 2)
+		{
+			free_data(data);
+			exit(2);
+		}
+	}
 }
 
 /**
