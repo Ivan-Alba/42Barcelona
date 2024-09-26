@@ -6,7 +6,7 @@
 /*   By: ctacconi <ctacconi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 16:26:20 by ctacconi          #+#    #+#             */
-/*   Updated: 2024/09/23 12:28:46 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/26 17:29:53 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,15 @@ int	is_nflag(char *str)
 {
 	int	i;
 
-	i = 1;
-	if (*str != '-')
-		return (0);
-	if (str[i] != 'n')
-		return (0);
-	while (str[i] == 'n')
+	i = 0;
+	while (str[i])
+	{
+		if (i == 0 && str[i] != '-')
+			return (0);
+		else if (i > 0 && str[i] != 'n')
+			return (0);
 		i++;
-	if (str[i] != '\0')
-		return (0);
+	}
 	return (1);
 }
 

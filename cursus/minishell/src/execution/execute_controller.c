@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 15:19:24 by igarcia2          #+#    #+#             */
-/*   Updated: 2024/09/09 14:06:28 by igarcia2         ###   ########.fr       */
+/*   Updated: 2024/09/26 17:24:37 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,7 @@ int	is_next_and_or(t_section *curr_sec, t_data *data)
  */
 void	execute_sections(t_section *curr_sec, t_data *data)
 {
+	signal(SIGINT, SIG_IGN);
 	generate_pipes(data);
 	while (curr_sec)
 	{
