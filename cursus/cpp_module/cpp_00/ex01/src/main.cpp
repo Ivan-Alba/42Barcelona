@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
+#include <algorithm>
 #include "../inc/Contact.hpp"
 #include "../inc/PhoneBook.hpp"
 
@@ -22,10 +23,24 @@ void getInput(const std::string& prompt, std::string& input)
     }
 }
 
+bool isNumber(const std::string& str)
+{
+	if (str.empty())
+		return (false);
+	for (size_t i = 0; i < str.length(); ++i)
+	{
+		if (!isdigit(str[i]))
+		{
+			return (false);
+		}
+	}
+	return (true);
+}
+
 void addNewContact(PhoneBook& phoneBook)
 {
     Contact newContact;
-    std::string firstName, lastName, nickName;
+    std::string firstName, lastName, nickName, phone, darkSecret;
 
     getInput("Enter first name: ", firstName);
     newContact.setFirstName(firstName);
@@ -36,8 +51,19 @@ void addNewContact(PhoneBook& phoneBook)
     getInput("Enter nickname: ", nickName);
     newContact.setNickName(nickName);
 
+	getInput("Enter phone number: ", phone);
+	while (phone.length() != 9 || !isNumber(phone))
+	{
+		std::cout << "Phone number must be 9 digits\n";
+		getInput("Enter phone number: ", phone);
+	}
+	newContact.setPhoneNumber(phone);
+	
+    getInput("Enter darkest secret: ", darkSecret);
+    newContact.setDarkSecret(darkSecret);
+
     phoneBook.addContact(newContact);
-	std::cout << "Contact added successfully!\n";
+	std::cout << "Contact added successfully!" << std::endl;
 }
 
 void searchContact(PhoneBook& phoneBook)

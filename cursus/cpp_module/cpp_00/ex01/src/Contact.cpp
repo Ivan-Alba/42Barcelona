@@ -28,6 +28,18 @@
 		return nickName;
 	}
 
+	std::string Contact::getPhoneNumber() const
+	{
+		return phoneNumber;
+	}
+
+	std::string Contact::getDarkSecret() const
+	{
+		return darkSecret;
+	}
+
+
+
 	//Setters
 	void	Contact::setFirstName(const std::string& first)
 	{
@@ -43,6 +55,18 @@
 	{
 		nickName = nick;
 	}
+
+	void	Contact::setPhoneNumber(const std::string& phone)
+	{
+		phoneNumber = phone;
+	}
+
+	void	Contact::setDarkSecret(const std::string& dark)
+	{
+		darkSecret = dark;
+	}
+
+
 
 	void	Contact::displayContact() const
 	{
