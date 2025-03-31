@@ -10,11 +10,11 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = phonebook
+NAME = zombie
 
-SRC = main.cpp PhoneBook.cpp Contact.cpp
+SRC = Zombie.cpp newZombie.cpp randomChump.cpp main.cpp
 
-SRC_DIR = src/
+SRC_DIR = ./
 
 SRC_FULL_DIR =  $(addprefix $(SRC_DIR), $(SRC))
 
@@ -27,7 +27,7 @@ OBJ_FULL_DIR = $(addprefix $(OBJ_DIR), $(OBJ))
 DEPS = $(SRC:.cpp=.d)
 
 CC = c++
-CFLAGS = -Wall -Wextra -Werror -std=c++98 -fsanitize=address -g 
+CFLAGS = -Wall -Wextra -Werror -std=c++98 -fsanitize=address -g
 RM = rm -rf
 
 # Color codes

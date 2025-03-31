@@ -27,7 +27,7 @@ OBJ_FULL_DIR = $(addprefix $(OBJ_DIR), $(OBJ))
 DEPS = $(SRC:.cpp=.d)
 
 CC = c++
-CFLAGS = -Wall -Wextra -Werror -std=c++98 
+CFLAGS = -Wall -Wextra -Werror -std=c++98 -fsanitize=address -g 
 RM = rm -rf
 
 # Color codes
@@ -66,7 +66,7 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.cpp Makefile
 
 $(NAME): $(OBJ_DIR) $(OBJ_FULL_DIR)
 	@echo "$(YELLOW)LINKING $(NAME)...$(RESET)"
-	$(CC) -o $(NAME) $(OBJ_FULL_DIR) 
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ_FULL_DIR) 
 
 $(OBJ_DIR): 
 	@mkdir $(OBJ_DIR)
