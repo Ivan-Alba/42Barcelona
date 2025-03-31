@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
-#include <algorithm>
 #include "../inc/Contact.hpp"
 #include "../inc/PhoneBook.hpp"
 
