@@ -1,4 +1,5 @@
 #include "Zombie.hpp"
+#include <iostream>
 
 std::string	Zombie::getName(void) const
 {
