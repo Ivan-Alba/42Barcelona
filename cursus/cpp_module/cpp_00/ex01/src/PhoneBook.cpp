@@ -12,6 +12,9 @@
 
 #include "../inc/PhoneBook.hpp"
 
+//Constructor
+PhoneBook::PhoneBook() : nextIndex(0) {}
+
 void	PhoneBook::addContact(const Contact& newContact)
 {
 	contacts[nextIndex] = newContact;
@@ -26,10 +29,11 @@ void	PhoneBook::displayContacts() const
 		<< std::setw(10) << "Last Name" << " | "
 		<< std::setw(10) << "Nickname" << std::endl;
 
-	for (int i = 0; i < MAX_CONTACTS; ++i) {
-		if (contacts[i].getFirstName().empty()) {
-			continue;
-		}
+	for (int i = 0; i < MAX_CONTACTS; ++i)
+	{
+		if (contacts[i].getFirstName().empty())
+			continue ;
+
 		std::cout << std::setw(10) << i + 1 << " | "
 			<< std::setw(10) << truncate(contacts[i].getFirstName()) << " | "
 			<< std::setw(10) << truncate(contacts[i].getLastName()) << " | "
@@ -39,12 +43,15 @@ void	PhoneBook::displayContacts() const
 
 void	PhoneBook::displayContactAt(int index) const 
 {
-	if (index < 1 || index > MAX_CONTACTS || contacts[index - 1].getFirstName().empty())
+	if (index < 1 || index > MAX_CONTACTS
+		|| contacts[index - 1].getFirstName().empty())
 	{
 		std::cout << "Invalid index or no contact at this index." << std::endl;
-		return;
+		return ;
 	}
-	const Contact& contact = contacts[index - 1];
+
+	const Contact	&contact = contacts[index - 1];
+
 	std::cout << "First Name: " << contact.getFirstName() << std::endl;
 	std::cout << "Last Name: " << contact.getLastName() << std::endl;
 	std::cout << "Nick Name: " << contact.getNickName() << std::endl;
@@ -54,7 +61,8 @@ std::string	PhoneBook::truncate(const std::string& str) const
 {
 	if (str.length() > 10)
 	{
-		return str.substr(0, 9) + ".";
+		return (str.substr(0, 9) + ".");
 	}
-	return str;
+
+	return (str);
 }

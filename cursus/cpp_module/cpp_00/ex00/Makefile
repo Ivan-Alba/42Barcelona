@@ -19,7 +19,7 @@ DEPS = $(MAIN:.cpp=.d)
 MAIN_OBJ = $(MAIN:.cpp=.o)
 
 CC = c++
-CFLAGS = -Wall -Wextra -Werror -std=c++98
+CFLAGS = -Wall -Wextra -Werror -std=c++98 -fsanitize=address -g
 RM = rm -f
 
 all: $(NAME)
@@ -28,7 +28,7 @@ all: $(NAME)
 	$(CC) $(CFLAGS) -c -MMD $<
 
 $(NAME): $(MAIN_OBJ)
-	$(CC) -o $(NAME) $(MAIN_OBJ)
+	$(CC) $(CFLAGS) -o $(NAME) $(MAIN_OBJ)
 
 clean:
 	$(RM) $(MAIN_OBJ) $(DEPS)

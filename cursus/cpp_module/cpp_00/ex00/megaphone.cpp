@@ -1,6 +1,6 @@
-#include <iostream> //std::cout std::cin
-#include <cctype> //std::toupper
-#include <cstring> //std::strlen
+#include <iostream> 
+#include <cctype>
+#include <cstring>
 
 int	main(int argc, char **argv)
 {

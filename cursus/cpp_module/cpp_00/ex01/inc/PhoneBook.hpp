@@ -7,18 +7,20 @@
 
 # define MAX_CONTACTS 8
 
-class PhoneBook {
-private:
-    Contact	contacts[MAX_CONTACTS];
-    int		nextIndex;
+class	PhoneBook
+{
+	private:
+		Contact	contacts[MAX_CONTACTS];
+		int		nextIndex;
+		
+		std::string	truncate(const std::string &str) const;
+	
+	public:
+		PhoneBook();
 
-public:
-	PhoneBook() : nextIndex(0) {}
-
-	void		addContact(const Contact& newContact);
-	void		displayContacts() const;
-	void		displayContactAt(int index) const;
-	std::string	truncate(const std::string& str) const;
+		void	addContact(const Contact &newContact);
+		void	displayContacts() const;
+		void	displayContactAt(int index) const;
 };
 
 #endif
