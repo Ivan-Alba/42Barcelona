@@ -8,7 +8,7 @@ Cure::Cure()
 	setType("cure");
 }
 
-Cure::Cure(const Cure &other) : AMateria()
+Cure::Cure(const Cure &other) : AMateria(other)
 {
 	*this = other;
 }

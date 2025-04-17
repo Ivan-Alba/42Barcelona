@@ -8,7 +8,7 @@ Ice::Ice()
 	setType("ice");
 }
 
-Ice::Ice(const Ice &other) : AMateria()
+Ice::Ice(const Ice &other) : AMateria(other)
 {
 	*this = other;
 }
