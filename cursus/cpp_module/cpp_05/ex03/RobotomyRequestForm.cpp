@@ -1,38 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ShrubberyCreationForm.cpp                          :+:      :+:    :+:   */
+/*   RobotomyRequestForm.cpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/18 17:38:09 by igarcia2          #+#    #+#             */
-/*   Updated: 2025/04/18 20:01:34 by igarcia2         ###   ########.fr       */
+/*   Created: 2025/04/18 17:42:49 by igarcia2          #+#    #+#             */
+/*   Updated: 2025/04/18 20:08:55 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ShrubberyCreationForm.hpp"
-#include <fstream>
+#include "RobotomyRequestForm.hpp"
+#include <cstdlib>
+#include <ctime>
 
 //Constructor
-ShrubberyCreationForm::ShrubberyCreationForm()
-	: AForm("shrubberyForm", 145, 137), target("defaultTarget") {}
+RobotomyRequestForm::RobotomyRequestForm()
+	: AForm("robotomyForm", 72, 45), target("defaultTarget") {}
 
-ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm &other)
+RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm &other)
 	: AForm(other.getName(), other.getSignGrade(), other.getExecGrade()),
 	target(other.target)
 {
 	this->setSigned(other.isSigned());
 }
 
-ShrubberyCreationForm::ShrubberyCreationForm(const std::string &target)
-	: AForm("shrubberyForm", 145, 137), target(target) {}
+RobotomyRequestForm::RobotomyRequestForm(const std::string &target)
+	: AForm("robotomyForm", 72, 45), target(target) {}
 
 //Destructor
-ShrubberyCreationForm::~ShrubberyCreationForm() {}
+RobotomyRequestForm::~RobotomyRequestForm() {}
 
 //Operator
-ShrubberyCreationForm&
-	ShrubberyCreationForm::operator=(const ShrubberyCreationForm &other)
+RobotomyRequestForm&
+	RobotomyRequestForm::operator=(const RobotomyRequestForm &other)
 {
 	if (this != &other)
 	{
@@ -42,7 +43,7 @@ ShrubberyCreationForm&
 }
 
 //Other
-void	ShrubberyCreationForm::execute(Bureaucrat const &executor) const
+void	RobotomyRequestForm::execute(Bureaucrat const &executor) const
 {
 	if (!this->isSigned())
 	{
@@ -52,11 +53,10 @@ void	ShrubberyCreationForm::execute(Bureaucrat const &executor) const
 	{
 		throw GradeTooLowException();
 	}
-
-	std::ofstream	file((this->target + "_shrubbery").c_str());
-
-    if (!file)
-	{
-        std::cerr << "Error creating file" << std::endl;
-    }
+	std::cout << "BRZZZZZZZZ ";
+	srand(time(0));
+	if (rand() % 2 == 0)
+		std::cout << this->target << " has been robotomized" << std::endl;
+	else
+		std::cout << this->target << " robotomy failed" << std::endl;
 }

@@ -1,38 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ShrubberyCreationForm.cpp                          :+:      :+:    :+:   */
+/*   PresidentialPardonForm.cpp                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/18 17:38:09 by igarcia2          #+#    #+#             */
-/*   Updated: 2025/04/18 20:01:34 by igarcia2         ###   ########.fr       */
+/*   Created: 2025/04/18 17:49:55 by igarcia2          #+#    #+#             */
+/*   Updated: 2025/04/18 20:03:50 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ShrubberyCreationForm.hpp"
-#include <fstream>
+#include "PresidentialPardonForm.hpp"
 
 //Constructor
-ShrubberyCreationForm::ShrubberyCreationForm()
-	: AForm("shrubberyForm", 145, 137), target("defaultTarget") {}
+PresidentialPardonForm::PresidentialPardonForm()
+	: AForm("presidentialForm", 25, 5), target("defaultTarget") {}
 
-ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm &other)
+PresidentialPardonForm::PresidentialPardonForm(
+		const PresidentialPardonForm &other)
 	: AForm(other.getName(), other.getSignGrade(), other.getExecGrade()),
 	target(other.target)
 {
 	this->setSigned(other.isSigned());
 }
 
-ShrubberyCreationForm::ShrubberyCreationForm(const std::string &target)
-	: AForm("shrubberyForm", 145, 137), target(target) {}
+PresidentialPardonForm::PresidentialPardonForm(const std::string &target)
+	: AForm("presidentialForm", 25, 5), target(target) {}
 
 //Destructor
-ShrubberyCreationForm::~ShrubberyCreationForm() {}
+PresidentialPardonForm::~PresidentialPardonForm() {}
 
 //Operator
-ShrubberyCreationForm&
-	ShrubberyCreationForm::operator=(const ShrubberyCreationForm &other)
+PresidentialPardonForm&
+	PresidentialPardonForm::operator=(const PresidentialPardonForm &other)
 {
 	if (this != &other)
 	{
@@ -42,7 +42,7 @@ ShrubberyCreationForm&
 }
 
 //Other
-void	ShrubberyCreationForm::execute(Bureaucrat const &executor) const
+void	PresidentialPardonForm::execute(Bureaucrat const &executor) const
 {
 	if (!this->isSigned())
 	{
@@ -52,11 +52,6 @@ void	ShrubberyCreationForm::execute(Bureaucrat const &executor) const
 	{
 		throw GradeTooLowException();
 	}
-
-	std::ofstream	file((this->target + "_shrubbery").c_str());
-
-    if (!file)
-	{
-        std::cerr << "Error creating file" << std::endl;
-    }
+	std::cout << this->target << " has been pardoned by Zaphod Beeblebrox"
+		<< std::endl;
 }
