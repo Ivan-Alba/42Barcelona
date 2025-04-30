@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Harl.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/30 17:38:49 by igarcia2          #+#    #+#             */
+/*   Updated: 2025/04/30 17:43:20 by igarcia2         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Harl.hpp"
 #include <iostream>
 
@@ -48,26 +60,18 @@ void	Harl::complain(std::string level)
 	switch (index)
 	{
 		case 0:
-		debug();
-		info();
-		warning();
-		error();
-		break;
+			debug();
+			//fallthrough
 		
 		case 1:
-		info();
-		warning();
-		error();
-		break;
-
+			info();
+			//fallthrough
 		case 2:
-		warning();
-		error();
-		break;
-		
+			warning();
+			//fallthrough
 		case 3:
-		error();
-		break;
+			error();
+			break;
 
 		default:
 			std::cout
