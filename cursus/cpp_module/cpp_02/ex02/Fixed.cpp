@@ -172,5 +172,8 @@ float	Fixed::toFloat(void) const
 
 int	Fixed::toInt(void) const
 {
-	return (this->number >> this->fractional); 
+	if (this->number >= 0)
+		return (this->number >> this->fractional); 
+	else
+		return -((-this->number) >> this->fractional);
 }
