@@ -30,6 +30,9 @@ int	main(void)
 	std::cout << "Scav HP: " << s.getHitPoints() << std::endl;
 	std::cout << "Scav EP: " << s.getEnergyPoints() << std::endl;
 	s.guardGate();
+
+	f.attack("Carolina");
+
 	f.highFivesGuys();
 	return (0);
 }

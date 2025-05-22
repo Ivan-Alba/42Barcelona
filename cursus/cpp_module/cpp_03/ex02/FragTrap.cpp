@@ -42,6 +42,27 @@ FragTrap& FragTrap::operator=(const FragTrap &other)
 }
 
 //Actions
+void	FragTrap::attack(const std::string &target)
+{
+	if (this->getHitPoints() == 0)
+	{
+		std::cout << "FragTrap " << this->getName()
+			<< " is dead. Cannot attack." << std::endl;
+	}
+	else if (this->getEnergyPoints() == 0)
+	{
+		std::cout << "FragTrap " << this->getName()
+			<< " insufficient energy points to attack!" << std::endl;
+	}
+	else
+	{
+		std::cout << "FragTrap " << this->getName() << " attacks " << target
+			<< ", causing " << this->getAttackDamage() << " points of damage!"
+			<< std::endl;
+		this->setEnergyPoints(this->getEnergyPoints() - 1);
+	}
+}
+
 void	FragTrap::highFivesGuys()
 {
 	std::cout << "FragTrap " << this->getName()
