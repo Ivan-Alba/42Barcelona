@@ -24,7 +24,7 @@ OBJ_DIR = bin/
 
 OBJ_FULL_DIR = $(addprefix $(OBJ_DIR), $(OBJ))
 
-DEPS = $(SRC:.cpp=.d)
+DEPS = $(OBJ_FULL_DIR:.o=.d)
 
 CC = c++
 CFLAGS = -Wall -Wextra -Werror -std=c++98 -fsanitize=address -g
