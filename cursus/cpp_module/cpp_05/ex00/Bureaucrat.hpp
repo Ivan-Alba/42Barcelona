@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Bureaucrat.hpp                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/14 12:42:46 by igarcia2          #+#    #+#             */
+/*   Updated: 2025/08/14 13:14:45 by igarcia2         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef BUREAUCRAT_HPP
 # define BUREAUCRAT_HPP
 
@@ -28,13 +40,13 @@ class	Bureaucrat
 		class GradeTooHighException : public std::exception
 		{
 			public:
-				const char* what() const throw();
+				virtual const char* what() const throw();
 		};
 
 		class GradeTooLowException : public std::exception
 		{
 			public:
-				const char* what() const throw();
+				virtual const char* what() const throw();
 		};
 };
 

@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 13:08:27 by igarcia2          #+#    #+#             */
-/*   Updated: 2025/04/18 14:41:38 by igarcia2         ###   ########.fr       */
+/*   Updated: 2025/08/14 13:18:59 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ class	Form
 		class	GradeTooHighException : public std::exception
 		{
 			public:
-				const char* what() const throw();
+				virtual const char* what() const throw();
 		};
 		
 		class	GradeTooLowException : public std::exception
 		{
 			public:
-				const char* what() const throw();
+				virtual const char* what() const throw();
 		};
 };
 

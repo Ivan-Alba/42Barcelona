@@ -6,7 +6,7 @@
 #    By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/21 21:07:38 by igarcia2          #+#    #+#              #
-#    Updated: 2025/04/18 17:54:45 by igarcia2         ###   ########.fr        #
+#    Updated: 2025/08/14 13:20:57 by igarcia2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ OBJ_DIR = bin/
 
 OBJ_FULL_DIR = $(addprefix $(OBJ_DIR), $(OBJ))
 
-DEPS = $(SRC:.cpp=.d)
+DEPS = $(OBJ_FULL_DIR:.o=.d)
 
 CC = c++
 CFLAGS = -Wall -Wextra -Werror -std=c++98 -fsanitize=address -g
