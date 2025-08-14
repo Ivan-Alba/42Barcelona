@@ -6,7 +6,7 @@
 /*   By: igarcia2 <igarcia2@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 17:38:09 by igarcia2          #+#    #+#             */
-/*   Updated: 2025/04/18 20:01:34 by igarcia2         ###   ########.fr       */
+/*   Updated: 2025/08/14 15:20:15 by igarcia2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,16 @@ void	ShrubberyCreationForm::execute(Bureaucrat const &executor) const
     if (!file)
 	{
         std::cerr << "Error creating file" << std::endl;
+		return ;
     }
+
+	file << "       _-_       \n";
+    file << "    /~~   ~~\\   \n";
+    file << " /~~         ~~\\\n";
+    file << "{               }\n";
+    file << " \\  _-     -_  / \n";
+    file << "   ~  \\\\ //  ~  \n";
+    file << "_- -   | | _- _  \n";
+    file << "  _ -  | |   -_  \n";
+    file << "      // \\\\      \n";
 }
