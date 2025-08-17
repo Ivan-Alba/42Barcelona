@@ -10,9 +10,9 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = convert
+NAME = serializer
 
-SRC = ScalarConverter.cpp main.cpp
+SRC = Data.cpp Serializer.cpp main.cpp
 
 SRC_DIR = ./
 
