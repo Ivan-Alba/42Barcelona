@@ -36,7 +36,7 @@ MateriaSource& MateriaSource::operator=(const MateriaSource &other)
 		{
 			if (this->src[i])
 				delete this->src[i];
-			this->src[i] = other.src[i];
+			this->src[i] = other.src[i]->clone();
 		}
 	}
 	

@@ -4,10 +4,6 @@
 #include <cstdlib>
 #include <ctime>
 
-class A;
-class B;
-class C;
-
 class Base {
 
 	public:

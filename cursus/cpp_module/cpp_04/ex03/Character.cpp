@@ -70,14 +70,14 @@ Character& Character::operator=(const Character &other)
 		{
 			if (this->inventory[i])
 				delete this->inventory[i];
-			this->inventory[i] = other.inventory[i];
+			this->inventory[i] = other.inventory[i]->clone();
 		}
 		
 		for (int i = 0; i < 100; i++)
 		{
 			if (this->unequippedMateria[i])
 				delete this->unequippedMateria[i];
-			this->unequippedMateria[i] = other.unequippedMateria[i];
+			this->unequippedMateria[i] = other.unequippedMateria[i]->clone();
 		}
 	}
 	
