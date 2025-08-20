@@ -1,0 +1,76 @@
+version: "3.8"
+
+services:
+  mariadb:
+    build: ./requirements/mariadb
+    container_name: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_ADMIN: ${MYSQL_ADMIN}
+    volumes:
+      - wordpress_db_data:/var/lib/mysql
+    networks:
+      - wp_network
+    secrets:
+      - db_root_password
+      - db_password
+      - db_user_password
+
+  wordpress:
+    build: ./requirements/wordpress
+    container_name: wordpress
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: mariadb:3306
+      WORDPRESS_DB_USER: ${MYSQL_ADMIN}
+      WORDPRESS_DB_PASSWORD_FILE: /run/secrets/db_password
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+      WORDPRESS_TABLE_PREFIX: wp_
+      DOMAIN_NAME: ${DOMAIN_NAME}
+    volumes:
+      - wordpress_site_data:/var/www/html
+    networks:
+      - wp_network
+    depends_on:
+      - mariadb
+    secrets:
+      - db_password
+
+  nginx:
+    build: ./requirements/nginx
+    container_name: nginx
+    restart: always
+    ports:
+      - "443:443"
+    environment:
+      DOMAIN_NAME: ${DOMAIN_NAME}
+    volumes:
+      - wordpress_site_data:/var/www/html:ro
+      - ./requirements/nginx/conf:/etc/nginx/conf.d:ro
+      - ./requeriments/nginx/certs:/etc/nginx/certs/:ro
+    networks:
+      - wp_network
+    depends_on:
+      - wordpress
+
+# Volúmenes para persistencia
+volumes:
+  wordpress_db_data:
+  wordpress_site_data:
+
+# Red dedicada
+networks:
+  wp_network:
+
+# Secrets
+secrets:
+  db_root_password:
+    file: ../secrets/db_root_password.txt
+  db_password:
+    file: ../secrets/db_password.txt
+  db_user_password:
+    file: ../secrets/db_user_password.txt
+
