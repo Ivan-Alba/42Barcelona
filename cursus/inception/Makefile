@@ -22,7 +22,7 @@ re: fclean all
 # Stop containers and remove networks
 clean:
 	@echo "[INFO] Stopping and removing containers and networks..."
-	@$(DOCKER_COMPOSE) down 2>/dev/null
+	@$(DOCKER_COMPOSE) down >/dev/null 2>&1
 	@docker system prune -af --volumes
 	@echo "[INFO] Clean finished."
 
@@ -69,6 +69,10 @@ secrets:
 	@if [ ! -f $(SECRETS_DIR)/db_user_password.txt ]; then \
 		echo -n "$$(openssl rand -base64 16)" > $(SECRETS_DIR)/db_user_password.txt; \
 		echo "[INFO] Generated db_user_password"; \
+	fi
+	@if [ ! -f $(SECRETS_DIR)/ftp_password.txt ]; then \
+		echo -n "$$(openssl rand -base64 16)" > $(SECRETS_DIR)/ftp_password.txt; \
+		echo "[INFO] Generated ftp_password"; \
 	fi
 
 # Check docker installation

@@ -55,6 +55,33 @@ services:
     depends_on:
       - wordpress
 
+  # Bonus services
+  redis:
+    build: ./requirements/bonus/redis
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - wp_network
+
+  ftp:
+    build: ./requirements/bonus/ftp
+    container_name: ftp
+    restart: always
+    ports:
+      - "21:21"
+      - "21000-21010:21000-21010"
+    volumes:
+      - wordpress_site_data:/home/ftpuser
+    networks:
+      - wp_network
+    environment:
+      FTP_USER: ${FTP_USER}
+      FTP_PASS_FILE: /run/secrets/ftp_password
+    secrets:
+      - ftp_password
+
 # Volúmenes para persistencia
 volumes:
   wordpress_db_data:
@@ -72,4 +99,6 @@ secrets:
     file: ../secrets/db_password.txt
   db_user_password:
     file: ../secrets/db_user_password.txt
+  ftp_password:
+    file: ../secrets/ftp_password.txt
 
