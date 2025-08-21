@@ -1,21 +1,22 @@
-# Dockerfile: MariaDB on Debian (bullseye)
+# Dockerfile: MariaDB on Debian (bullseye-slim)
 FROM debian:bullseye-slim
 
-# Set non-interactive mode for apt
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Update repos and install MariaDB
+# Install MariaDB
 RUN apt-get update && \
     apt-get install -y mariadb-server && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy initialization scripts
-COPY conf /docker-entrypoint-initdb.d/
+# Create directory for socket
+RUN mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld
+
+# Copy entrypoint script
+COPY tools/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Expose MariaDB port
 EXPOSE 3306
 
-# Use official MariaDB entrypoint
-ENTRYPOINT ["docker-entrypoint.sh"]
-
-# No CMD needed; entrypoint starts MariaDB daemon
+# Use custom entrypoint
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

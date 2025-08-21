@@ -24,7 +24,7 @@ services:
     container_name: wordpress
     restart: always
     environment:
-      WORDPRESS_DB_HOST: mariadb:3306
+      WORDPRESS_DB_HOST: mariadb
       WORDPRESS_DB_USER: ${MYSQL_ADMIN}
       WORDPRESS_DB_PASSWORD_FILE: /run/secrets/db_password
       WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
@@ -50,7 +50,6 @@ services:
     volumes:
       - wordpress_site_data:/var/www/html:ro
       - ./requirements/nginx/conf:/etc/nginx/conf.d:ro
-      - ./requeriments/nginx/certs:/etc/nginx/certs/:ro
     networks:
       - wp_network
     depends_on:

@@ -18,6 +18,11 @@ COPY conf/ /etc/nginx/conf.d/
 # Copy SSL certificates (server.crt and server.key)
 COPY certs/ /etc/nginx/certs/
 
+# Set proper permissions so NGINX can read the certificates
+RUN chown -R www-data:www-data /etc/nginx/certs && \
+    chmod 600 /etc/nginx/certs/server.key && \
+    chmod 644 /etc/nginx/certs/server.crt
+
 # Expose HTTPS port
 EXPOSE 443
 

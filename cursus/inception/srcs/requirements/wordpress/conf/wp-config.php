@@ -3,7 +3,7 @@
 
 // Load environment variables
 $env_mysql_db   = getenv('MYSQL_DATABASE') ?: 'wordpress';
-$env_mysql_user = getenv('MYSQL_ADMIN') ?: 'admin_user';
+$env_mysql_user = getenv('MYSQL_ADMIN') ?: 'gandalf';
 
 // Load password from admin secret
 $env_mysql_password_file = '/run/secrets/db_password';

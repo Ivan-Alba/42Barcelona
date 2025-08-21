@@ -9,10 +9,11 @@ export DOMAIN
 COMPOSE_FILE   = srcs/docker-compose.yml
 DOCKER_COMPOSE = docker-compose -f $(COMPOSE_FILE)
 CERTS_DIR      = srcs/requirements/nginx/certs
+SECRETS_DIR    = secrets
 DOMAIN         = $(DOMAIN_NAME)
 
 # Default target: build and run
-all: check_docker certs build up
+all: check_docker certs secrets build up
 
 # Rebuild everything from scratch
 re: fclean all
@@ -25,22 +26,46 @@ clean:
 fclean: clean
 	docker system prune -af --volumes
 	rm -rf $(CERTS_DIR)
+	rm -rf $(SECRETS_DIR)
+
 # Build images
 build:
 	$(DOCKER_COMPOSE) build
 
 # Run in detached mode
 up:
-	$(DOCKER_COMPOSE) up -d
+	$(DOCKER_COMPOSE) up -d 
 
 # Generate self-signed SSL certificates
 certs:
-	mkdir -p $(CERTS_DIR)
-	openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-		-keyout $(CERTS_DIR)/server.key \
-		-out $(CERTS_DIR)/server.crt \
-		-subj "/C=FR/ST=Paris/L=Paris/O=42/OU=42/CN=$(DOMAIN)"
+	@if [ -f $(CERTS_DIR)/server.key ] && [ -f $(CERTS_DIR)/server.crt ]; then \
+		echo "[INFO] Certificates already exist. Skipping..."; \
+	else \
+		mkdir -p $(CERTS_DIR); \
+		openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+			-keyout $(CERTS_DIR)/server.key \
+			-out $(CERTS_DIR)/server.crt \
+			-subj "/C=FR/ST=Paris/L=Paris/O=42/OU=42/CN=$(DOMAIN)"; \
+		echo "[INFO] Certificates generated."; \
+	fi
 
+# Generate secrets random passwords
+secrets:
+	mkdir -p $(SECRETS_DIR)
+	@if [ ! -f $(SECRETS_DIR)/db_root_password.txt ]; then \
+		openssl rand -base64 16 > $(SECRETS_DIR)/db_root_password.txt; \
+		echo "[INFO] Generated db_root_password"; \
+	fi
+	@if [ ! -f $(SECRETS_DIR)/db_password.txt ]; then \
+		openssl rand -base64 16 > $(SECRETS_DIR)/db_password.txt; \
+		echo "[INFO] Generated db_password"; \
+	fi
+	@if [ ! -f $(SECRETS_DIR)/db_user_password.txt ]; then \
+		openssl rand -base64 16 > $(SECRETS_DIR)/db_user_password.txt; \
+		echo "[INFO] Generated db_user_password"; \
+	fi
+
+# Check docker installation
 check_docker:
 	@command -v docker >/dev/null 2>&1 || { \
 		echo "Docker not found. Installing..."; \
@@ -57,4 +82,4 @@ check_docker:
 		sudo apt install -y docker-compose; \
 	}
 
-.PHONY: all re clean fclean build up certs
+.PHONY: all re clean fclean build up certs secrets
