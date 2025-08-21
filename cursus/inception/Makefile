@@ -21,10 +21,11 @@ re: fclean all
 # Stop containers and remove networks
 clean:
 	$(DOCKER_COMPOSE) down
+	docker system prune -af --volumes
 
 # Clean everything: containers, images, volumes and certs
 fclean: clean
-	docker system prune -af --volumes
+	docker volume rm srcs_wordpress_db_data srcs_wordpress_site_data
 	rm -rf $(CERTS_DIR)
 	rm -rf $(SECRETS_DIR)
 
@@ -53,15 +54,15 @@ certs:
 secrets:
 	mkdir -p $(SECRETS_DIR)
 	@if [ ! -f $(SECRETS_DIR)/db_root_password.txt ]; then \
-		openssl rand -base64 16 > $(SECRETS_DIR)/db_root_password.txt; \
+		echo -n "$$(openssl rand -base64 16)" > $(SECRETS_DIR)/db_root_password.txt; \
 		echo "[INFO] Generated db_root_password"; \
 	fi
 	@if [ ! -f $(SECRETS_DIR)/db_password.txt ]; then \
-		openssl rand -base64 16 > $(SECRETS_DIR)/db_password.txt; \
+		echo -n "$$(openssl rand -base64 16)" > $(SECRETS_DIR)/db_password.txt; \
 		echo "[INFO] Generated db_password"; \
 	fi
 	@if [ ! -f $(SECRETS_DIR)/db_user_password.txt ]; then \
-		openssl rand -base64 16 > $(SECRETS_DIR)/db_user_password.txt; \
+		echo -n "$$(openssl rand -base64 16)" > $(SECRETS_DIR)/db_user_password.txt; \
 		echo "[INFO] Generated db_user_password"; \
 	fi
 
