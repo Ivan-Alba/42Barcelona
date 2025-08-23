@@ -29,7 +29,8 @@ clean:
 # Clean everything: containers, images, volumes and certs
 fclean: clean
 	@echo "[INFO] Performing full clean: removing volumes, certs, and secrets..."
-	@docker volume rm srcs_wordpress_db_data srcs_wordpress_site_data 2>/dev/null || true
+	@docker volume rm srcs_wordpress_db_data \
+		srcs_portainer_data srcs_wordpress_site_data 2>/dev/null || true
 	@rm -rf $(CERTS_DIR)
 	@rm -rf $(SECRETS_DIR)
 	@echo "[INFO] Full clean finished."

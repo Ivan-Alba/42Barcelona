@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Static Page</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f7f7f7;
+        color: #333;
+        margin: 0;
+        padding: 0;
+      }
+      header {
+        background-color: #4caf50;
+        color: white;
+        padding: 1rem 2rem;
+        text-align: center;
+      }
+      main {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 1rem 2rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        margin-top: 0;
+      }
+      footer {
+        text-align: center;
+        padding: 1rem;
+        font-size: 0.9rem;
+        color: #666;
+      }
+      a.button {
+        display: inline-block;
+        margin-top: 1rem;
+        padding: 0.5rem 1rem;
+        background-color: #4caf50;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+      }
+      a.button:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Welcome to My Static Page</h1>
+    </header>
+    <main>
+      <p>This is a simple static website hosted in its own Docker container.</p>
+      <p>
+        You can use this page to showcase content, a resume, or any information
+        you want.
+      </p>
+      <a href="/" class="button">Back to Home</a>
+    </main>
+    <footer>&copy; 2025 igarcia2</footer>
+  </body>
+</html>

@@ -82,10 +82,43 @@ services:
     secrets:
       - ftp_password
 
+  static:
+    build: ./requirements/bonus/static
+    container_name: static
+    restart: always
+    networks:
+      - wp_network
+    ports:
+      - "8080:80"
+    volumes:
+      - ./requirements/bonus/static/site:/usr/share/nginx/html
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    restart: always
+    networks:
+      - wp_network
+    depends_on:
+      - mariadb
+
+  portainer:
+    build: ./requirements/bonus/portainer
+    container_name: portainer
+    restart: always
+    networks:
+      - wp_network
+    environment:
+      PORTAINER_TRUSTED_ORIGINS: "https://igarcia2.42.fr"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+
 # Volúmenes para persistencia
 volumes:
   wordpress_db_data:
   wordpress_site_data:
+  portainer_data:
 
 # Red dedicada
 networks:
