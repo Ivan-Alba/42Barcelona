@@ -39,21 +39,21 @@ void	Base::identify(Base &p)
 {
 	try
 	{
-		dynamic_cast<A&>(p);
+		A a = dynamic_cast<A&>(p);
 		std::cout << "Object type A" << std::endl;
 		return ;
 	} catch(...) {}
 
 	try
 	{
-		dynamic_cast<B&>(p);
+		B b = dynamic_cast<B&>(p);
 		std::cout << "Object type B" << std::endl;
 		return ;
 	} catch(...) {}
 
 	try
 	{
-		dynamic_cast<C&>(p);
+		C c = dynamic_cast<C&>(p);
 		std::cout << "Object type C" << std::endl;
 		return ;
 	} catch(...) {}
