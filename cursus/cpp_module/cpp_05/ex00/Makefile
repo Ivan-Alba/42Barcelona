@@ -48,15 +48,6 @@ define SHOW_MESSAGE
 endef
 
 
-# Length of the progress bar
-BAR_LENGTH = 50
-
-# Function to display a progress bar
-define SHOW_PROGRESS
-	@printf "$(YELLOW)[[[[%${BAR_LENGTH}s] %3d%%\r" "$(1)" $(2)
-endef
-
-
 all: $(NAME)	
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.cpp Makefile
