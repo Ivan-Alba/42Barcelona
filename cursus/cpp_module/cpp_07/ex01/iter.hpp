@@ -5,7 +5,7 @@
 #include <cstddef>
 
 template <typename T>
-void	iter(T *ptr, size_t len, void (*f)(T&))
+void	iter(T *ptr, const size_t len, void (*f)(T&))
 {
 	for (size_t i = 0; i < len; i++)
 	{

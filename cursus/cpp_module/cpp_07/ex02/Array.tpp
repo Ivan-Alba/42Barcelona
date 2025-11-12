@@ -19,10 +19,17 @@ template <typename T>
 Array<T>::Array(const Array &other)
 {
 	len = other.len;
-	array = new T[len];
-	for (size_t i = 0; i < len; i++)
+	if (len == 0)
 	{
-		array[i] = other.array[i];
+		array = NULL;
+	}
+	else
+	{
+		array = new T[len];
+		for (size_t i = 0; i < len; i++)
+		{
+			array[i] = other.array[i];
+		}
 	}
 }
 
@@ -39,10 +46,17 @@ Array<T>& Array<T>::operator=(const Array<T> &other)
 	{
 		delete[] array;
 		len = other.len;
-		array = new T[len];
+		if (len == 0)
+		{
+			array = NULL;
+		}
+		else
+		{
+			array = new T[len];
 
-		for (size_t i = 0; i < len; i++)
-			this->array[i] = other.array[i];
+			for (size_t i = 0; i < len; i++)
+				this->array[i] = other.array[i];
+		}
 	}
 
 	return (*this);	
