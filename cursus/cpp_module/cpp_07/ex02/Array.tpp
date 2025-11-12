@@ -11,7 +11,7 @@ Array<T>::Array()
 template <typename T>
 Array<T>::Array(unsigned int n)
 {
-	array = new T[n];
+	array = new T[n]();
 	len = n;
 }
 
