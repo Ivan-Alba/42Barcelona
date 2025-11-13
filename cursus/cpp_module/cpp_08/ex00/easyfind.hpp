@@ -2,6 +2,7 @@
 #define EASYFIND_HPP
 
 #include <iostream>
+#include <sstream>
 #include <stdexcept>
 #include <vector>
 #include <list>
@@ -16,11 +17,14 @@ void	easyfind(const T &container, int value)
 	{
 		if (*iter == value)
 		{
-			std::cout << "Value found." << std::endl;
+			std::cout << "Value " << value << " found." << std::endl;
 			return ;
 		}
 	}
-	throw std::runtime_error("Value not found");
+
+	std::ostringstream oss;
+	oss << "Value " << value << " not found";
+	throw std::runtime_error(oss.str());
 }
 
 #endif
