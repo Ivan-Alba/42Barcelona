@@ -52,7 +52,7 @@ int		Span::longestSpan() const
 	return (max - min);	
 }
 
-int		Span::shortestSpan()
+int		Span::shortestSpan() 
 {
 	int	min;
 
@@ -62,7 +62,7 @@ int		Span::shortestSpan()
 	
 	min = vec[1] - vec[0];
 
-	for (std::vector<int>::iterator iter = vec.begin();
+	for (std::vector<int>::const_iterator iter = vec.begin();
 		iter != vec.end() - 1; ++iter)
 	{
 		if ((*(iter + 1)) - (*iter) < min)

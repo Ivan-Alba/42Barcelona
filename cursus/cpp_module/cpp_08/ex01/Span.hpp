@@ -28,9 +28,8 @@ class Span
 			}
 		}
 
-		int		shortestSpan() const;
+		int		shortestSpan() ;
 		int		longestSpan() const;
-
 };
 
 #endif

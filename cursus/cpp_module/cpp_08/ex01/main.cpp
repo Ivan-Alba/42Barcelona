@@ -1,21 +1,36 @@
 #include "Span.hpp"
 #include <iostream>
+#include <deque>
 
 int	main()
 {
-	std::vector<int> vec(50000);
-	Span sp = Span(50005);
+	Span sp = Span(10005);
 	
+	std::vector<int> vec;
+	std::deque<int> deq;
+	
+	for (int i = 1; i <= 5000; i++)
+	{
+		vec.push_back(i);
+	}
+
+	for (int i = 5001; i <= 10000; i++)
+	{
+		deq.push_back(i);
+	}
+
 	try
 	{
-		sp.addNumber(-6);
-		sp.addNumber(3);
-		sp.addNumber(17);
-		sp.addNumber(9);
-		sp.addNumber(11);
-		//sp.addNumber(42); //Provoke exception
+		sp.addNumber(-50);
+		sp.addNumber(-100);
+		sp.addNumber(-1000);
+		sp.addNumber(-2000);
+		sp.addNumber(-5000);
 
 		sp.addNumber(vec.begin(), vec.end());
+		sp.addNumber(deq.begin(), deq.end());
+
+		//sp.addNumber(42); //Provoke exception
 	}
 	catch (std::exception &e)
 	{
