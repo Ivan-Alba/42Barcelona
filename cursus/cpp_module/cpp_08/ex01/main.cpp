@@ -9,20 +9,20 @@ int	main()
 	std::vector<int> vec;
 	std::deque<int> deq;
 	
-	for (int i = 1; i <= 5000; i++)
+	for (int i = 6; i <= 5005; i++)
 	{
 		vec.push_back(i);
 	}
 
-	for (int i = 5001; i <= 10000; i++)
+	for (int i = 5006; i <= 10005; i++)
 	{
 		deq.push_back(i);
 	}
 
 	try
 	{
-		sp.addNumber(-50);
-		sp.addNumber(-100);
+		sp.addNumber(0);
+		sp.addNumber(1);
 		sp.addNumber(-1000);
 		sp.addNumber(-2000);
 		sp.addNumber(-5000);

@@ -22,13 +22,10 @@ class Span
 		template <typename Iterator>
 		void	addNumber(Iterator begin, Iterator end)
 		{
-			for (Iterator i = begin; i != end; ++i)
-			{
-				addNumber(*i);
-			}
+			vec.insert(vec.end(), begin, end);
 		}
 
-		int		shortestSpan() ;
+		int		shortestSpan() const;
 		int		longestSpan() const;
 };
 

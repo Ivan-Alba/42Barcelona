@@ -1,6 +1,7 @@
 #include "Span.hpp"
 #include <stdexcept>
 #include <algorithm>
+#include <numeric>
 
 Span::Span() : maxSize(0) {}
 
@@ -32,44 +33,25 @@ void	Span::addNumber(int nb)
 
 int		Span::longestSpan() const
 {
-	int	max;
-	int	min;
-	
 	if (vec.size() < 2)
 		throw std::runtime_error("Cannot get longest span: less than two integers");
 
-	min = vec[0];
-	max = vec[0];
-
-	for (std::vector<int>::const_iterator iter = vec.begin();
-		iter != vec.end(); ++iter)
-	{
-		if ((*iter) > max)
-			max = (*iter);
-		if ((*iter) < min)
-			min = (*iter);
-	}
-	return (max - min);	
+	int	minVal = *std::min_element(vec.begin(), vec.end());
+	int	maxVal = *std::max_element(vec.begin(), vec.end());
+	
+	return (maxVal - minVal);	
 }
 
-int		Span::shortestSpan() 
+int		Span::shortestSpan() const
 {
-	int	min;
-
 	if (vec.size() < 2)
 		throw std::runtime_error("Cannot get shortest span: less than two integers");
-	std::sort(vec.begin(), vec.end());
+
+	std::vector<int>	tmp(vec);
+	std::vector<int>	diffs(tmp.size());
 	
-	min = vec[1] - vec[0];
+	std::sort(tmp.begin(), tmp.end());
+	std::adjacent_difference(tmp.begin(), tmp.end(), diffs.begin());
 
-	for (std::vector<int>::const_iterator iter = vec.begin();
-		iter != vec.end() - 1; ++iter)
-	{
-		if ((*(iter + 1)) - (*iter) < min)
-		{
-			min = (*(iter + 1)) - (*iter);
-		}
-	}
-
-	return (min);
+	return (*std::min_element(diffs.begin() + 1, diffs.end()));
 }
