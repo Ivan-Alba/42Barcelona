@@ -22,14 +22,27 @@ int	main(int ac, char **av)
 		return (1);
 	}
 
-	BitcoinExchange be;
-	std::string line;
+	try
+	{	
+		BitcoinExchange	be;
+		std::string		line;
 
-	std::getline(file, line);
-
-	while (std::getline(file, line))
+		std::getline(file, line);
+		if (!be.isInputHeaderCorrect(line))
+		{
+		std::cerr << "Error: file header not correct. Must be \"date | value\""\
+			<< std::endl;
+		return (1);
+		}
+	
+		while (std::getline(file, line))
+		{
+			be.getValue(line);
+		}
+	}
+	catch (std::exception &e)
 	{
-		be.getValue(line);
+		std::cerr << "Exception caught: " << e.what() << std::endl;
 	}
 
 	file.close();

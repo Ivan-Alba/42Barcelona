@@ -20,6 +20,7 @@ class BitcoinExchange
 		BitcoinExchange& operator=(const BitcoinExchange &other);
 
 		void	initDatabase();
+		bool	isInputHeaderCorrect(std::string &line) const;
 		void	getValue(const std::string &line) const;
 		bool	isDateValid(const std::string &date) const;
 		float	isValueValid(const std::string &value_str,

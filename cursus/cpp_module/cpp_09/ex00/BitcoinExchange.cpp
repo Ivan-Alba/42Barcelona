@@ -1,6 +1,8 @@
 #include "BitcoinExchange.hpp"
 #include <sstream>
 #include <iostream>
+#include <exception>
+#include <fstream>
 
 BitcoinExchange::BitcoinExchange()
 {
@@ -25,10 +27,18 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange &other)
 
 void	BitcoinExchange::initDatabase()
 {
+
+	std::ifstream file("data.csv");
+	if (!file.is_open())
+	{
+		throw std::runtime_error("Error: could not open file \"data.csv\".");
+	}
+
 	db["2011-01-03"] = 1.2f;
 	db["2011-01-09"] = 0.2f;
 	db["2011-01-11"] = 3;
 	db["2011-02-23"] = 0.8f;
+	db["2012-01-01"] = 500;
 	db["2020-08-02"] = 2.2f;
 	db["2024-07-16"] = 3.1f;
 	db["2020-01-01"] = 0.25f;
@@ -126,7 +136,7 @@ float	BitcoinExchange::isValueValid(const std::string &value_str,
 		std::cerr << "Error: not a positive number." << std::endl;
 		return (false);
 	}
-	else if (value > 1000.f)
+	else if (value > 1000.0f)
 	{
 		std::cerr << "Error: too large a number." << std::endl;
 		return (false);
@@ -166,7 +176,7 @@ void	BitcoinExchange::getValue(const std::string &line) const
 	std::map<std::string, float>::const_iterator it = db.find(date);
 	if (it == db.end())
 	{
-		it = db.upper_bound(date);
+		it = db.lower_bound(date);
 		if (it == db.begin())
 		{
 			std::cerr << "Error: date not found" << std::endl;
@@ -178,4 +188,12 @@ void	BitcoinExchange::getValue(const std::string &line) const
 
 	std::cout << date << " => " << value << " = " << val * it->second
 		<< std::endl;
+}
+
+bool	BitcoinExchange::isInputHeaderCorrect(std::string &line) const
+{
+	if (line != "date | value")
+		return (false);
+
+	return (true);
 }
