@@ -33,6 +33,19 @@ void	BitcoinExchange::initDatabase()
 	{
 		throw std::runtime_error("Error: could not open file \"data.csv\".");
 	}
+	
+	std::string	line;
+	if (std::getline(file, line) != "date,exchange_rate")
+	{
+		throw std::runtime_error(
+			"Error: data file header not correct. Must be \"date,exchange_rate\"");
+	}
+
+	while (std::getline(file, line))
+	{
+		loadData(line);
+	}
+
 
 	db["2011-01-03"] = 1.2f;
 	db["2011-01-09"] = 0.2f;
@@ -43,6 +56,32 @@ void	BitcoinExchange::initDatabase()
 	db["2024-07-16"] = 3.1f;
 	db["2020-01-01"] = 0.25f;
 	db["2001-12-31"] = 1.1f;
+}
+
+void	BitcoinExchange::loadData(const std::string &line)
+{
+	size_t		pos;
+	std::string	date;
+	std::string	value;
+	float		exchangeRate;
+
+	pos = line.find(",");
+	if (pos != std::string::npos && pos + 2 <= line.size())
+	{
+		date = line.substr(0, pos);
+		if (isDateValid(date))
+		{
+			value = line.substr(pos + 1);
+			if (strToFloat(value, exchangeRate))
+			{
+				std::pair<std::map<std::string,float>::iterator, bool> res;
+				
+				res = db.insert(std::make_pair(date, exchangeRate));
+				if (!res.second)
+
+			}
+		}
+	}
 }
 
 bool	BitcoinExchange::strToInt(const std::string &s, int &out) const

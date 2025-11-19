@@ -30,7 +30,7 @@ int	main(int ac, char **av)
 		std::getline(file, line);
 		if (!be.isInputHeaderCorrect(line))
 		{
-		std::cerr << "Error: file header not correct. Must be \"date | value\""\
+		std::cerr << "Error: input file header not correct. Must be \"date | value\""\
 			<< std::endl;
 		return (1);
 		}
