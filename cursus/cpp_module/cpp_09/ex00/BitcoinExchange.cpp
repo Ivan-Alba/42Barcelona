@@ -35,7 +35,8 @@ void	BitcoinExchange::initDatabase()
 	}
 	
 	std::string	line;
-	if (std::getline(file, line) != "date,exchange_rate")
+	std::getline(file, line);
+	if (line != "date,exchange_rate")
 	{
 		throw std::runtime_error(
 			"Error: data file header not correct. Must be \"date,exchange_rate\"");
@@ -45,17 +46,6 @@ void	BitcoinExchange::initDatabase()
 	{
 		loadData(line);
 	}
-
-
-	db["2011-01-03"] = 1.2f;
-	db["2011-01-09"] = 0.2f;
-	db["2011-01-11"] = 3;
-	db["2011-02-23"] = 0.8f;
-	db["2012-01-01"] = 500;
-	db["2020-08-02"] = 2.2f;
-	db["2024-07-16"] = 3.1f;
-	db["2020-01-01"] = 0.25f;
-	db["2001-12-31"] = 1.1f;
 }
 
 void	BitcoinExchange::loadData(const std::string &line)
@@ -78,10 +68,15 @@ void	BitcoinExchange::loadData(const std::string &line)
 				
 				res = db.insert(std::make_pair(date, exchangeRate));
 				if (!res.second)
-
+					std::cerr << "Error: data already exists => "
+						<< line << std::endl;
+				
+				return ;
 			}
 		}
 	}
+	
+	std::cerr << "Error: bad data input => " << line << std::endl;
 }
 
 bool	BitcoinExchange::strToInt(const std::string &s, int &out) const

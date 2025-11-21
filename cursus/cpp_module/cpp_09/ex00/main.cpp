@@ -32,7 +32,7 @@ int	main(int ac, char **av)
 		{
 		std::cerr << "Error: input file header not correct. Must be \"date | value\""\
 			<< std::endl;
-		return (1);
+			return (1);
 		}
 	
 		while (std::getline(file, line))

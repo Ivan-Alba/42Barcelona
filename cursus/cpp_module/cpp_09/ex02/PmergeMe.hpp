@@ -7,6 +7,9 @@
 
 class PmergeMe
 {
+	private:
+		std::vector<size_t>	generateJacobsthal(size_t n) const;
+
 	public:
 		PmergeMe();
 		PmergeMe(const PmergeMe &other);

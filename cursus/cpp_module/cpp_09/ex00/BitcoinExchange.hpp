@@ -11,6 +11,7 @@ class BitcoinExchange
 		
 		bool	strToInt(const std::string &s, int &out) const;
 		bool	strToFloat(const std::string &value, float &out) const;
+		void	loadData(const std::string &line);
 		
 	public:
 		BitcoinExchange();

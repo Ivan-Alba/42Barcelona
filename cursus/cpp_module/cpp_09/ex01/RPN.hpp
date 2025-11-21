@@ -9,6 +9,8 @@ class RPN
 	private:
 		std::stack<unsigned int> stack;
 
+		void	trim(std::string &s) const;
+
 	public:
 		RPN();
 		RPN(const RPN &other);
@@ -16,7 +18,7 @@ class RPN
 
 		RPN& operator=(const RPN &other);
 
-		bool			isFormatValid(const std::string &line) const;
+		bool			isFormatValid(std::string &line) const;
 		unsigned int	calculate(const std::string &line);
 		unsigned int	operate(unsigned int a, unsigned int b, char op) const;
 };

@@ -1,5 +1,6 @@
 #include "RPN.hpp"
 #include <stdexcept>
+#include <cctype>
 
 RPN::RPN() {}
 
@@ -20,8 +21,10 @@ RPN& RPN::operator=(const RPN &other)
 	return (*this);
 }
 
-bool	RPN::isFormatValid(const std::string &line) const
+bool	RPN::isFormatValid(std::string &line) const
 {
+	trim(line);
+
 	for (size_t i = 0; i < line.size(); ++i)
 	{
 		if (i % 2 == 0 && (!std::isdigit(line[i]) && line[i] != '+'
@@ -100,3 +103,23 @@ unsigned int	RPN::calculate(const std::string &line)
 
 	return (result);
 }
+
+
+void	RPN::trim(std::string& s) const
+{
+    // Trim left
+    std::string::size_type start = 0;
+    while (start < s.size() && std::isspace(static_cast<unsigned char>(s[start]))) {
+        ++start;
+    }
+
+    // Trim right
+    std::string::size_type end = s.size();
+    while (end > start && std::isspace(static_cast<unsigned char>(s[end - 1]))) {
+        --end;
+    }
+
+    s = s.substr(start, end - start);
+}
+
+
