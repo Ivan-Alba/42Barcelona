@@ -53,7 +53,10 @@ unsigned int	RPN::operate(unsigned int a, unsigned int b, char op) const
 		case '*':
 			return (a * b);
 		case '/':
-			return (a / b);
+			if (b != 0)
+				return (a / b);
+			else
+				throw std::invalid_argument("division by 0");
 		default:
 			throw std::invalid_argument("wrong operator");
 	}
