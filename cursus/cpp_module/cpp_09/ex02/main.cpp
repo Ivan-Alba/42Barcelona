@@ -96,10 +96,10 @@ int	main(int ac, char **av)
 		return (EXIT_FAILURE);
 	}
 
-	std::cout << "Time to process a range of " << ac
+	std::cout << "Time to process a range of " << (ac - 1)
 		<< " elements with std::vector : " << timeVec << " us" << std::endl;
 	
-	std::cout << "Time to process a range of " << ac
+	std::cout << "Time to process a range of " << (ac - 1)
 		<< " elements with std::deque : " << timeDeq << " us" << std::endl;
 	
 	return (EXIT_SUCCESS);

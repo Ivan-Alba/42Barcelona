@@ -93,35 +93,61 @@ void	PmergeMe::mergeInsertionSort(const std::vector<unsigned int> &input,
 
 	if (input.size() == 1)
 	{
-		sorted.push_back(input.at(0));
+		sorted.push_back(input[0]);
 		return ;
 	}
 
-	for (size_t i = 0; i < input.size(); i += 2)
+	size_t i = 0;
+	for (i = 0; i + 1 < input.size(); i += 2)
 	{
-		if (input.size() % 2 == 1 && i == input.size() - 1)
-			losers.push_back(input.at(i));
+		if (input[i] > input[i + 1])
+		{
+			winners.push_back(input[i]);
+			losers.push_back(input[i + 1]);
+		}
 		else
 		{
-			if (input.at(i) > input.at(i + 1))
-			{
-				winners.push_back(input.at(i));
-				losers.push_back(input.at(i + 1));
-			}
-			else
-			{
-				losers.push_back(input.at(i));
-				winners.push_back(input.at(i + 1));
-			}
+			losers.push_back(input[i]);
+			winners.push_back(input[i + 1]);
 		}
 	}
+
+	if (i < input.size())
+			losers.push_back(input[i]);
+
 	mergeInsertionSort(winners, sorted);
 
+	std::vector<size_t>	jacobOrder = generateJacobsthal(losers.size());
+	std::vector<bool>	inserted(losers.size(), false);
+
+	// Insert by jacobsthal order
+	for (size_t i = 0; i < jacobOrder.size(); ++i)
+	{
+		if (jacobOrder[i] < losers.size() && !inserted[jacobOrder[i]])
+		{
+			std::vector<unsigned int>::iterator	pos = std::lower_bound(
+				sorted.begin(), sorted.end(), losers[jacobOrder[i]]);
+			sorted.insert(pos, losers[jacobOrder[i]]);
+			inserted[jacobOrder[i]] = true;
+		}
+	}
+
+	// Insert others
 	for (size_t i = 0; i < losers.size(); ++i)
 	{
-		std::vector<unsigned int>::iterator pos =
-			std::lower_bound(sorted.begin(), sorted.end(), losers.at(i));
-		sorted.insert(pos, losers.at(i));
+		if (!inserted[i] && i < winners.size())
+		{
+			std::vector<unsigned int>::iterator	pos = std::lower_bound(
+				sorted.begin(), std::find(
+					sorted.begin(), sorted.end(), winners[i]), losers[i]);
+			sorted.insert(pos, losers[i]);
+		}
+		else if (!inserted[i])
+		{
+			std::vector<unsigned int>::iterator	pos = std::lower_bound(
+				sorted.begin(), sorted.end(), losers[i]);
+			sorted.insert(pos, losers[i]);
+		}
 	}
 }
 
