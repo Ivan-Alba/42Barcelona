@@ -31,6 +31,7 @@ void	PmergeMe::mergeInsertionSort(const std::deque<unsigned int> &input,
 		return ;
 	}
 
+	// Make pairs winners/losers
 	size_t i = 0;
 	for (i = 0; i + 1 < input.size(); i += 2)
 	{
@@ -59,8 +60,17 @@ void	PmergeMe::mergeInsertionSort(const std::deque<unsigned int> &input,
 	{
 		if (jacobOrder[i] < losers.size() && !inserted[jacobOrder[i]])
 		{
-			std::deque<unsigned int>::iterator	pos = std::lower_bound(
-				sorted.begin(), sorted.end(), losers[jacobOrder[i]]);
+			std::deque<unsigned int>::iterator	pos;
+			if (jacobOrder[i] < winners.size())
+			{
+				pos = std::lower_bound(
+				sorted.begin(), std::find(sorted.begin(), sorted.end(),
+					winners[jacobOrder[i]]), losers[jacobOrder[i]]);
+			}
+			else
+				pos = std::lower_bound(
+					sorted.begin(), sorted.end(), losers[jacobOrder[i]]);
+
 			sorted.insert(pos, losers[jacobOrder[i]]);
 			inserted[jacobOrder[i]] = true;
 		}
@@ -69,17 +79,17 @@ void	PmergeMe::mergeInsertionSort(const std::deque<unsigned int> &input,
 	// Insert others
 	for (size_t i = 0; i < losers.size(); ++i)
 	{
-		if (!inserted[i] && i < winners.size())
+		if (!inserted[i])
 		{
-			std::deque<unsigned int>::iterator	pos = std::lower_bound(
-				sorted.begin(), std::find(
+			std::deque<unsigned int>::iterator	pos;
+			if (i < winners.size())
+			{
+				pos = std::lower_bound(sorted.begin(), std::find(
 					sorted.begin(), sorted.end(), winners[i]), losers[i]);
-			sorted.insert(pos, losers[i]);
-		}
-		else if (!inserted[i])
-		{
-			std::deque<unsigned int>::iterator	pos = std::lower_bound(
-				sorted.begin(), sorted.end(), losers[i]);
+			}
+			else
+				pos = std::lower_bound(sorted.begin(), sorted.end(), losers[i]);
+
 			sorted.insert(pos, losers[i]);
 		}
 	}
@@ -97,6 +107,7 @@ void	PmergeMe::mergeInsertionSort(const std::vector<unsigned int> &input,
 		return ;
 	}
 
+	// Make pairs winners/losers
 	size_t i = 0;
 	for (i = 0; i + 1 < input.size(); i += 2)
 	{
@@ -125,8 +136,16 @@ void	PmergeMe::mergeInsertionSort(const std::vector<unsigned int> &input,
 	{
 		if (jacobOrder[i] < losers.size() && !inserted[jacobOrder[i]])
 		{
-			std::vector<unsigned int>::iterator	pos = std::lower_bound(
+			std::vector<unsigned int>::iterator	pos;
+			if (jacobOrder[i] < winners.size())
+			{
+				pos = std::lower_bound(sorted.begin(), std::find(sorted.begin(),
+					sorted.end(), winners[jacobOrder[i]]), losers[jacobOrder[i]]);
+			}
+			else
+				pos = std::lower_bound(
 				sorted.begin(), sorted.end(), losers[jacobOrder[i]]);
+			
 			sorted.insert(pos, losers[jacobOrder[i]]);
 			inserted[jacobOrder[i]] = true;
 		}
@@ -137,15 +156,14 @@ void	PmergeMe::mergeInsertionSort(const std::vector<unsigned int> &input,
 	{
 		if (!inserted[i] && i < winners.size())
 		{
-			std::vector<unsigned int>::iterator	pos = std::lower_bound(
-				sorted.begin(), std::find(
+			std::vector<unsigned int>::iterator	pos;
+			if (i < winners.size())
+			{
+				pos = std::lower_bound(sorted.begin(), std::find(
 					sorted.begin(), sorted.end(), winners[i]), losers[i]);
-			sorted.insert(pos, losers[i]);
-		}
-		else if (!inserted[i])
-		{
-			std::vector<unsigned int>::iterator	pos = std::lower_bound(
-				sorted.begin(), sorted.end(), losers[i]);
+			}
+			else
+				pos = std::lower_bound(sorted.begin(), sorted.end(), losers[i]);
 			sorted.insert(pos, losers[i]);
 		}
 	}
