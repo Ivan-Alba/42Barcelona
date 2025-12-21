@@ -69,7 +69,14 @@ void	PmergeMe::mergeInsertionSort(const std::deque<unsigned int> &input,
 	// Insert others
 	for (size_t i = 0; i < losers.size(); ++i)
 	{
-		if (!inserted[i])
+		if (!inserted[i] && i < winners.size())
+		{
+			std::deque<unsigned int>::iterator	pos = std::lower_bound(
+				sorted.begin(), std::find(
+					sorted.begin(), sorted.end(), winners[i]), losers[i]);
+			sorted.insert(pos, losers[i]);
+		}
+		else if (!inserted[i])
 		{
 			std::deque<unsigned int>::iterator	pos = std::lower_bound(
 				sorted.begin(), sorted.end(), losers[i]);
