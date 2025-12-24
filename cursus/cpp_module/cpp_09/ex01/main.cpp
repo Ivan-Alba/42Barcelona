@@ -23,7 +23,7 @@ int	main(int ac, char **av)
 	try
 	{
 		result = rpn.calculate(line);
-		std::cout << result << std::endl;
+		std::cout << static_cast<int>(result) << std::endl;
 	}
 	catch (const std::exception &e)
 	{
