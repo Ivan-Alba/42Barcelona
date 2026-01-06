@@ -117,8 +117,23 @@ services:
 # Volúmenes para persistencia
 volumes:
   wordpress_db_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/igarcia2/data/mariadb
   wordpress_site_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/igarcia2/data/wordpress
   portainer_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/igarcia2/data/portainer
 
 # Red dedicada
 networks:
