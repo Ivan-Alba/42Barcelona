@@ -1,4 +1,4 @@
-# Makefile for Docker Compose project
+# Makefile for Docker Compose project (Inception)
 
 # Load .env so Make can use variables
 ENV_FILE = srcs/.env
@@ -13,48 +13,69 @@ SECRETS_DIR    = secrets
 DOMAIN         = $(DOMAIN_NAME)
 DATA_PATH      = /home/igarcia2/data
 
-# Default target
-all: setup_dirs check_docker certs secrets build up
+# --- MAIN TARGETS ---
+
+# Default target: Simplified to trigger the full setup and launch
+all: up
 	@echo "[INFO] All done. Access your site at https://$(DOMAIN)"
 
-# Rebuild
+# Rebuild: Full cleanup followed by a fresh start
 re: fclean all
 
-# Create local directories
+# --- DOCKER OPERATIONS ---
+
+# Build images: Ensures data directories exist before building
+build: setup_dirs
+	@echo "[INFO] Building Docker images..."
+	@$(DOCKER_COMPOSE) build
+
+# Up: The core rule. Chains all dependencies to ensure a perfect launch.
+# If anything is missing (certs, secrets, docker), it handles it before 'up -d'.
+up: setup_dirs check_docker certs secrets build
+	@echo "[INFO] Launching containers in background..."
+	@$(DOCKER_COMPOSE) up -d 
+
+# Down: Stops and removes containers/networks but PRESERVES volumes (Persistence)
+down:
+	@echo "[INFO] Stopping and removing containers/networks (preserving volumes)..."
+	@$(DOCKER_COMPOSE) down
+
+# PS: Shows status. Depends on secrets to avoid "undefined secret file" warnings.
+ps: secrets
+	@$(DOCKER_COMPOSE) ps
+
+# Logs: Follow real-time output from all containers
+logs:
+	@$(DOCKER_COMPOSE) logs -f
+
+# --- CLEANUP ---
+
+# Clean: Stops containers and prunes unused Docker data (keeps volumes and secrets)
+clean: down
+	@echo "[INFO] Cleaning Docker system (pruning)..."
+	@docker system prune -af
+	@echo "[INFO] Clean finished."
+
+# Fclean: Nuclear option. Removes containers, volumes, secrets, certs, and local data.
+fclean: clean
+	@echo "[INFO] Performing full clean (removing volumes and local data)..."
+	@$(DOCKER_COMPOSE) down -v >/dev/null 2>&1
+	@rm -rf $(CERTS_DIR)
+	@rm -rf $(SECRETS_DIR)
+	@echo "[INFO] Removing local data directories with sudo..."
+	@sudo rm -rf $(DATA_PATH)
+	@echo "[INFO] Full clean finished."
+
+# --- PREREQUISITES (DEPENDENCIES) ---
+
+# Create physical directories on the host for volume mapping
 setup_dirs:
-	@echo "[INFO] Creating local data directories in $(DATA_PATH)..."
+	@echo "[INFO] Ensuring local data directories exist..."
 	@mkdir -p $(DATA_PATH)/mariadb
 	@mkdir -p $(DATA_PATH)/wordpress
 	@mkdir -p $(DATA_PATH)/portainer
 
-# Stop and remove containers
-clean:
-	@echo "[INFO] Stopping and removing containers and networks..."
-	@$(DOCKER_COMPOSE) down >/dev/null 2>&1
-	@docker system prune -af
-	@echo "[INFO] Clean finished."
-
-# Full clean
-fclean: clean
-	@echo "[INFO] Performing full clean..."
-	@$(DOCKER_COMPOSE) down -v >/dev/null 2>&1
-	@rm -rf $(CERTS_DIR)
-	@rm -rf $(SECRETS_DIR)
-	@echo "[INFO] Removing local data directories..."
-	@sudo rm -rf $(DATA_PATH)
-	@echo "[INFO] Full clean finished."
-
-# Build images
-build:
-	@echo "[INFO] Building Docker images..."
-	@$(DOCKER_COMPOSE) build
-
-# Run
-up:
-	@echo "[INFO] Launching containers..."
-	@$(DOCKER_COMPOSE) up -d 
-
-# SSL Certs
+# Generate self-signed SSL certificates for Nginx
 certs:
 	@if [ -f $(CERTS_DIR)/server.key ] && [ -f $(CERTS_DIR)/server.crt ]; then \
 		echo "[INFO] Certificates already exist. Skipping..."; \
@@ -63,31 +84,28 @@ certs:
 		openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 			-keyout $(CERTS_DIR)/server.key \
 			-out $(CERTS_DIR)/server.crt \
-			-subj "/C=FR/ST=Paris/L=Paris/O=42/OU=42/CN=$(DOMAIN)" >/dev/null 2>&1; \
+			-subj "/C=ES/ST=Barcelona/L=Barcelona/O=42/OU=42/CN=$(DOMAIN)" >/dev/null 2>&1; \
 		echo "[INFO] Certificates generated for $(DOMAIN)."; \
 	fi
 
-# Secrets
+# Generate random passwords for secure storage (Secrets)
 secrets:
 	@mkdir -p $(SECRETS_DIR)
 	@if [ ! -f $(SECRETS_DIR)/db_root_password.txt ]; then \
 		echo -n "$$(openssl rand -base64 16)" > $(SECRETS_DIR)/db_root_password.txt; \
-		echo "[INFO] Generated db_root_password"; \
 	fi
 	@if [ ! -f $(SECRETS_DIR)/db_password.txt ]; then \
 		echo -n "$$(openssl rand -base64 16)" > $(SECRETS_DIR)/db_password.txt; \
-		echo "[INFO] Generated db_password"; \
 	fi
 	@if [ ! -f $(SECRETS_DIR)/db_user_password.txt ]; then \
 		echo -n "$$(openssl rand -base64 16)" > $(SECRETS_DIR)/db_user_password.txt; \
-		echo "[INFO] Generated db_user_password"; \
 	fi
 	@if [ ! -f $(SECRETS_DIR)/ftp_password.txt ]; then \
 		echo -n "$$(openssl rand -base64 16)" > $(SECRETS_DIR)/ftp_password.txt; \
-		echo "[INFO] Generated ftp_password"; \
 	fi
+	@echo "[INFO] Secrets are ready."
 
-# Docker install
+# Automatically install Docker and Docker-compose if not found on the system
 check_docker:
 	@command -v docker >/dev/null 2>&1 || { \
 		echo "[INFO] Docker not found. Installing..."; \
@@ -98,4 +116,4 @@ check_docker:
 		sudo apt update && sudo apt install -y docker-compose; \
 	}
 
-.PHONY: all re clean fclean build up certs secrets setup_dirs
+.PHONY: all re clean fclean build up down certs secrets setup_dirs logs ps
