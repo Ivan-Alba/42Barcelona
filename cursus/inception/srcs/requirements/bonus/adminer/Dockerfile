@@ -1,17 +1,21 @@
-# Dockerfile: Adminer container
+# Base image: Debian Bullseye
+FROM debian:bullseye
 
-# Base image: lightweight PHP + Apache on Debian Bullseye
-FROM php:8.1-apache-bullseye
+# Install PHP and the mysqli extension needed for MariaDB
+RUN apt-get update && apt-get install -y \
+    php \
+    php-mysqli \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install required PHP extensions (mysqli for MariaDB/MySQL)
-RUN docker-php-ext-install mysqli pdo pdo_mysql
+# Create the directory for Adminer
+RUN mkdir -p /var/www/html
 
-# Copy Adminer PHP file into web root
-# Adminer is a single PHP file, acting as a database client
-COPY adminer.php /var/www/html/
+# Download the latest Adminer PHP file directly
+RUN wget "https://github.com/vrana/adminer/releases/download/v4.17.1/adminer-4.17.1-mysql.php" -O /var/www/html/index.php
 
-# Expose HTTP port
+# Expose the internal port
 EXPOSE 8080
 
-# Ensure Apache runs in foreground
-CMD ["apache2-foreground"]
+# Start a simple PHP server to serve the single file
+CMD ["php", "-S", "0.0.0.0:8080", "-t", "/var/www/html"]

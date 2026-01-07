@@ -92,7 +92,7 @@ services:
       - ./requirements/bonus/static/site:/usr/share/nginx/html
 
   adminer:
-    image: adminer
+    build: ./requirements/bonus/adminer
     container_name: adminer
     restart: always
     networks:
