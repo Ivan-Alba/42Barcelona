@@ -1,52 +1,82 @@
 #!/bin/bash
+
+set -e
+
+#!/bin/bash
+
+# Exit immediately if a command exits with a non-zero status
 set -e
 
 # Path where WordPress lives
 WP_PATH="/var/www/html"
 
-# Database variables (.env)
+# Database variables from .env and secrets
 DB_HOST=${WORDPRESS_DB_HOST}
 DB_NAME=${WORDPRESS_DB_NAME}
-DB_USER=${WORDPRESS_DB_USER}
+DB_USER=${WORDPRESS_DB_USER} # This is MYSQL_ADMIN
+DB_PASSWORD=$(cat /run/secrets/db_password)
+DB_USER_NAME=${MYSQL_USER}
+DB_USER_PASSWORD=$(cat /run/secrets/db_user_password)
 
-if [ -f /run/secrets/db_password ]; then
-    DB_PASSWORD=$(cat /run/secrets/db_password)
-fi
-
-echo "[INFO] Waiting for MariaDB to be ready..."
-until mysql -h "$DB_HOST" -P 3306 -u "$DB_USER" -p"$DB_PASSWORD" "$DB_NAME" &> /dev/null; do
+# Wait for MariaDB to be fully ready
+echo "[INFO] Waiting for MariaDB at $DB_HOST..."
+until mysql -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASSWORD" "$DB_NAME" &> /dev/null; do
     echo "[INFO] MariaDB not ready, retrying in 2 seconds..."
-	sleep 2
+    sleep 2
 done
 echo "[INFO] MariaDB is ready."
 
-# Path inside container where wp-config.php from build is stored
-WP_CONFIG_SOURCE="/usr/local/etc/wp-config.php"
+# Move to WordPress directory
+cd $WP_PATH
 
-# Check if WordPress is installed by looking for index.php
-if [ ! -f "$WP_PATH/index.php" ]; then
-    echo "[INFO] WordPress not found in $WP_PATH. Installing..."
+# 1. CORE INSTALLATION (Only if wp-config doesn't exist)
+if [ ! -f "wp-config.php" ]; then
+    echo "[INFO] WordPress not found. Downloading and installing..."
 
-    # Download and extract WordPress
-    curl -o /tmp/wordpress.tar.gz https://wordpress.org/latest.tar.gz
-    tar -xzf /tmp/wordpress.tar.gz -C $WP_PATH --strip-components=1
-    rm /tmp/wordpress.tar.gz
+    # Download WordPress core
+    wp core download --allow-root
 
-    # Copy wp-config.php only if it does not exist
-    if [ ! -f "$WP_PATH/wp-config.php" ] && [ -f "$WP_CONFIG_SOURCE" ]; then
-        cp "$WP_CONFIG_SOURCE" "$WP_PATH/wp-config.php"
-        echo "[INFO] Copied wp-config.php into place."
-    fi
+    # Create wp-config.php using secrets
+    wp config create \
+        --dbname="$DB_NAME" \
+        --dbuser="$DB_USER" \
+        --dbpass="$DB_PASSWORD" \
+        --dbhost="$DB_HOST" \
+        --allow-root
 
-    # Set proper ownership and permissions
-    chown -R www-data:www-data "$WP_PATH"
-    find "$WP_PATH" -type d -exec chmod 755 {} \;
-    find "$WP_PATH" -type f -exec chmod 644 {} \;
+    # Run installation (Creates the Admin User)
+    wp core install \
+        --url="https://${DOMAIN_NAME}" \
+        --title="Inception" \
+        --admin_user="${DB_USER}" \
+        --admin_password="${DB_PASSWORD}" \
+        --admin_email="${DB_USER}@student.42.fr" \
+        --skip-email \
+        --allow-root
 
-    echo "[INFO] WordPress installed successfully."
+    echo "[INFO] WordPress core installed."
 else
-    echo "[INFO] WordPress already present in $WP_PATH. Skipping install."
+    echo "[INFO] WordPress core already present."
 fi
 
-# Start PHP-FPM in the foreground
+# 2. USER MANAGEMENT (Outside the if, to ensure they always exist)
+# Create second user if it doesn't exist
+if ! wp user get "${DB_USER_NAME}" --allow-root > /dev/null 2>&1; then
+    echo "[INFO] Creating second user: ${DB_USER_NAME}..."
+    wp user create \
+        "${DB_USER_NAME}" \
+        "${DB_USER_NAME}@student.42.fr" \
+        --user_pass="${DB_USER_PASSWORD}" \
+        --role=author \
+        --allow-root
+    echo "[INFO] Second user created."
+else
+    echo "[INFO] Second user already exists."
+fi
+
+# Set proper ownership and permissions
+chown -R www-data:www-data "$WP_PATH"
+
+# Start PHP-FPM in foreground
+echo "[INFO] Starting PHP-FPM..."
 exec php-fpm7.4 -F

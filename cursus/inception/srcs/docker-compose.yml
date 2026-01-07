@@ -30,6 +30,7 @@ services:
       WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
       WORDPRESS_TABLE_PREFIX: wp_
       DOMAIN_NAME: ${DOMAIN_NAME}
+      MYSQL_USER: ${MYSQL_USER}
     volumes:
       - wordpress_site_data:/var/www/html
     networks:
@@ -38,6 +39,7 @@ services:
       - mariadb
     secrets:
       - db_password
+      - db_user_password
 
   nginx:
     build: ./requirements/nginx

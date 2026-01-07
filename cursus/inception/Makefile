@@ -1,6 +1,6 @@
 # Makefile for Docker Compose project
 
-# Load .env so Make can use variables (Compose auto-loads srcs/.env)
+# Load .env so Make can use variables
 ENV_FILE = srcs/.env
 -include $(ENV_FILE)
 export DOMAIN
@@ -11,39 +11,50 @@ DOCKER_COMPOSE = docker-compose -f $(COMPOSE_FILE)
 CERTS_DIR      = srcs/requirements/nginx/certs
 SECRETS_DIR    = secrets
 DOMAIN         = $(DOMAIN_NAME)
+DATA_PATH      = /home/igarcia2/data
 
-# Default target: build and run
-all: check_docker certs secrets build up
-	@echo "[INFO] All done."
+# Default target
+all: setup_dirs check_docker certs secrets build up
+	@echo "[INFO] All done. Access your site at https://$(DOMAIN)"
 
-# Rebuild everything from scratch
+# Rebuild
 re: fclean all
 
-# Stop containers and remove networks
+# Create local directories
+setup_dirs:
+	@echo "[INFO] Creating local data directories in $(DATA_PATH)..."
+	@mkdir -p $(DATA_PATH)/mariadb
+	@mkdir -p $(DATA_PATH)/wordpress
+	@mkdir -p $(DATA_PATH)/portainer
+
+# Stop and remove containers
 clean:
 	@echo "[INFO] Stopping and removing containers and networks..."
 	@$(DOCKER_COMPOSE) down >/dev/null 2>&1
-	@docker system prune -af --volumes
+	@docker system prune -af
 	@echo "[INFO] Clean finished."
 
-# Clean everything: containers, images, volumes and certs
+# Full clean
 fclean: clean
-	@echo "[INFO] Performing full clean: removing volumes, certs, and secrets..."
-	@docker volume rm srcs_wordpress_db_data \
-		srcs_portainer_data srcs_wordpress_site_data 2>/dev/null || true
+	@echo "[INFO] Performing full clean..."
+	@$(DOCKER_COMPOSE) down -v >/dev/null 2>&1
 	@rm -rf $(CERTS_DIR)
 	@rm -rf $(SECRETS_DIR)
+	@echo "[INFO] Removing local data directories..."
+	@sudo rm -rf $(DATA_PATH)
 	@echo "[INFO] Full clean finished."
 
 # Build images
 build:
+	@echo "[INFO] Building Docker images..."
 	@$(DOCKER_COMPOSE) build
 
-# Run in detached mode
+# Run
 up:
+	@echo "[INFO] Launching containers..."
 	@$(DOCKER_COMPOSE) up -d 
 
-# Generate self-signed SSL certificates
+# SSL Certs
 certs:
 	@if [ -f $(CERTS_DIR)/server.key ] && [ -f $(CERTS_DIR)/server.crt ]; then \
 		echo "[INFO] Certificates already exist. Skipping..."; \
@@ -53,10 +64,10 @@ certs:
 			-keyout $(CERTS_DIR)/server.key \
 			-out $(CERTS_DIR)/server.crt \
 			-subj "/C=FR/ST=Paris/L=Paris/O=42/OU=42/CN=$(DOMAIN)" >/dev/null 2>&1; \
-		echo "[INFO] Certificates generated."; \
+		echo "[INFO] Certificates generated for $(DOMAIN)."; \
 	fi
 
-# Generate secrets random passwords
+# Secrets
 secrets:
 	@mkdir -p $(SECRETS_DIR)
 	@if [ ! -f $(SECRETS_DIR)/db_root_password.txt ]; then \
@@ -76,22 +87,15 @@ secrets:
 		echo "[INFO] Generated ftp_password"; \
 	fi
 
-# Check docker installation
+# Docker install
 check_docker:
 	@command -v docker >/dev/null 2>&1 || { \
 		echo "[INFO] Docker not found. Installing..."; \
-		sudo apt update; \
-		sudo apt install -y apt-transport-https ca-certificates curl software-properties-common; \
-		curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg; \
-		echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $$(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null; \
-		sudo apt update; \
-		sudo apt install -y docker-ce docker-ce-cli containerd.io; \
-		echo "[INFO] Docker installed."; \
+		sudo apt update && sudo apt install -y docker.io; \
 	}
 	@command -v docker-compose >/dev/null 2>&1 || { \
-		echo "docker-compose not found. Installing..."; \
-		sudo apt update; \
-		sudo apt install -y docker-compose; \
+		echo "[INFO] docker-compose not found. Installing..."; \
+		sudo apt update && sudo apt install -y docker-compose; \
 	}
 
-.PHONY: all re clean fclean build up certs secrets
+.PHONY: all re clean fclean build up certs secrets setup_dirs
