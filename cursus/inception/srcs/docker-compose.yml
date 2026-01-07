@@ -62,8 +62,6 @@ services:
     build: ./requirements/bonus/redis
     container_name: redis
     restart: unless-stopped
-    ports:
-      - "6379:6379"
     networks:
       - wp_network
 
@@ -90,8 +88,6 @@ services:
     restart: always
     networks:
       - wp_network
-    ports:
-      - "8080:80"
     volumes:
       - ./requirements/bonus/static/site:/usr/share/nginx/html
 

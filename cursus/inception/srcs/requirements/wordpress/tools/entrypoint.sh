@@ -1,9 +1,5 @@
 #!/bin/bash
 
-set -e
-
-#!/bin/bash
-
 # Exit immediately if a command exits with a non-zero status
 set -e
 
@@ -44,6 +40,14 @@ if [ ! -f "wp-config.php" ]; then
         --dbhost="$DB_HOST" \
         --allow-root
 
+    # --- REDIS CONFIGURATION ---
+    # We add the Redis settings to wp-config.php during installation
+    echo "[INFO] Configuring Redis settings in wp-config.php..."
+    wp config set WP_REDIS_HOST "redis" --allow-root
+    wp config set WP_REDIS_PORT 6379 --raw --allow-root
+    # WP_CACHE must be true for the object cache to work
+    wp config set WP_CACHE true --raw --allow-root
+
     # Run installation (Creates the Admin User)
     wp core install \
         --url="https://${DOMAIN_NAME}" \
@@ -57,10 +61,13 @@ if [ ! -f "wp-config.php" ]; then
     echo "[INFO] WordPress core installed."
 else
     echo "[INFO] WordPress core already present."
+    # Ensure Redis settings exist even if WP was already present (optional but safer)
+    wp config set WP_REDIS_HOST "redis" --allow-root
+    wp config set WP_REDIS_PORT 6379 --raw --allow-root
+    wp config set WP_CACHE true --raw --allow-root
 fi
 
-# 2. USER MANAGEMENT (Outside the if, to ensure they always exist)
-# Create second user if it doesn't exist
+# 2. USER MANAGEMENT
 if ! wp user get "${DB_USER_NAME}" --allow-root > /dev/null 2>&1; then
     echo "[INFO] Creating second user: ${DB_USER_NAME}..."
     wp user create \
@@ -70,9 +77,18 @@ if ! wp user get "${DB_USER_NAME}" --allow-root > /dev/null 2>&1; then
         --role=author \
         --allow-root
     echo "[INFO] Second user created."
-else
-    echo "[INFO] Second user already exists."
 fi
+
+# 3. REDIS PLUGIN INSTALLATION & ACTIVATION
+# This ensures the bonus requirement for Redis is fully automated
+if ! wp plugin is-installed redis-cache --allow-root; then
+    echo "[INFO] Installing Redis Cache plugin..."
+    wp plugin install redis-cache --activate --allow-root
+fi
+
+# Enable the object cache (this creates the wp-content/object-cache.php file)
+echo "[INFO] Enabling Redis Object Cache..."
+wp redis enable --allow-root
 
 # Set proper ownership and permissions
 chown -R www-data:www-data "$WP_PATH"
